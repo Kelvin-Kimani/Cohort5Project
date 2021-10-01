@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="container text-center">
+    <h2>Fill Out User Details</h2>
+    <br>
+
+    <form th:object="${createUser}"
+          th:action="@{'/change_user_role/' + ${createUser.userId}}"
+          method="post">
+
+        <input type="text" class="form-control" th:field="*{employeeName}" readonly/>
+
+        <select class="form-select" id="role" th:field="*{userRole}" th:name="'userRole'">
+            <option selected disabled th:value= "'NONE'" th:text = "Role"/>
+            <option th:value="'User'">User</option>
+            <option th:value="'Organization Officer'">Organization Officer</option>
+        </select>
+
+        <div>
+            <button type="submit" class="btn btn-success">Create User</button>
+        </div>
+    </form>
+
+    <div>
+        <a class="btn btn-secondary" th:href="@{/users}">View User</a>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+</body>
+</html>

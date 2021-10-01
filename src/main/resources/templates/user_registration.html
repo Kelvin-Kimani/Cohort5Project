@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <link th:href="@{/css/forms.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="container text-center">
+    <h3 class="text-center">Sign Up:- Register User</h3>
+
+    <br />
+    <br />
+
+    <form  th:action="@{/user_registration}" method="post" style="max-width: 600px;"
+           th:object="${user}">
+
+            <div class="form-floating col-6">
+                    <input type="text" id="fullnames" class="form-control" required placeholder="Full Names" th:field="*{employeeName}"/>
+                    <label for="fullnames">Full Names</label>
+            </div>
+
+            <div class="form-floating col-6">
+                <input type="text" class="form-control" id="emailaddress" placeholder="Email Address" th:field="*{employeeEmailAddress}">
+                <label for="emailaddress">Email Address</label>
+            </div>
+
+        <div class="form-floating col-6">
+            <input type="text" class="form-control" id="phonenumber" placeholder="Phone Number" th:field="*{employeePhoneNumber}">
+            <label for="phonenumber">Phone Number</label>
+        </div>
+
+
+        <label for="gender">Gender:</label>
+
+        <select  th:field="*{employeeGender}" class="form-select col-6" id="gender">
+            <option disabled th:value='N' th:text = "Choose"></option>
+            <option th:value="'Male'" th:text="Male"></option>
+            <option th:value="'Female'" th:text="Female"></option>
+            <option th:value="'Other'" th:text="Other"></option>
+        </select>
+
+
+        <label for="department">Department:</label>
+
+        <select  th:field="*{employeeDepartment}" class="form-select col-6" id="department">
+            <option disabled th:value='N'>Choose department</option>
+            <option th:value="'Human Resource'">Human Resource</option>
+            <option th:value= "'Finance'">Finance</option>
+            <option th:value="'Quality Assurance'">Quality Assurance</option>
+            <option th:value="'Software Development'">Software Development</option>
+            <option th:value="'Hospitality'">Hospitality</option>
+            <option th:value="'Marketing'">Marketing</option>
+        </select>
+
+        <!--By default the user has no role-->
+        <select style="visibility: hidden" th:field="*{userRole}">
+            <option th:value="'NONE'">NONE</option>
+        </select>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+    </form>
+
+    <div class="createuserbutton">
+        <a class="btn btn-secondary" th:href="@{/registered_users}">Users</a>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+</body>
+</html>
