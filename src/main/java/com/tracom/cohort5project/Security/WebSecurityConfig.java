@@ -64,16 +64,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //list all the users registered on the website, there we use antmatchers to match with the url
                 //Authenticated means you can view this page
-                .antMatchers("/list_users").authenticated()
-//                .antMatchers("/").authenticated()
+                .antMatchers("/adminWelcomePage").authenticated()
                 .anyRequest().permitAll()
 
                 //Configuring to the login page we used before or provided by spring security
                 .and()
                 .formLogin()
+//                .loginPage("/login")
                     .usernameParameter("emailAddress")
                     //Landing page for the user on successful login
-                    .defaultSuccessUrl("/registered_users")
+                    .defaultSuccessUrl("/adminWelcomePage")
                     .permitAll()
 
                 //Implementing logout

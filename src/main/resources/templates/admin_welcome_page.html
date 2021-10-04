@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add Organization</title>
+    <title>Admin Dashboard</title>
 
     <!--    CDN Path-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -18,32 +18,41 @@
 <div th:replace="admin_dashboard::navbar"></div>
 <div th:replace="admin_dashboard::sidebar"></div>
 
-<div class="container">
+<main class="mt-5 pt-3">
+    <div class="container-fluid">
 
-    <h2 class="text-center">Add Organization</h2>
-    <br>
-
-    <form style="max-width: 600px; margin: 0 auto;" method="post"
-          th:action="@{/add_organization}"
-          th:object="${organization}">
-
-        <div class="form-floating col-6">
-            <input type="text" id="organizationName" class="form-control" required placeholder="Organization Name" th:field="*{organizationName}"/>
-            <label for="organizationName">Organization Name</label>
+        <div class="row">
+            <h3 class="col-md-3 fw-bold fs-30">Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b></h3>
         </div>
 
-        <div class="form-floating col-6">
-            <input type="text" id="organizationDesc" class="form-control" placeholder="What does you company do?" th:field="*{organizationDescription}"/>
-            <label for="organizationDesc">What does you company do?</label>
+        <div class="row">
+            <div class="col-6">
+                <div class="row shortcuts">
+
+                    <a href="" class="card fw-bold bg-success mb-3 text-white p-2 col-2" style="text-decoration: none;">
+                        <span>Meetings<i class="bi bi-chevron-right fw-bold"></i></span>
+                    </a>
+
+                    <a href="" class="card fw-bold bg-secondary mb-3 text-white p-2 col-2" style="text-decoration: none;">
+                        <span>Users<i class="bi bi-chevron-right fw-bold"></i></span>
+                    </a>
+
+                    <a href="" class="card fw-bold bg-danger mb-3 text-white p-2 col-3" style="text-decoration: none;">
+                        <span>Board Rooms<i class="bi bi-chevron-right fw-bold"></i></span>
+                    </a>
+
+                </div>
+
+            </div>
+            <div class="col-6">
+
+                Calendar
+                <!--            <iframe src="https://calendar.google.com/calendar/embed?height=400&wkst=1&bgcolor=%23ffffff&ctz=Africa%2FNairobi&showPrint=1&title=Meeting%20Schedules&src=a2Vsdmlua2ltOTk2QGdtYWlsLmNvbQ&color=%23039BE5" style="border-width:0" width="400" height="400" frameborder="0" scrolling="no"></iframe>        </div>-->
+
+            </div>
         </div>
-
-        <button class="btn btn-primary">Create Organization</button>
-
-    </form>
-
-    <button class="btn btn-outline-success">View Organizations</button>
-
-</div>
+    </div>
+</main>
 
 <footer th:replace="admin_dashboard::footer"></footer>
 

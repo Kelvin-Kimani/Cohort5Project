@@ -1,13 +1,10 @@
 package com.tracom.cohort5project.Controllers;
 
 import com.tracom.cohort5project.Entities.*;
-import com.tracom.cohort5project.Repositories.UserRepository;
 import com.tracom.cohort5project.Services.OrganizationService;
 import com.tracom.cohort5project.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +31,11 @@ public class ProjectController {
     @GetMapping("")
     public String viewHomePage() {
         return "welcome";
+    }
+
+    @GetMapping("/dashboard")
+    public String viewdashboard() {
+        return "admin_dashboard";
     }
 
 
@@ -81,7 +83,6 @@ public class ProjectController {
 
     @GetMapping("/users")
     public String getUsers(Model model){
-
         //Users with roles
         List<User> usersList = userService.getUsersWithRoles();
         model.addAttribute("userDetails", usersList);
@@ -107,7 +108,7 @@ public class ProjectController {
     @PostMapping("/add_organization")
     public String createOrganization(Organization organization) {
         organizationService.createOrganization(organization);
-        return "organization_dashboard";
+        return "welcome";
     }
 
 
@@ -116,6 +117,11 @@ public class ProjectController {
     @GetMapping("/login")
     public String getLoginPage(Model model){
         return "user_login";
+    }
+
+    @GetMapping("/adminWelcomePage")
+    public String getAdminDashboard(){
+        return "admin_welcome_page";
     }
 
 }
