@@ -55,6 +55,35 @@ body{
     margin-left: var(--offcanvas-width);
 }
 
+.edit-profile{
+    border-radius: 12px;
+    box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
+    background-color: #FFFFFF;
+    color: #252422;
+}
+
+.edit-profile .card-header{
+    background-color: transparent;
+}
+
+.edit-profile label{
+    font-size: 0.8571em;
+    margin-bottom: 5px;
+    color: #9A9A9A;
+}
+
+.btn-round{
+    border-width: 1px;
+    border-radius: 30px;
+    padding-right: 23px;
+    padding-left: 23px;
+}
+
+.avatar-card{
+    border-radius: 12px;
+    box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
 @media (min-width: 992px) {
     body{
         overflow: auto !important;

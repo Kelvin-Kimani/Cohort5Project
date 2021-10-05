@@ -3,7 +3,6 @@ body{
 }
 .login{
     display: flex;
-    /*justify-content: center;*/
     align-items: center;
 }
 .login input{
@@ -43,8 +42,11 @@ body{
 }
 
 .inputs{
-    position: absolute;
-    background-color: red;
+    /*position: absolute;*/
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+    text-align: center;
 }
 
 .inputs a, .inputs button{

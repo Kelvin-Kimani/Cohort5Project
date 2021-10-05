@@ -89,13 +89,17 @@ public class ProjectController {
         return "list_users";
     }
 
-    @RequestMapping("/delete_user/{id}")
-    public String deleteUser(@PathVariable(name = "id") int id){
-        userService.deleteById(id);
-        return "list_users";
+    @PostMapping(path = "/dashboard/delete_user_role/{userId}")
+    public String deleteUserWithRole(@PathVariable(name = "userId") int userId){
+        userService.deleteUserWithRoleById(userId);
+        return "list_registered_users";
     }
 
-
+    @GetMapping(path = "/user_profile")
+    public String getUserProfile(Model model){
+        model.addAttribute("user", new User());
+        return "user_profile";
+    }
 
 
     /*Organization*/

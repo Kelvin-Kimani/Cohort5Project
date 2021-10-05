@@ -10,14 +10,6 @@
 </head>
 <body>
     <div class="card border-light container login">
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation" >
-                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-admin" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Admin</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-user" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">User</button>
-            </li>
-        </ul>
 
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="pills-admin" role="tabpanel" aria-labelledby="pills-admin">
@@ -26,7 +18,7 @@
 
                     <form>
 
-                        <h1>Admin sign in</h1>
+                        <h1>Sign In</h1>
 
                         <div class="form-floating">
                             <input type="text" class="form-control border-light" id="floatingAdminInput" placeholder="Username">
@@ -37,8 +29,12 @@
                             <label for="floatingAdminPassword">Password</label>
                         </div>
                         <div class="inputs">
-                            <a href="">Forgot Password?</a>
-                            <button class="btn btn-primary" type="submit">Sign in</button>
+                            <div>
+                                <a href="">Forgot Password?</a>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" type="submit">Sign in</button>
+                            </div>
                         </div>
 
                     </form>
@@ -46,37 +42,6 @@
                 </main>
 
             </div>
-
-            <div class="tab-pane fade" id="pills-user" role="tabpanel" aria-labelledby="pills-user">
-
-                <main class="form-signin">
-
-                    <!--User-->
-
-                    <form>
-
-                        <h1>User sign in</h1>
-
-                        <div class="form-floating">
-                            <input type="text" class="form-control border-light" id="floatingUserInput" placeholder="Username">
-                            <label for="floatingUserInput">Username</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="password" class="form-control border-light" id="floatingUserPassword" placeholder="Password">
-                            <label for="floatingUserPassword">Password</label>
-                        </div>
-
-                        <div class="inputs">
-                            <a href="">Forgot Password?</a>
-                            <button class="btn btn-primary" type="submit">Sign in</button>
-                        </div>
-
-                    </form>
-
-                </main>
-
-            </div>
-
         </div>
     </div>
 <!--    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>-->

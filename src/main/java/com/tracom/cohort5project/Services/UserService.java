@@ -45,6 +45,14 @@ public class UserService {
     public List<User> getUsers(){
         return userRepository.findAll();
     }
+    public List<User> getUsersWithRoles() {
+        return userRepository.findAllWithRoles();
+    }
+
+    public User getUserById(int id) {
+        return userRepository.findById(id)
+                .orElseThrow(()-> new IllegalStateException("User with id " + id + " does not exist."));
+    }
 
 
     /*UPDATE*/
@@ -56,6 +64,10 @@ public class UserService {
 
         user.setUserRole(role);
     }
+
+    public void deleteUserWithRoleById(int id){
+        userRepository.deleteUserRole(id);
+    }
     /*DELETE*/
     public void deleteById(int id) {
         boolean userExists = userRepository.existsById(id);
@@ -63,15 +75,6 @@ public class UserService {
             throw new IllegalStateException("User by id " + id + " does not exist.");
         }
         userRepository.deleteById(id);
-    }
-
-    public List<User> getUsersWithRoles() {
-        return userRepository.findAllWithRoles();
-    }
-
-    public User getUserById(int id) {
-        return userRepository.findById(id)
-                .orElseThrow(()-> new IllegalStateException("User with id " + id + " does not exist."));
     }
 
 }
