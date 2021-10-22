@@ -9,14 +9,14 @@
 <body>
 
 <div class="container text-center">
-    <h2>Fill Out User Details</h2>
+    <h2>New User:- Create User</h2>
     <br>
 
     <form th:object="${createUser}"
           th:action="@{'/change_user_role/' + ${createUser.userId}}"
           method="post">
 
-        <input type="text" class="form-control" th:field="*{employeeName}" readonly/>
+        <input type="text" class="form-control" th:field="*{employeeFirstName}" readonly/>
 
         <select class="form-select" id="role" th:field="*{userRole}" th:name="'userRole'">
             <option selected disabled th:value= "'NONE'" th:text = "Role"/>

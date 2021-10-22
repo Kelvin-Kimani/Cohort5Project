@@ -7,7 +7,6 @@ body{
 }
 .login input{
     margin: 20px 0;
-    border-radius: 60px;
 }
 
 .login label{
@@ -42,10 +41,6 @@ body{
 }
 
 .inputs{
-    /*position: absolute;*/
-    /*display: flex;*/
-    /*align-items: center;*/
-    /*justify-content: center;*/
     text-align: center;
 }
 

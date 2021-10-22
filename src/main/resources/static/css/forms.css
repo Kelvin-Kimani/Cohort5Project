@@ -1,7 +1,22 @@
-
-form div, select{
-    margin: 20px;
+body{
+    background-color: #3d3d82;
 }
-.createuserbutton{
-    float: right;
+
+.user-registration{
+    border-radius: 8px;
+
+    /*Vertically center*/
+    /*margin: 0;*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+
+.user-registration label{
+    font-size: 0.8571em;
+    margin-bottom: 5px;
+    color: #9A9A9A;
 }

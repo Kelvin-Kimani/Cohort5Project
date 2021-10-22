@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="UTF-8">
   <title>Dashboard</title>
@@ -13,6 +14,7 @@
   <link th:href="@{/css/admin_dashboard.css}" rel="stylesheet"/>
 </head>
 <body>
+
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="navbar">
         <div class="container-fluid">
@@ -22,37 +24,39 @@
             </button>
 
 
-            <a class="navbar-brand fw-bold text-uppercase me-auto" href="#">Meeting Planner</a>
+            <a class="heading navbar-brand fw-bold text-uppercase me-auto" href="#" th:href="@{/admin/dashboard}">Meeting Planner</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <form class="d-flex ms-auto">
-                    <div class="input-group my-3 my-lg-0">
-                        <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-                    </div>
-                </form>
+                <!--Remember to add notifications-->
+                <ul class="d-flex ms-auto navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bell-fill"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                            <li><a class="dropdown-item">Notification 1</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item">Notification 2</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-fill"></i>
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span sec:authentication="principal.fullName"></span><i class="bi bi-person-fill ml-2"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" th:href="@{/user_profile}">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" th:href="@{/admin/profile}">
                                 <span><i class="bi bi-person-fill"></i></span> My Profile</a></li>
                             <!--            <li><a class="dropdown-item" href="#">Another action</a></li>-->
                             <li><hr class="dropdown-divider"></li>
                             <form th:action="@{/logout}" method="post">
-
-                                <span><i class="bi bi-box-arrow-right"></i></span>
                                <input class="dropdown-item" type="submit" value="Sign Out"/>
-<!--                                <li><a class="dropdown-item" type="submit">-->
-<!--                                     Log out</a>-->
-<!--                                </li>-->
                             </form>
 
                         </ul>
@@ -81,13 +85,12 @@
                         </div>
                     </li>
                     <li>
-                        <a href="#" th:href="@{/adminWelcomePage}" class="nav-link px-3 active">
+                        <a href="#" th:href="@{/admin/dashboard}" class="nav-link px-3 active">
                             <span><span><i class="bi bi-house-door-fill mr-1"></i></span> Home</span>
                         </a>
                     </li>
 
                     <li class="my-4">
-                        <!--          <hr class="dropdown-divider"/>-->
                     </li>
 
                     <li>
@@ -106,14 +109,14 @@
                             <div>
                                 <ul class="navbar-nav ps-3">
                                     <li>
-                                        <a href="#" th:href="@{/users}" class="nav-link px-3">
-                                            <span><span><i class="bi bi-people"></i></span> View Users</span>
+                                        <a href="#" th:href="@{/admin/users}" class="nav-link px-3">
+                                            <span class="me-2"><i class="bi bi-people"></i></span>View Users
                                         </a>
                                     </li>
 
                                     <li>
                                         <a href="#" class="nav-link px-3">
-                                            <span><span><i class="bi bi-person-plus"></i></span> Create User</span>
+                                            <span class="me-2"><i class="bi bi-person-plus"></i></span>Create User
                                         </a>
                                     </li>
 
@@ -124,7 +127,7 @@
                     </li>
 
                     <li class="my-4">
-                        <!--          <hr class="dropdown-divider"/>-->
+
                     </li>
 
                     <li>
@@ -144,13 +147,13 @@
                                 <ul class="navbar-nav ps-3">
                                     <li>
                                         <a href="#" class="nav-link px-3">
-                                            <span><i class="bi bi-calendar3"></i></span> View Meetings</span>
+                                            <span class="me-2"><i class="bi bi-calendar3"></i></span>Manage Meetings
                                         </a>
                                     </li>
 
                                     <li>
                                         <a href="#" class="nav-link px-3">
-                                            <span><span><i class="bi bi-calendar-plus"></i></span> Create Meeting</span>
+                                            <span class="me-2"><i class="bi bi-calendar-plus"></i></span>Create Meeting
                                         </a>
                                     </li>
 
@@ -161,16 +164,40 @@
                     </li>
 
                     <li class="my-4">
-                        <!--          <hr class="dropdown-divider"/>-->
                     </li>
 
                     <li>
-                        <a href="#" class="nav-link px-3">
-                            <span><i class="bi bi-border-style"></i></span> Board Rooms</span>
-                        </a>
+                        <div class="text-muted small text-uppercase fw-bold px-3">
+                            Rooms Management
+                        </div>
                     </li>
 
+                    <li>
+                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#boardRoomsDropDown" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <span class="me-2"><i class="bi bi-border-style"></i></span>Board Rooms</span>
+                            <span class="right-icon ms-auto"><i class="bi bi-chevron-down"></i></span>
+                        </a>
 
+                        <div class="collapse" id="boardRoomsDropDown">
+                            <div>
+                                <ul class="navbar-nav ps-3">
+                                    <li>
+                                        <a href="#" th:href="@{/admin/rooms}" class="nav-link px-3">
+                                            <span class="me-2"><i class="bi bi-border-width"></i></span>View Rooms</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" th:href="@{/admin/create_room}" class="nav-link px-3">
+                                            <span class="me-2"><i class="bi bi-calendar2-plus"></i></span>Create Room
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </li>
 
                 </ul>
             </nav>
@@ -182,7 +209,7 @@
 <footer class="page-footer font-small elegant-color fixed-bottom" th:fragment="footer">
 
     <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">© 2020 Copyright</div>
+    <div class="footer-copyright text-center py-3">© 2021 Copyright</div>
     <!-- Copyright -->
 
 </footer>

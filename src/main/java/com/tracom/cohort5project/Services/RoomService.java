@@ -3,7 +3,13 @@ package com.tracom.cohort5project.Services;
 import com.tracom.cohort5project.Entities.Room;
 import com.tracom.cohort5project.Repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+@Service
+@Transactional
 public class RoomService {
 
     private RoomRepository roomRepository;
@@ -19,7 +25,7 @@ public class RoomService {
     }
 
     /*READ*/
-    public void showRooms(){
-        roomRepository.findAll();
+    public List<Room> showRooms(){
+        return roomRepository.findAll();
     }
 }

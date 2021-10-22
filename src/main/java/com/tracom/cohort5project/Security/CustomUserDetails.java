@@ -1,10 +1,12 @@
 package com.tracom.cohort5project.Security;
 
 import com.tracom.cohort5project.Entities.User;
+import com.tracom.cohort5project.Enums.UserRoles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -50,6 +52,11 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String getFullName(){
-        return user.getEmployeeName();
+        return user.getEmployeeFirstName() + " " + user.getEmployeeLastName();
+    }
+
+    public void setFullName(String firstName, String lastName){
+        this.user.setEmployeeFirstName(firstName);
+        this.user.setEmployeeLastName(lastName);
     }
 }

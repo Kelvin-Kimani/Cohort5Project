@@ -54,6 +54,11 @@ public class UserService {
                 .orElseThrow(()-> new IllegalStateException("User with id " + id + " does not exist."));
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmployeeEmailAddress(email);
+    }
+
+
 
     /*UPDATE*/
     public void updateUser(int id,

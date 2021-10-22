@@ -6,12 +6,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 @Entity
 @Table
 public class Organization {
@@ -23,10 +20,13 @@ public class Organization {
     private String organizationDescription;
 
     @OneToMany(mappedBy = "organization")
-    private List<User> user = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
-    public Organization(String organizationName, List<User> user) {
+    @OneToMany(mappedBy = "organization")
+    private List<Room> rooms = new ArrayList<>();
+
+    public Organization(String organizationName, List<User> users) {
         this.organizationName = organizationName;
-        this.user = user;
+        this.users = users;
     }
 }

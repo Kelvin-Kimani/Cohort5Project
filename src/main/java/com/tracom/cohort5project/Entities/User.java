@@ -4,12 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 @Entity
 @Table
 public class User {
@@ -17,16 +14,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
-    private String employeeName;
+    private String employeeFirstName;
+    private String employeeLastName;
     private String userRole;
 
     //User defined
     private String employeeDepartment;
-    private String employeeGender;
+    //private String employeeGender;
     private String employeeEmailAddress;
     private String employeePhoneNumber;
     private String password;
 
     @ManyToOne
+    @JoinColumn(name = "organization_id")
     private Organization organization;
 }

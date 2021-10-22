@@ -6,9 +6,7 @@ import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "room")
 public class Room{
@@ -18,8 +16,12 @@ public class Room{
     private int roomId;
     private String roomName;
     private int roomCapacity;
-    private boolean roomWhiteboardPresent;
-    private boolean roomTVPresent;
-    private boolean roomPhonePresent;
+    private String whiteboard;
+    private String displayScreen;
+    private String conferencePhone;
+
+    @ManyToOne
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
 
 }

@@ -28,18 +28,22 @@ public class ProjectController {
         this.userService = userService;
     }
 
+    /*Home Page*/
     @GetMapping("")
     public String viewHomePage() {
         return "welcome";
     }
 
-    @GetMapping("/dashboard")
-    public String viewdashboard() {
-        return "admin_dashboard";
+
+    /*Login*/
+    @GetMapping("/login")
+    public String getLoginPage(){
+        return "login";
     }
 
 
-    /*Employee*/
+
+    /*Employee Registration*/
     @GetMapping("/register")
     public String getRegistrationForm(Model model) {
         model.addAttribute("user", new User());
@@ -81,51 +85,12 @@ public class ProjectController {
         return "list_registered_users";
     }
 
-    @GetMapping("/users")
-    public String getUsers(Model model){
-        //Users with roles
-        List<User> usersList = userService.getUsersWithRoles();
-        model.addAttribute("userDetails", usersList);
-        return "list_users";
-    }
+
 
     @PostMapping(path = "/dashboard/delete_user_role/{userId}")
     public String deleteUserWithRole(@PathVariable(name = "userId") int userId){
         userService.deleteUserWithRoleById(userId);
         return "list_registered_users";
-    }
-
-    @GetMapping(path = "/user_profile")
-    public String getUserProfile(Model model){
-        model.addAttribute("user", new User());
-        return "user_profile";
-    }
-
-
-    /*Organization*/
-    @GetMapping("/organization")
-    public String getOrganizationForm(Model model) {
-        model.addAttribute("organization", new Organization());
-        return "add_organization";
-    }
-
-    @PostMapping("/add_organization")
-    public String createOrganization(Organization organization) {
-        organizationService.createOrganization(organization);
-        return "welcome";
-    }
-
-
-
-    /*Login*/
-    @GetMapping("/login")
-    public String getLoginPage(Model model){
-        return "user_login";
-    }
-
-    @GetMapping("/adminWelcomePage")
-    public String getAdminDashboard(){
-        return "admin_welcome_page";
     }
 
 }

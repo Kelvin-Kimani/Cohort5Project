@@ -1,5 +1,6 @@
 package com.tracom.cohort5project.Security;
 
+import com.tracom.cohort5project.Enums.UserRoles;
 import com.tracom.cohort5project.Security.Service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -54,7 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //Configure authenticationProvider object
         auth.authenticationProvider(authenticationProvider());
-
     }
 
     @Override
@@ -63,21 +63,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 
                 //list all the users registered on the website, there we use antmatchers to match with the url
-                //Authenticated means you can view this page
-                .antMatchers("/adminWelcomePage").authenticated()
-                .anyRequest().permitAll()
-
-                //Configuring to the login page we used before or provided by spring security
+                .antMatchers("/login", "/register").permitAll()
+                .antMatchers("/admin/**")
+//                .antMatchers("/organization_officer/**").hasRole(UserRoles.ORGANIZATION_OFFICER.name())
+//                .antMatchers("/user/**").hasRole(UserRoles.USER.name())
+                .authenticated()
                 .and()
-                .formLogin()
-//                .loginPage("/login")
-                    .usernameParameter("emailAddress")
-                    //Landing page for the user on successful login
-                    .defaultSuccessUrl("/adminWelcomePage")
-                    .permitAll()
-
-                //Implementing logout
-                .and()
+                .formLogin(
+                        form -> form
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/admin/dashboard")
+                                .failureUrl("/login?error=true")
+                )
                 .logout().logoutSuccessUrl("/").permitAll();
     }
 }
