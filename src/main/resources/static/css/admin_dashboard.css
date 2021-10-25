@@ -2,14 +2,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Ubuntu:wght@400;500;700&display=swap');
 
-
-
 body, button{
     font-family: 'Inter', sans-serif;
 }
 :root{
     --offcanvas-width: 300px;
-    --topNavbarHeight: 56px;
+    --topNavbarHeight: 60px;
+}
+.heading{
+    font-size: 25px;
 }
 .sidebar-nav{
     width: var(--offcanvas-width);
@@ -48,10 +49,6 @@ body, button{
 .shortcuts-div{
     display: flex;
     justify-content: space-between;
-}
-
-.page-footer{
-    margin-left: var(--offcanvas-width);
 }
 
 .edit-profile{
@@ -107,6 +104,9 @@ body, button{
         top: var(--topNavbarHeight);
         height: calc(100% - var(--topNavbarHeight));
     }
-    
+
+    .page-footer{
+        margin-left: var(--offcanvas-width);
+    }
 }
 

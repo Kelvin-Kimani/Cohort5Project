@@ -9,5 +9,6 @@ public class PasswordEncoder {
         String encodedPassword = passwordEncoder.encode(rawPassword);
 
         System.out.println(encodedPassword);
+
     }
 }

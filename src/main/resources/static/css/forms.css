@@ -20,3 +20,9 @@ body{
     margin-bottom: 5px;
     color: #9A9A9A;
 }
+.col{
+    margin: 1rem;
+}
+.row{
+    margin: 2rem;
+}
