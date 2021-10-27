@@ -12,8 +12,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -48,9 +50,18 @@ public class AdminController {
         return "user_profile";
     }
 
-    @PostMapping(path = "/profile/update")
-    public String updateUserProfile(User user, RedirectAttributes redirectAttributes, @AuthenticationPrincipal CustomUserDetails loggedUser){
+    @GetMapping("/edit_profile")
+    public String getUserProfileDetails(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
 
+        model.addAttribute("editUser", user);
+
+        return "edit_profile";
+    }
+
+    @PostMapping(path = "/edit_profile/update")
+    public String updateUserProfile(User user, RedirectAttributes redirectAttributes, @AuthenticationPrincipal CustomUserDetails loggedUser){
         userService.createUser(user);
 
         loggedUser.setFullName(user.getEmployeeFirstName() , user. getEmployeeLastName());
@@ -59,15 +70,6 @@ public class AdminController {
         return "redirect:/admin/user_profile";
     }
 
-
-
-    @GetMapping("/users")
-    public String getUsers(Model model){
-        //Users with roles
-        List<User> usersList = userService.getUsersWithRoles();
-        model.addAttribute("userDetails", usersList);
-        return "list_users";
-    }
 
     /*Organization*/
     @GetMapping("/organization")
@@ -101,6 +103,41 @@ public class AdminController {
     public String createRoom(Room room){
         roomService.createRoom(room);
         return "create_boardroom";
+    }
+
+    /*User*/
+    @GetMapping(path = "/registered_users")
+    public String showRegisteredUsers(Model model){
+        List<User> registeredUsers = userService.getUsersWithoutRoles();
+        model.addAttribute("registeredUsersList", registeredUsers);
+        return "list_registered_users";
+    }
+
+    @RequestMapping("/edit_user/{id}")
+    public ModelAndView showCreateUser(@PathVariable(name = "id") int id){
+
+        ModelAndView mnv = new ModelAndView("create_user");
+
+        //User object
+        User user = userService.getUserById(id);
+        mnv.addObject("createUser", user);
+
+        return mnv;
+    }
+
+    @GetMapping("/users")
+    public String getUsers(Model model){
+        //Users with roles
+        List<User> usersList = userService.getUsersWithRoles();
+        model.addAttribute("userDetails", usersList);
+        return "list_users";
+    }
+
+
+    @GetMapping(path = "/delete_user_role/{userId}")
+    public String deleteUserWithRole(@PathVariable(name = "userId") int userId){
+        userService.deleteUserWithRoleById(userId);
+        return "redirect:/admin/users";
     }
 
 }

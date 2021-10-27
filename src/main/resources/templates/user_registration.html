@@ -17,6 +17,11 @@
 
             <form th:action="@{/user_registration}" method="post"
                   th:object="${user}">
+
+<!--                &lt;!&ndash;Default user role&ndash;&gt;-->
+<!--                <input type="hidden" class="form-control" th:value="${user.userRole}" name="userRole">-->
+
+
                 <div class="row">
                     <div class="col">
                         <div class="form-group">

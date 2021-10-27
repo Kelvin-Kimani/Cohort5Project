@@ -24,7 +24,7 @@
             </button>
 
 
-            <a class="heading navbar-brand fw-bold text-uppercase me-auto" href="#" th:href="@{/admin/dashboard}">Meeting Planner</a>
+            <a class="heading navbar-brand px-3 fw-bold me-auto" href="#" th:href="@{/admin/dashboard}">Meeting Planner</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -79,12 +79,12 @@
             <nav class="navbar-dark">
                 <ul class="navbar-nav">
                     <li>
-                        <div class="text-muted small text-uppercase fw-bold px-3">
+                        <div class="category-title small text-uppercase fw-bold px-4">
                             Dashboard
                         </div>
                     </li>
                     <li>
-                        <a href="#" th:href="@{/admin/dashboard}" class="nav-link px-3 active">
+                        <a href="#" th:href="@{/admin/dashboard}" class="nav-link px-4 active">
                             <span><span><i class="bi bi-house-door-fill mr-1"></i></span> Home</span>
                         </a>
                     </li>
@@ -93,28 +93,28 @@
                     </li>
 
                     <li>
-                        <div class="text-muted small text-uppercase fw-bold px-3">
+                        <div class="category-title small text-uppercase fw-bold px-4">
                             User Management
                         </div>
                     </li>
 
                     <li>
-                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <a class="nav-link px-4 sidebar-link" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                             <span class="me-2"><i class="bi bi-people-fill"></i></span>Users
                             <span class="right-icon ms-auto"><i class="bi bi-chevron-down"></i></span>
                         </a>
 
                         <div class="collapse" id="collapseExample">
                             <div>
-                                <ul class="navbar-nav ps-3">
+                                <ul class="navbar-nav ps-4">
                                     <li>
-                                        <a href="#" th:href="@{/admin/users}" class="nav-link px-3">
+                                        <a href="#" th:href="@{/admin/users}" class="nav-link px-4">
                                             <span class="me-2"><i class="bi bi-people"></i></span>View Users
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a href="#" class="nav-link px-3">
+                                        <a href="#" th:href="@{/admin/registered_users}" class="nav-link px-4">
                                             <span class="me-2"><i class="bi bi-person-plus"></i></span>Create User
                                         </a>
                                     </li>
@@ -130,28 +130,28 @@
                     </li>
 
                     <li>
-                        <div class="text-muted small text-uppercase fw-bold px-3">
+                        <div class="category-title small text-uppercase fw-bold px-4">
                             Meetings Management
                         </div>
                     </li>
 
                     <li>
-                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#meetingsdropdown" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <a class="nav-link px-4 sidebar-link" data-bs-toggle="collapse" href="#meetingsdropdown" role="button" aria-expanded="false" aria-controls="collapseExample">
                             <span class="me-2"><i class="bi bi-calendar-event-fill"></i></span>Meetings
                             <span class="right-icon ms-auto"><i class="bi bi-chevron-down"></i></span>
                         </a>
 
                         <div class="collapse" id="meetingsdropdown">
                             <div>
-                                <ul class="navbar-nav ps-3">
+                                <ul class="navbar-nav ps-4">
                                     <li>
-                                        <a href="#" class="nav-link px-3">
+                                        <a href="#" class="nav-link px-4">
                                             <span class="me-2"><i class="bi bi-calendar3"></i></span>Manage Meetings
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a href="#" class="nav-link px-3">
+                                        <a href="#" class="nav-link px-4">
                                             <span class="me-2"><i class="bi bi-calendar-plus"></i></span>Create Meeting
                                         </a>
                                     </li>
@@ -166,28 +166,28 @@
                     </li>
 
                     <li>
-                        <div class="text-muted small text-uppercase fw-bold px-3">
+                        <div class="category-title small text-uppercase fw-bold px-4">
                             Rooms Management
                         </div>
                     </li>
 
                     <li>
-                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#boardRoomsDropDown" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <a class="nav-link px-4 sidebar-link" data-bs-toggle="collapse" href="#boardRoomsDropDown" role="button" aria-expanded="false" aria-controls="collapseExample">
                             <span class="me-2"><i class="bi bi-border-style"></i></span>Board Rooms</span>
                             <span class="right-icon ms-auto"><i class="bi bi-chevron-down"></i></span>
                         </a>
 
                         <div class="collapse" id="boardRoomsDropDown">
                             <div>
-                                <ul class="navbar-nav ps-3">
+                                <ul class="navbar-nav ps-4">
                                     <li>
-                                        <a href="#" th:href="@{/admin/rooms}" class="nav-link px-3">
+                                        <a href="#" th:href="@{/admin/rooms}" class="nav-link px-4">
                                             <span class="me-2"><i class="bi bi-border-width"></i></span>View Rooms</span>
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a href="#" th:href="@{/admin/create_room}" class="nav-link px-3">
+                                        <a href="#" th:href="@{/admin/create_room}" class="nav-link px-4">
                                             <span class="me-2"><i class="bi bi-calendar2-plus"></i></span>Create Room
                                         </a>
                                     </li>
@@ -213,6 +213,7 @@
 
 </footer>
 <!-- Footer -->
+
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

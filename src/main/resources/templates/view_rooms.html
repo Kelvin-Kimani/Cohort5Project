@@ -28,7 +28,7 @@
 <div th:replace="admin_dashboard::sidebar"></div>
 
 <main class="mt-5 pt-3">
-    <div class="container-fluid">
+    <div class="content container-fluid">
         <div class="row mb-2 mt-3">
             <div class="col">
                 <nav aria-label="breadcrumb">
@@ -64,8 +64,7 @@
                                         <th scope="col">Screen Display</th>
                                         <th scope="col">Whiteboard</th>
                                         <th scope="col">Conference Phone</th>
-                                        <th scope="col">Edit</th>
-                                        <th scope="col">Delete</th>
+                                        <th scope="col">Actions</th>
                                     </tr>
                                     </thead>
 
@@ -78,38 +77,9 @@
                                         <td th:text="${roomsDetails.whiteboard}"/>
                                         <td th:text="${roomsDetails.conferencePhone}"/>
 
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-secondary"><i class="me-2 bi bi-pen"></i>Edit</button>
-                                        </td>
-
-                                        <td>
-                                            <button class="btn btn-danger btn-sm"><i class="me-2 bi bi-trash"></i>Delete</button>
-
-                                            <!--Delete Modal-->
-                                            <!--                                    <div th:attr="id='deleteUser' + ${userTableDetails.userId}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
-                                            <!--                                        <div class="modal-dialog modal-dialog-centered">-->
-                                            <!--                                            <div class="modal-content">-->
-                                            <!--                                                <div class="modal-header border-0">-->
-                                            <!--                                                    <h5 class="modal-title" id="exampleModalLongTitle">Confirm Delete</h5>-->
-                                            <!--                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-                                            <!--                                                        <span aria-hidden="true">&times;</span>-->
-                                            <!--                                                    </button>-->
-                                            <!--                                                </div>-->
-                                            <!--                                                <div class="modal-body">-->
-                                            <!--                                                    <p>Are you sure you want to delete <span th:text="${userTableDetails.employeeFirstName}"/> <span th:text="${userTableDetails.employeeLastName}"/>?</p>-->
-                                            <!--                                                </div>-->
-
-                                            <!--                                                <div class="modal-footer border-0">-->
-
-                                            <!--                                                    <button class="btn btn-danger btn-sm text-white" data-dismiss="modal" th:href="@{'/dashboard/delete_user_role/' + ${userTableDetails.userId}}" th:method="post">Yes</button>-->
-                                            <!--                                                    <a class="btn btn-primary btn-sm text-white" data-dismiss="modal">No</a>-->
-
-                                            <!--                                                </div>-->
-
-                                            <!--                                            </div>-->
-                                            <!--                                        </div>-->
-                                            <!--                                    </div>-->
-
+                                        <td class="d-flex justify-content-center">
+                                            <a href="" class="text-muted"><i class="me-2 bi bi-pen"></i></a>
+                                            <a href="" class="text-muted"><i class="me-2 bi bi-trash"></i></a>
                                         </td>
 
                                     </tr>
@@ -128,7 +98,6 @@
         </div>
 
     </div>
-
 
 </main>
 

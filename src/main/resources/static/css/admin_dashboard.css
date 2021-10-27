@@ -12,6 +12,9 @@ body, button{
 .heading{
     font-size: 25px;
 }
+.category-title{
+    color: #545454;
+}
 .sidebar-nav{
     width: var(--offcanvas-width);
 }
@@ -39,28 +42,11 @@ body, button{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
-.shortcuts{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-left: 8px;
-}
-
-.shortcuts-div{
-    display: flex;
-    justify-content: space-between;
-}
-
 .edit-profile{
     box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
     background-color: #FFFFFF;
     color: #252422;
     transition: 0.5s;
-}
-
-.edit-profile:hover{
-    transition: 0.5s;
-    box-shadow: 0 10px 10px -4px rgba(10, 10, 10, 0.5);
 }
 
 .edit-profile .card-header{

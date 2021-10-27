@@ -49,6 +49,10 @@ public class UserService {
         return userRepository.findAllWithRoles();
     }
 
+    public List<User> getUsersWithoutRoles() {
+        return userRepository.findAllWithoutRoles();
+    }
+
     public User getUserById(int id) {
         return userRepository.findById(id)
                 .orElseThrow(()-> new IllegalStateException("User with id " + id + " does not exist."));

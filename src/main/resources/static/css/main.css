@@ -1,25 +1,33 @@
 body{
     background-color: #e9ecef;
-    overflow-x: hidden;
+}
+
+.content{
+    padding: 1rem 2rem;
 }
 
 .divider{
     margin: 30px 0;
 }
-.create-room label{
+label{
     font-size: 0.8571em;
     margin-bottom: 5px;
     color: #9A9A9A;
 }
+/*.create-room label{*/
+/*    font-size: 0.8571em;*/
+/*    margin-bottom: 5px;*/
+/*    color: #9A9A9A;*/
+/*}*/
 
-.change-password label{
-    font-size: 0.8571em;
-    margin-bottom: 5px;
-    color: #9A9A9A;
-}
+/*.change-password label{*/
+/*    font-size: 0.8571em;*/
+/*    margin-bottom: 5px;*/
+/*    color: #9A9A9A;*/
+/*}*/
 
 .card{
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 5px 10px 0 rgba(124, 124, 124, 0.2);
 }
 a{
     text-decoration: none;
@@ -32,4 +40,8 @@ a:hover{
 .create-user-btn{
     border-radius: 20px;
     float: right;
+}
+.profile-cover{
+    background: url("../images/profile-cover.jpg") no-repeat;
+    background-size: cover;
 }

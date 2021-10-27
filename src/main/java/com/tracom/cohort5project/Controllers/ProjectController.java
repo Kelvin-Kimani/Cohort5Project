@@ -85,12 +85,4 @@ public class ProjectController {
         return "list_registered_users";
     }
 
-
-
-    @PostMapping(path = "/dashboard/delete_user_role/{userId}")
-    public String deleteUserWithRole(@PathVariable(name = "userId") int userId){
-        userService.deleteUserWithRoleById(userId);
-        return "list_registered_users";
-    }
-
 }
