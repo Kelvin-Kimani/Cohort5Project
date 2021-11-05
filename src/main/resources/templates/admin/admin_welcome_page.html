@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <!--    CDN Path-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!--  Bootstrap icons-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../static/css/admin_dashboard.css">
+    <link rel="stylesheet" href="../../static/css/main.css">
+    <link th:href="@{/css/admin_dashboard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+
+    <script>
+        let timeDisplay = document.getElementById("time");
+
+
+        function refreshTime() {
+            let dateString = new Date().toLocaleString("en-US", {timeZone: "America/Sao_Paulo"});
+            let formattedString = dateString.replace(", ", " - ");
+            timeDisplay.innerHTML = formattedString;
+        }
+
+        setInterval(refreshTime, 1000);
+
+    </script>
+
+</head>
+<body>
+
+<div th:replace="admin/admin_dashboard::navbar"></div>
+<div th:replace="admin/admin_dashboard::sidebar"></div>
+
+<main class="mt-5 pt-4">
+    <div class="content container-fluid">
+
+        <div class="row">
+
+            <div class="col-lg-12 col-md-12 col-12">
+                <!-- Page header -->
+                <div class="mb-2 d-flex justify-content-between">
+                    <h3 class="col-md-3 fw-bold fs-30">Dashboard</h3>
+                    <button type="button" class="btn btn-sm btn-primary btn-round">New Meeting</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-6 col-md-6 col-sm-12 shortcuts">
+
+                <div class="row">
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12 mt-4">
+                        <!-- card -->
+                        <a href="" class="text-black text-decoration-none"><div class="card rounded-3">
+                            <!-- card body -->
+                            <div class="card-body">
+                                <!-- heading -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <h4 class="mb-0">Meetings</h4>
+                                    </div>
+                                    <div class="icon-shape icon-md bg-light-primary text-primary rounded-1">
+                                        <i class="bi bi-calendar-event-fill fs-4"></i>
+                                    </div>
+                                </div>
+                                <!-- meetings number -->
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="text-muted">Scheduled</p>
+                                        <h1 class="fw-bold">18</h1>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <p class="text-muted">Attended</p>
+                                        <h1 class="fw-bold">18</h1>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <p class="text-muted">Cancelled</p>
+                                        <h1 class="fw-bold">18</h1>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div></a>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-12 mt-4">
+                        <!-- card -->
+                        <a href="" th:href="@{/admin/users}" class="text-black text-decoration-none"><div class="card rounded-3">
+                            <!-- card body -->
+                            <div class="card-body">
+                                <!-- heading -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <h4 class="mb-0">Users</h4>
+                                    </div>
+                                    <div class="icon-shape icon-md bg-light-primary text-primary rounded-1">
+                                        <i class="bi bi-people fs-4"></i>
+                                    </div>
+                                </div>
+                                <!-- users number -->
+                                <div>
+                                    <h1 class="fw-bold" th:text="${noOfUsers}"/>
+                                </div>
+                            </div>
+                        </div></a>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-12 mt-4 mb-4">
+                        <!-- card -->
+                        <a href="" th:href="@{/admin/rooms}" class="text-black text-decoration-none"><div class="card rounded-3">
+                            <!-- card body -->
+                            <div class="card-body">
+                                <!-- heading -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <h4 class="mb-0">Rooms</h4>
+                                    </div>
+                                    <div class="icon-shape icon-md bg-light-primary text-primary rounded-1">
+                                        <i class="bi bi-border-style fs-4"></i>
+                                    </div>
+                                </div>
+                                <!-- rooms number -->
+                                <div>
+                                    <h1 class="fw-bold" th:text="${noOfRooms}"/>
+                                </div>
+                            </div>
+                        </div></a>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-6 col-md-6 col-sm-12 shortcuts">
+
+                <div class="row">
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-12 mt-4">
+                        <!-- card -->
+                        <a href="" class="text-black text-decoration-none"><div class="card rounded-3">
+                            <!-- card body -->
+                            <div class="card-body">
+                                <!-- heading -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <h4 class="mb-0">Calendar</h4>
+                                    </div>
+                                    <div class="icon-shape icon-md bg-light-primary text-primary rounded-1">
+                                        <i class="bi bi-calendar-week fs-4"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p class="lead" id="time"></p>
+                                </div>
+
+                            </div>
+                        </div></a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Scheduled Meetings</h5>
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover">
+                                <thead class="fw-bold text-muted">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Venue</td>
+                                    <td>Date</td>
+                                    <td>Status</td>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td>Meeting A</td>
+                                    <td>Boardroom A</td>
+                                    <td>12th December, 2021</td>
+                                    <td>Scheduled</td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="admin/admin_dashboard::footer"></footer>
+
+
+<!---->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -9,24 +9,24 @@
 </head>
 <body>
 
-   <div class="card border-0 user-registration container">
-        <div class="card-header border-0">
+<div class="card border-0 user-registration container">
+        <div class="card-header bg-transparent border-0">
             <h1 class="card-title fw-bold text-center p-3">Sign Up:- Register User</h1>
         </div>
         <div class="card-body">
 
-            <form th:action="@{/user_registration}" method="post"
-                  th:object="${user}">
-
-<!--                &lt;!&ndash;Default user role&ndash;&gt;-->
-<!--                <input type="hidden" class="form-control" th:value="${user.userRole}" name="userRole">-->
-
+            <form th:action="@{/register}"
+                  th:object="${user}"
+                  method="post">
 
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label>Organization (disabled)</label>
-                            <input type="text" class="form-control" disabled placeholder="Organization" value="Tracom Services Limited">
+                            <label>Organization</label>
+                            <select class="form-select" id="organization" th:field="*{organization}">
+                                <option disabled th:value="'NONE'"/>
+                                <option th:each="organization : ${organizations}" th:value="${organization.organizationId}" th:text="${organization.organizationName}"/>
+                            </select>
                         </div>
                     </div>
 

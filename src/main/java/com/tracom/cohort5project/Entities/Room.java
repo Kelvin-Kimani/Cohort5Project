@@ -24,4 +24,7 @@ public class Room{
     @JoinColumn(name = "organization_id")
     private Organization organization;
 
+    @OneToOne(mappedBy = "room")
+    private Meeting meeting;
+
 }

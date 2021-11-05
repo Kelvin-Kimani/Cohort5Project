@@ -1,5 +1,5 @@
 body{
-    background-color: #e9ecef;
+    background-color: #f1f1f1;
 }
 
 .content{
@@ -14,21 +14,11 @@ label{
     margin-bottom: 5px;
     color: #9A9A9A;
 }
-/*.create-room label{*/
-/*    font-size: 0.8571em;*/
-/*    margin-bottom: 5px;*/
-/*    color: #9A9A9A;*/
-/*}*/
-
-/*.change-password label{*/
-/*    font-size: 0.8571em;*/
-/*    margin-bottom: 5px;*/
-/*    color: #9A9A9A;*/
-/*}*/
-
 .card{
+    border: none;
     box-shadow: 0 5px 10px 0 rgba(124, 124, 124, 0.2);
 }
+
 a{
     text-decoration: none;
 }
@@ -45,3 +35,14 @@ a:hover{
     background: url("../images/profile-cover.jpg") no-repeat;
     background-size: cover;
 }
+.password-requirements{
+    font-size: 0.8571em;
+    margin-bottom: 5px;
+    color: #9A9A9A;
+}
+
+.pt-10 {
+    padding-top: 4rem !important; }
+
+.pt-21 {
+    padding-top: 9.5rem !important; }

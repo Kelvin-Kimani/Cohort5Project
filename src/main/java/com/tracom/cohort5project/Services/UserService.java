@@ -62,6 +62,9 @@ public class UserService {
         return userRepository.findByEmployeeEmailAddress(email);
     }
 
+    public int numberOfUsersWithRoles(){
+        return userRepository.numberOfUsersWithRoles();
+    }
 
 
     /*UPDATE*/

@@ -36,7 +36,7 @@ public class ProjectController {
 
 
     /*Login*/
-    @GetMapping("/login")
+    @GetMapping(path = "/login")
     public String getLoginPage(){
         return "login";
     }
@@ -44,45 +44,17 @@ public class ProjectController {
 
 
     /*Employee Registration*/
-    @GetMapping("/register")
+    @GetMapping(path = "/register")
     public String getRegistrationForm(Model model) {
+        List<Organization> organizations = organizationService.getOrganizations();
+        model.addAttribute("organizations", organizations);
         model.addAttribute("user", new User());
         return "user_registration";
     }
 
-    @PostMapping("/user_registration")
+    @PostMapping(value = "/register")
     public String addNewUser(User user) {
-        //Done by the user
         userService.createUser(user);
-        return "welcome";
+        return "redirect:/";
     }
-
-
-    /*User*/
-    @GetMapping(path = "/registered_users")
-    public String showRegisteredUsers(Model model){
-        List<User> registeredUsers = userService.getUsers();
-        model.addAttribute("registeredUsersList", registeredUsers);
-        return "list_registered_users";
-    }
-
-    @RequestMapping("/edit_user/{id}")
-    public ModelAndView showCreateUser(@PathVariable(name = "id") int id){
-
-        ModelAndView mnv = new ModelAndView("create_user");
-
-        //User object
-        User user = userService.getUserById(id);
-        mnv.addObject("createUser", user);
-
-        return mnv;
-    }
-
-    @PostMapping(path = "/change_user_role/{userId}")
-    public String createUser(@PathVariable(name = "userId") int userId,
-                             @RequestParam(required = false, name = "userRole") String role){
-        userService.createSystemUserById(userId, role);
-        return "list_registered_users";
-    }
-
 }

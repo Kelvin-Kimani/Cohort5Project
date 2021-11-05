@@ -3,6 +3,8 @@ package com.tracom.cohort5project.Entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -14,13 +16,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
-    private String employeeFirstName;
-    private String employeeLastName;
     private String userRole;
 
     //User defined
+    private String employeeFirstName;
+    private String employeeLastName;
     private String employeeDepartment;
-    //private String employeeGender;
     private String employeeEmailAddress;
     private String employeePhoneNumber;
     private String password;
@@ -28,4 +29,5 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "organization_id")
     private Organization organization;
+
 }

@@ -28,4 +28,15 @@ public class RoomService {
     public List<Room> showRooms(){
         return roomRepository.findAll();
     }
+
+    public int noOfRooms(){
+        return roomRepository.numberOfRooms();
+    }
+
+
+    /******************                         DELETE                                          ****************/
+
+    public void deleteRoom(int roomId){
+        roomRepository.deleteById(roomId);
+    }
 }

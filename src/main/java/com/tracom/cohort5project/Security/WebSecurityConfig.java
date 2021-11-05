@@ -1,6 +1,6 @@
 package com.tracom.cohort5project.Security;
 
-import com.tracom.cohort5project.Enums.UserRoles;
+import com.tracom.cohort5project.Security.Service.CustomSuccessHandler;
 import com.tracom.cohort5project.Security.Service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.sql.DataSource;
 
@@ -22,9 +23,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //Connect user to database for authentication
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private AuthenticationSuccessHandler successHandler;
 
     //Load user from custom user details
     @Bean
+    @Override
     public UserDetailsService userDetailsService(){
         return new CustomUserDetailsService();
     }
@@ -63,18 +67,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 
                 //list all the users registered on the website, there we use antmatchers to match with the url
-                .antMatchers("/login", "/register").permitAll()
-                .antMatchers("/admin/**")
-//                .antMatchers("/organization_officer/**").hasRole(UserRoles.ORGANIZATION_OFFICER.name())
-//                .antMatchers("/user/**").hasRole(UserRoles.USER.name())
-                .authenticated()
+                .antMatchers("/css/**", "/js/**", "/images/**", "/register").permitAll()
+                .antMatchers("/admin/**").hasAuthority("Admin")
+                .antMatchers("/officer/**").hasAuthority("Organization Officer")
+                .antMatchers("/user/**").hasAuthority("User")
+                .anyRequest().authenticated()
                 .and()
-                .formLogin(
-                        form -> form
-                                .loginPage("/login")
-                                .defaultSuccessUrl("/admin/dashboard")
-                                .failureUrl("/login?error=true")
-                )
-                .logout().logoutSuccessUrl("/").permitAll();
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .successHandler(successHandler)
+                    .failureUrl("/login?error=true")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/").permitAll();
     }
 }

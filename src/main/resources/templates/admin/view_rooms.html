@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rooms</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <!--    CDN Path-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--Styling-->
+    <link th:href="@{/css/admin_dashboard.css}" th:rel="stylesheet">
+    <link th:href="@{/css/main.css}" th:rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/admin_dashboard.css">
+    <link rel="stylesheet" href="../../static/css/main.css">
+
+
+    <!--Data Tables Offline-->
+    <link href="../../static/css/extern/dataTables.bootstrap5.min.css" th:href="@{/css/extern/dataTables.bootstrap5.min.css}" rel="stylesheet">
+
+    <!--  Bootstrap icons-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+</head>
+<body>
+
+<div th:replace="admin/admin_dashboard::navbar"></div>
+<div th:replace="admin/admin_dashboard::sidebar"></div>
+
+<main class="mt-5 pt-3">
+    <div class="content container-fluid">
+        <div class="row mb-2 mt-3">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" th:href="@{/admin/dashboard}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Rooms</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="col">
+                <a class="create-user-btn btn btn-sm btn-primary text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Create User" th:href="@{/admin/create_room}"><i class="me-2 bi bi-person-plus"></i>Create Room</a>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+                <div class="col-md-12">
+                    <div class="card border-0">
+                        <div class="card-header border-0">
+                            <h2 class="fw-bold text-center">Rooms</h2>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-borderless" id="users_list">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Room ID</th>
+                                        <th scope="col">Room Name</th>
+                                        <th scope="col">Room Capacity</th>
+                                        <th scope="col">Screen Display</th>
+                                        <th scope="col">Whiteboard</th>
+                                        <th scope="col">Conference Phone</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="roomsDetails: ${roomsList}">
+                                        <th th:text="${roomsDetails.roomId}"/>
+                                        <td th:text="${roomsDetails.roomName}"/>
+                                        <td th:text="${roomsDetails.roomCapacity}"/>
+                                        <td th:text="${roomsDetails.displayScreen}"/>
+                                        <td th:text="${roomsDetails.whiteboard}"/>
+                                        <td th:text="${roomsDetails.conferencePhone}"/>
+
+                                        <td class="d-flex justify-content-center">
+                                            <a href="" class="text-muted"><i class="me-2 bi bi-pen"></i></a>
+
+
+                                            <a href="" class="text-muted" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${roomsDetails.roomId}"><i class="me-2 bi bi-trash"></i></a>
+
+                                            <div class="modal fade" th:attr="id='modal-warning'+${roomsDetails.roomId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header border-0">
+                                                            <h5 class="modal-title">Confirm Delete</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to delete <span th:text="${roomsDetails.roomName}"/>?</p>
+                                                        </div>
+                                                        <div class="modal-footer border-0">
+                                                            <a type="button" class="btn btn-danger btn-sm text-white" th:attr="href='/admin/delete_room/'+${roomsDetails.roomId}">Yes</a>
+                                                            <a class="btn btn-primary btn-sm text-white" data-dismiss="modal">No</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<footer th:replace="admin/admin_dashboard::footer"></footer>
+
+<!--Offline Scripts-->
+<script src="../../static/js/extern/jquery-3.6.0.js"></script>
+<script src="../../static/js/extern/jquery.dataTables.min.js"></script>
+<script src="../../static/js/extern/dataTables.bootstrap5.min.js"></script>
+<script src="../../static/js/script.js"></script>
+<!--Thymeleaf-->
+<script th:src="@{/js/extern/jquery-3.6.0.js}"></script>
+<script th:src="@{/js/extern/jquery.dataTables.min.js}"></script>
+<script th:src="@{/js/extern/dataTables.bootstrap5.min.js}"></script>
+<script th:src="@{/js/script.js}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
