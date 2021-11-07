@@ -1,17 +1,14 @@
 package com.tracom.cohort5project.Entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -28,20 +25,32 @@ public class Meeting {
 
     /** --- Date and Time -----**/
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
     private Date meetingDate;
-    private LocalTime startTime;
+
+    @DateTimeFormat(pattern = "HH:mm:ss")
+    @Temporal(TemporalType.TIME)
+    private Date startTime;
+
+
 //    public Time startTime;
 //    public Time endTime;
 
     private int capacity;
-
+    private int ownerId;
 
     /** --- Owners and Co-owners (TO-DO) -----**/
+    @ManyToMany
+    @JoinTable(
+            name = "users_meetings",
+            joinColumns = @JoinColumn(name = "meeting_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> users;
 
-    /** --- Relationships -----**/
-    @OneToOne
+    /** --- Other Relationships -----**/
+    @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
-
 
 }

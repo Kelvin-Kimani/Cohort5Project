@@ -19,7 +19,7 @@
                 <!-- Card body -->
                 <div class="card-body p-4 m-2">
                     <div class="mb-4">
-                        <h3><a href="" class="text-decoration-none text-black fw-bold">Meeting Planner</a></h3>
+                        <h3><a href="" class="text-decoration-none text-black fw-bold" th:href="@{/}">Meeting Planner</a></h3>
                         <p class="mb-4 text-muted">Please enter your user information.</p>
 
                         <div th:if="${param.error}">
@@ -60,10 +60,10 @@
 
                             <div class="d-md-flex justify-content-between mt-4">
                                 <div class="mb-2 mb-md-0">
-                                    <a href="" class="text-decoration-none">Create An Account </a>
+                                    <a href="#" th:href="@{/register}" class="text-decoration-none">Create An Account</a>
                                 </div>
                                 <div>
-                                    <a href="" class="text-inherit text-decoration-none">Forgot your password?</a>
+                                    <a href="#" th:href="@{/forgot_password}" class="text-decoration-none fw-bold">Forgot your password?</a>
                                 </div>
 
                             </div>
@@ -77,31 +77,6 @@
         </div>
     </div>
 </div>
-
-<!-- Modal -->
-<!--<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--        <div class="modal-dialog modal-dialog-centered">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header border-0">-->
-<!--                    <h5 class="modal-title text-center" id="exampleModalLabel">Forgot Password</h5>-->
-<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    <form>-->
-<!--                        <p>Please provide the email you used when registering. We will send a link to reset your password.</p>-->
-<!--                        <div class="form-floating mb-4">-->
-<!--                            <input type="email" class="form-control" id="floatingResetInput" name="username" required placeholder="Email Address">-->
-<!--                            <label for="floatingResetInput">Email Address</label>-->
-<!--                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
-<!--                        </div>-->
-
-<!--                        <button type="submit" class="btn btn-primary text-uppercase">Reset</button>-->
-
-<!--                    </form>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

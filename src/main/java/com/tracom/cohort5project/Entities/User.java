@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -30,4 +31,6 @@ public class User {
     @JoinColumn(name = "organization_id")
     private Organization organization;
 
+    @ManyToMany(mappedBy = "users")
+    private List<Meeting> meetings;
 }

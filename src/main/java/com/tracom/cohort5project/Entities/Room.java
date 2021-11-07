@@ -3,6 +3,7 @@ package com.tracom.cohort5project.Entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +25,7 @@ public class Room{
     @JoinColumn(name = "organization_id")
     private Organization organization;
 
-    @OneToOne(mappedBy = "room")
-    private Meeting meeting;
+    @OneToMany(mappedBy = "room")
+    private List<Meeting> meeting;
 
 }

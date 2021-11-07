@@ -74,8 +74,16 @@
                     <div class="card-body">
 
                         <form th:action="@{/admin/create_room}"
-                              th:object="${room}" method="post">
+                              th:object="${room}"
+                              method="post">
+
                             <div class="row">
+
+                                <!--Map room to organization-->
+                                <select hidden class="form-select" id="organization" th:field="*{organization}">
+                                    <option th:value="${loggedUser.organization.organizationId}" th:text="${loggedUser.organization.organizationId}"/>
+                                </select>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Room Name</label>

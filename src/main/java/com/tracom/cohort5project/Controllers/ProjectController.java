@@ -42,7 +42,6 @@ public class ProjectController {
     }
 
 
-
     /*Employee Registration*/
     @GetMapping(path = "/register")
     public String getRegistrationForm(Model model) {
@@ -57,4 +56,11 @@ public class ProjectController {
         userService.createUser(user);
         return "redirect:/";
     }
+
+    /*Forgot Password*/
+    @GetMapping(path = "/forgot_password")
+    public String getForgotPassword(){
+        return "forgot_password";
+    }
+
 }

@@ -103,16 +103,21 @@ public class AdminController {
         return "admin/view_rooms";
     }
     @GetMapping(path = "/create_room")
-    public String getCreateRoomForm(Model model){
-
+    public String getCreateRoomForm(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
         model.addAttribute("room", new Room());
+
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        model.addAttribute("loggedUser", user);
+
         return "admin/create_boardroom";
     }
 
-    @PostMapping(path = "/create_room")
+    @PostMapping(value = "/create_room")
     public String createRoom(Room room){
         roomService.createRoom(room);
-        return "admin/create_boardroom";
+        return "redirect:/admin/rooms";
     }
 
     @RequestMapping("/delete_room/{roomId}")
@@ -163,10 +168,14 @@ public class AdminController {
     }
 
     @GetMapping(path = "/create_meeting")
-    public String createMeeting(Model model){
+    public String createMeeting(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
 
         List<Room> roomsList = roomService.showRooms();
         model.addAttribute("roomsList", roomsList);
+        model.addAttribute("loggedUser", user);
         model.addAttribute("meeting", new Meeting());
         return "admin/create_meeting";
     }

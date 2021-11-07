@@ -33,8 +33,13 @@
         <form th:action="@{/admin/create_meeting}"
               th:object="${meeting}"
                 method="post">
+            <!--Map meeting with user-->
+            <select hidden class="form-select" id="organization" th:field="*{ownerId}">
+                <option th:value="${loggedUser.userId}" th:text="${loggedUser.employeeFirstName}"/>
+            </select>
 
             <div class="row">
+
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="name" name="meetingname" required placeholder="Meeting Name" th:field="*{meetingName}">
@@ -43,15 +48,30 @@
 
                     <label for="room">Boardroom:</label>
 
-                    <select  class="form-select" id="room">
+                    <select  class="form-select mb-3" id="room" th:field="*{room}">
                         <option value="">Choose room...</option>
                         <option th:each="room: ${roomsList}" th:value="${room.roomId}" th:text="${room.roomName}" />
                     </select>
 
 
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="date" name="meetingname" required th:field="*{meetingDate}">
+                        <input type="date" class="form-control" id="date" required th:field="*{meetingDate}">
                         <label for="date" class="text-muted">Date</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="time" class="form-control" id="starttime" required th:field="*{startTime}">
+                                <label for="starttime" class="text-muted">Start Time</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="time" class="form-control" id="endtime">
+                                <label for="endtime" class="text-muted">End Time</label>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
