@@ -20,6 +20,7 @@
     <!--  Bootstrap icons-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
+
 </head>
 <body>
 
@@ -39,19 +40,8 @@
                 </nav>
             </div>
             <div class="col">
-                <button type="button" class="create-user-btn btn btn-sm btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-person-plus"></i> Create User</button>
+                <a type="button" class="create-user-btn btn btn-sm btn-primary" th:href="@{/admin/create_user}"><i class="bi bi-person-plus"></i> Create User</a>
             </div>
-
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header">
-                    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    ...
-                </div>
-            </div>
-
         </div>
 
         <div class="row">
@@ -73,7 +63,7 @@
                                         <th scope="col">Email Address</th>
                                         <th scope="col">Department</th>
                                         <th scope="col">Role</th>
-                                        <th scope="col">Actions</th>
+                                        <th scope="col" class="text-center">Actions</th>
                                     </tr>
                                     </thead>
 
@@ -88,9 +78,9 @@
                                         <td th:text="${userTableDetails.employeeDepartment}"/>
                                         <td th:text="${userTableDetails.userRole}"/>
 
-                                        <td>
+                                        <td class="d-flex justify-content-center">
 
-                                            <a href="" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-muted"><i class="me-2 bi bi-pen"></i></a>
+                                            <a th:if="${userTableDetails.userId} != ${loggedUser.userId}" href="" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-muted"><i class="me-2 bi bi-pen"></i></a>
 
                                             <!--Edit Modal-->
                                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -112,7 +102,7 @@
                                             </div>
 
 
-                                            <a href="" class="text-muted" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${userTableDetails.userId}"><i class="me-2 bi bi-trash"></i></a>
+                                            <a th:if="${userTableDetails.userId} != ${loggedUser.userId}" href="" class="text-muted" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${userTableDetails.userId}"><i class="me-2 bi bi-trash"></i></a>
 
                                             <!--Delete Modal-->
                                             <div class="modal fade" th:attr="id='modal-warning'+${userTableDetails.userId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -132,6 +122,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <a href="#" th:href="@{/admin/edit_profile}"><b class="text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" th:if="${userTableDetails.userId} == ${loggedUser.userId}">CU</b></a>
 
                                         </td>
 
@@ -162,7 +154,6 @@
 <script th:src="@{/js/extern/dataTables.bootstrap5.min.js}"></script>
 <script th:src="@{/js/script.js}"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

@@ -13,11 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -41,9 +37,15 @@ public class AdminController {
 
     /*Dashboard*/
     @GetMapping(path = "/dashboard")
-    public String homeAdminDashboard(Model model){
-        int users = userService.numberOfUsersWithRoles();
-        int rooms = roomService.noOfRooms();
+    public String homeAdminDashboard(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
+
+        int users = userService.numberOfUsersWithRolesAndByOrganization(organizationId);
+        int rooms = roomService.noOfRoomsInOrganization(organizationId);
 
         model.addAttribute("noOfUsers", users);
         model.addAttribute("noOfRooms", rooms);
@@ -96,9 +98,15 @@ public class AdminController {
 
     /*Board Room*/
     @GetMapping(path = "/rooms")
-    public String getRooms(Model model){
+    public String getRooms(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
 
-        List<Room> roomsList = roomService.showRooms();
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
+        //List<Room> roomsList = roomService.showRooms();
+
+        List<Room> roomsList = roomService.showRoomsInOrganization(organizationId);
         model.addAttribute("roomsList", roomsList);
         return "admin/view_rooms";
     }
@@ -127,29 +135,41 @@ public class AdminController {
     }
 
     /*User*/
-    @GetMapping(path = "/registered_users")
-    public String showRegisteredUsers(Model model){
-        List<User> registeredUsers = userService.getUsersWithoutRoles();
+    @GetMapping(path = "/create_user")
+    public String showCreateUser(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+
+        //Users without roles and organization
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
+
+        //List<User> registeredUsers = userService.getUsersWithoutRoles();
+        List<User> registeredUsers = userService.getUsersWithoutRolesAndByOrganization(organizationId);
         model.addAttribute("registeredUsersList", registeredUsers);
-        return "admin/list_registered_users";
+        model.addAttribute("editUserRole", new User());
+        return "admin/create_user";
     }
 
-    @RequestMapping("/edit_user/{id}")
-    public ModelAndView showCreateUser(@PathVariable(name = "id") int id){
-
-        ModelAndView mnv = new ModelAndView("admin/create_user");
-
-        //User object
-        User user = userService.getUserById(id);
-        mnv.addObject("createUser", user);
-
-        return mnv;
+    @RequestMapping("/edit_user_role")
+    public String createUser(@RequestParam(value = "userId") int userId,
+                             @RequestParam(value = "userRole") String userRole){
+        userService.createSystemUserById(userId, userRole);
+        return "redirect:/admin/create_user";
     }
 
     @GetMapping("/users")
-    public String getUsers(Model model){
+    public String getUsers(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+
+        //Users with roles and organization
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
         //Users with roles
-        List<User> usersList = userService.getUsersWithRoles();
+        //List<User> usersList = userService.getUsersWithRoles();
+        List<User> usersList = userService.getUsersWithRolesAndByOrganization(organizationId);
+        model.addAttribute("loggedUser", user);
         model.addAttribute("userDetails", usersList);
         return "admin/list_users";
     }
@@ -173,7 +193,9 @@ public class AdminController {
         String email = loggedUser.getUsername();
         User user = userService.getUserByEmail(email);
 
-        List<Room> roomsList = roomService.showRooms();
+        int organizationId = user.getOrganization().getOrganizationId();
+
+        List<Room> roomsList = roomService.showRoomsInOrganization(organizationId);
         model.addAttribute("roomsList", roomsList);
         model.addAttribute("loggedUser", user);
         model.addAttribute("meeting", new Meeting());

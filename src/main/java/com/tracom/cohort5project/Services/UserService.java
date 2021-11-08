@@ -49,6 +49,14 @@ public class UserService {
         return userRepository.findAllWithRoles();
     }
 
+    public List<User> getUsersWithRolesAndByOrganization(int organizationId) {
+        return userRepository.findAllWithRolesAndByOrganization(organizationId);
+    }
+
+    public List<User> getUsersWithoutRolesAndByOrganization(int organizationId) {
+        return userRepository.findAllWithoutRolesAndByOrganization(organizationId);
+    }
+
     public List<User> getUsersWithoutRoles() {
         return userRepository.findAllWithoutRoles();
     }
@@ -66,6 +74,12 @@ public class UserService {
         return userRepository.numberOfUsersWithRoles();
     }
 
+    public int numberOfUsersWithRolesAndByOrganization(int organizationId){
+        return userRepository.numberOfUsersWithRolesAndByOrganization(organizationId);
+    }
+
+
+
 
     /*UPDATE*/
     public void updateUser(int id,
@@ -80,6 +94,8 @@ public class UserService {
     public void deleteUserWithRoleById(int id){
         userRepository.deleteUserRole(id);
     }
+
+
     /*DELETE*/
     public void deleteById(int id) {
         boolean userExists = userRepository.existsById(id);
