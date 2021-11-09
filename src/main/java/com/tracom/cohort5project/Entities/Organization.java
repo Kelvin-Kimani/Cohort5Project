@@ -25,6 +25,9 @@ public class Organization {
     @OneToMany(mappedBy = "organization")
     private List<Room> rooms = new ArrayList<>();
 
+    @OneToMany(mappedBy = "organization")
+    private List<Meeting> meetings = new ArrayList<>();
+
     public Organization(String organizationName, List<User> users) {
         this.organizationName = organizationName;
         this.users = users;

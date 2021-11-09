@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -24,17 +26,14 @@ public class Meeting {
     private String meetingDescription;
 
     /** --- Date and Time -----**/
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
-    private Date meetingDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate meetingDate;
 
-    @DateTimeFormat(pattern = "HH:mm:ss")
-    @Temporal(TemporalType.TIME)
-    private Date startTime;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private LocalTime startTime;
 
-
-//    public Time startTime;
-//    public Time endTime;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private LocalTime endTime;
 
     private int capacity;
     private int ownerId;
@@ -52,5 +51,9 @@ public class Meeting {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+
+    @ManyToOne
+    @JoinColumn(name = "org_id")
+    private Organization organization;
 
 }

@@ -73,13 +73,24 @@ public class AdminController {
     }
 
     @PostMapping(path = "/edit_profile/update")
-    public String updateUserProfile(User user, RedirectAttributes redirectAttributes, @AuthenticationPrincipal CustomUserDetails loggedUser){
-        userService.createUser(user);
+    public String updateUserProfile(@AuthenticationPrincipal CustomUserDetails loggedUser,
+                                    @RequestParam(value = "userId", required = false) int userId,
+                                    @RequestParam(value = "firstName", required = false) String firstName,
+                                    @RequestParam(value = "lastName", required = false) String lastName,
+                                    @RequestParam(value = "phone", required = false) String phoneNumber,
+                                    User user,
+                                    RedirectAttributes redirectAttributes){
 
-        loggedUser.setFullName(user.getEmployeeFirstName() , user. getEmployeeLastName());
+        //Perform update
+        userService.updateUserDetails(userId, firstName, lastName, phoneNumber);
+
+        //Set current loggedIn user details on top.
+        loggedUser.setFirstName(firstName);
+        loggedUser.setLastName(lastName);
+
 
         redirectAttributes.addFlashAttribute("message", "Profile Updated successfully");
-        return "redirect:/admin/user_profile";
+        return "redirect:/admin/profile";
     }
 
 
@@ -167,7 +178,6 @@ public class AdminController {
 
         int organizationId = user.getOrganization().getOrganizationId();
         //Users with roles
-        //List<User> usersList = userService.getUsersWithRoles();
         List<User> usersList = userService.getUsersWithRolesAndByOrganization(organizationId);
         model.addAttribute("loggedUser", user);
         model.addAttribute("userDetails", usersList);

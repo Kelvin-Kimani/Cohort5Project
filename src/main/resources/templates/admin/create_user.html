@@ -56,7 +56,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>User</label>
-                                    <select id="user" th:field="*{userId}" class="fs-5" th:if="${registeredUsersList != null and !registeredUsersList.isEmpty()}">
+                                    <select id="user" th:field="*{userId}" class="fs-5">
                                         <option name="userId" th:each="user : ${registeredUsersList}" th:value="${user.userId}" th:text="${user.employeeFirstName} + ' ' + ${user.employeeLastName} + ' : ' + ${user.employeeDepartment}" />
                                         <option th:if="${registeredUsersList == null}" th:value="'No users available'"/>
                                     </select>
@@ -82,7 +82,7 @@
                             </div>
 
                         </div>
-                        <div th:if="${#lists.isEmpty(registeredUsersList)}" class="row mt-5 mb-5">
+                        <div th:if="${#lists.isEmpty(registeredUsersList)}" class="row m-5">
                             <h1 class="fw-bold">No users to be registered.</h1>
                             <p class="text-muted">Come back at a later time.</p>
                         </div>
@@ -100,7 +100,7 @@
 
 <script>
     $(document).ready(function () {
-        $("#user, #nouser").selectize({
+        $("#user").selectize({
             sortField: 'text'
         });
     });

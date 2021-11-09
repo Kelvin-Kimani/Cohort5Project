@@ -15,21 +15,30 @@
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
 
     <script>
-        let timeDisplay = document.getElementById("time");
-
-
-        function refreshTime() {
-            let dateString = new Date().toLocaleString("en-US", {timeZone: "America/Sao_Paulo"});
-            let formattedString = dateString.replace(", ", " - ");
-            timeDisplay.innerHTML = formattedString;
+        function display_c(){
+            var refresh=1000; // Refresh rate in milli seconds
+            mytime=setTimeout('display_ct()',refresh)
         }
 
-        setInterval(refreshTime, 1000);
+        function display_ct() {
+            var x = new Date()
+            var month = x.toLocaleString('default', {month: 'long'});
+            var day = x.toLocaleString('default', {weekday: 'long'});
+            var year = x.getFullYear();
+            var date = x.getDate();
+
+            var fullDate = day + ', ' + month + ' ' + date + ', ' + year;
+            var time = x.toLocaleTimeString();
+
+            document.getElementById('date').innerHTML = fullDate;
+            document.getElementById('time').innerHTML = time;
+            display_c();
+        }
 
     </script>
 
 </head>
-<body>
+<body onload="display_ct()">
 
 <div th:replace="admin/admin_dashboard::navbar"></div>
 <div th:replace="admin/admin_dashboard::sidebar"></div>
@@ -38,12 +47,15 @@
     <div class="content container-fluid">
 
         <div class="row">
-
             <div class="col-lg-12 col-md-12 col-12">
                 <!-- Page header -->
-                <div class="mb-2 d-flex justify-content-between">
-                    <h3 class="col-md-3 fw-bold fs-30">Dashboard</h3>
-                    <button type="button" class="btn btn-sm btn-primary btn-round">New Meeting</button>
+                <div class="row mb-2">
+                    <div class="col">
+                        <h3 class="col-md-3 fw-bold fs-30">Dashboard</h3>
+                    </div>
+                    <div class="col">
+                        <a type="button" class="create-user-btn btn-sm btn btn-primary" th:href="@{/admin/create_meeting}"><i class="bi bi-calendar-plus me-2"></i>New Meeting</a>
+                    </div>
                 </div>
             </div>
 
@@ -146,25 +158,24 @@
 
                     <div class="col-xl-12 col-lg-12 col-md-12 col-12 mt-4">
                         <!-- card -->
-                        <a href="" class="text-black text-decoration-none"><div class="card rounded-3">
+                        <div class="card rounded-3">
+
+                            <div class="card-header border-0"></div>
                             <!-- card body -->
                             <div class="card-body">
-                                <!-- heading -->
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <h4 class="mb-0">Calendar</h4>
-                                    </div>
-                                    <div class="icon-shape icon-md bg-light-primary text-primary rounded-1">
-                                        <i class="bi bi-calendar-week fs-4"></i>
-                                    </div>
-                                </div>
 
                                 <div>
-                                    <p class="lead" id="time"></p>
+                                    <h1 id="time" class="text-center fw-bold"/>
+
+                                    <h6 id="date" class="text-center text-muted"/>
+                                </div>
+
+                                <div class="text-center">
+                                    <p>No upcoming meetings for today</p>
                                 </div>
 
                             </div>
-                        </div></a>
+                        </div>
                     </div>
 
                 </div>

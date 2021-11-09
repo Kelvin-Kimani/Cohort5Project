@@ -30,6 +30,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateUserRole(@Param(value = "userId") int userId, @Param(value = "userRole") String userRole);
 
     @Modifying
+    @Query("UPDATE User u SET u.employeeFirstName = :firstName, u.employeeLastName = :lastName, u.employeePhoneNumber = :phoneNumber WHERE u.userId = :userId")
+    void updateUserDetails(@Param(value = "userId") int userId, @Param(value = "firstName") String firstName, @Param(value = "lastName") String lastName, @Param(value = "phoneNumber") String phoneNumber);
+
+    @Modifying
     @Query("UPDATE User u SET u.userRole = NULL WHERE u.userId = :userId")
     void deleteUserRole(@Param(value = "userId") int userId);
 

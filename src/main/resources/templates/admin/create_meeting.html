@@ -15,11 +15,6 @@
     <link th:href="@{/css/admin_dashboard.css}" rel="stylesheet"/>
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
 
-    <link rel="stylesheet" href="../../static/css/extern/datepicker/bootstrap-datepicker3.css">
-    <link rel="stylesheet" href="../../static/css/extern/datepicker/bootstrap-datepicker3.standalone.css">
-    <link rel="stylesheet" th:href="@{/css/extern/datepicker/bootstrap-datepicker3.css}">
-    <link rel="stylesheet" th:href="@{/css/extern/datepicker/bootstrap-datepicker3.standalone.css}">
-
 </head>
 <body>
 
@@ -34,12 +29,17 @@
               th:object="${meeting}"
                 method="post">
             <!--Map meeting with user-->
-            <select hidden class="form-select" id="organization" th:field="*{ownerId}">
-                <option th:value="${loggedUser.userId}" th:text="${loggedUser.employeeFirstName}"/>
+            <select hidden class="form-select" id="owner" th:field="*{ownerId}">
+                <option th:value="${loggedUser.userId}"/>
             </select>
 
-            <div class="row">
+            <!--Map meeting with organization-->
+            <select hidden class="form-select" id="organization" th:field="*{organization}">
+                <option th:value="${loggedUser.organization.organizationId}"/>
+            </select>
 
+
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="name" name="meetingname" required placeholder="Meeting Name" th:field="*{meetingName}">
@@ -48,15 +48,15 @@
 
                     <label for="room">Boardroom:</label>
 
-                    <select  class="form-select mb-3" id="room" th:field="*{room}">
-                        <option value="">Choose room...</option>
+                    <select class="form-select mb-3" id="room" th:field="*{room}" required>
+                        <option disabled th:value="'NONE'">Choose room...</option>
                         <option th:each="room: ${roomsList}" th:value="${room.roomId}" th:text="${room.roomName}" />
                     </select>
 
 
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="date" required th:field="*{meetingDate}">
-                        <label for="date" class="text-muted">Date</label>
+                        <input id="date_picker" type="date" class="form-control" required th:field="*{meetingDate}">
+                        <label for="date_picker" class="text-muted">Date</label>
                     </div>
 
                     <div class="row">
@@ -68,7 +68,7 @@
                         </div>
                         <div class="col-6">
                             <div class="form-floating mb-3">
-                                <input type="time" class="form-control" id="endtime">
+                                <input type="time" class="form-control" id="endtime" required th:field="*{endTime}">
                                 <label for="endtime" class="text-muted">End Time</label>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="form-floating">
-                        <textarea class="form-control" placeholder="Meeting Description" id="meetingdesc" style="height: 100px" th:field="*{meetingDescription}"></textarea>
+                        <textarea class="form-control" required placeholder="Meeting Description" id="meetingdesc" style="height: 100px" th:field="*{meetingDescription}"></textarea>
                         <label for="meetingdesc">Meeting Description</label>
                     </div>
 
@@ -99,19 +99,17 @@
 </main>
 <footer th:replace="admin/admin_dashboard::footer"></footer>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 <script>
-    $('.input-group.date').datepicker({
-        autoclose: true,
-        todayHighlight: true
-    });
+    var date = new Date().toISOString().slice(0,10);
+    //To restrict past date
+    $('#date_picker').attr('min', date);
+
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-<script src="static/js/extern/datepicker/bootstrap-datepicker.js"></script>
-<script th:src="@{/js/extern/datepicker/bootstrap-datepicker.js}"></script>
 
 </body>
 </html>

@@ -55,11 +55,14 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String getFullName(){
-        return user.getEmployeeFirstName() + " " + user.getEmployeeLastName();
+        return this.user.getEmployeeFirstName() + " " + this.user.getEmployeeLastName();
     }
 
-    public void setFullName(String firstName, String lastName){
+    //Update Current LoggedIn user
+    public void setFirstName(String firstName){
         this.user.setEmployeeFirstName(firstName);
+    }
+    public void setLastName(String lastName){
         this.user.setEmployeeLastName(lastName);
     }
 }

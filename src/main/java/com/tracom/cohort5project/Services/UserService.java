@@ -82,13 +82,21 @@ public class UserService {
 
 
     /*UPDATE*/
-    public void updateUser(int id,
+    public void updateUserRole(int id,
                                String role){
 
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new IllegalStateException("User with the id does not exist"));
 
         user.setUserRole(role);
+    }
+
+
+    public void updateUserDetails(int userId,
+                                  String firstName,
+                                  String lastname,
+                                  String phoneNumber){
+        userRepository.updateUserDetails(userId, firstName, lastname, phoneNumber);
     }
 
     public void deleteUserWithRoleById(int id){
