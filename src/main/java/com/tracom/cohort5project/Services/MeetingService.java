@@ -2,13 +2,11 @@ package com.tracom.cohort5project.Services;
 
 import com.tracom.cohort5project.Entities.Meeting;
 import com.tracom.cohort5project.Repositories.MeetingRepository;
-import com.tracom.cohort5project.Repositories.OrganizationRepository;
-import com.tracom.cohort5project.Repositories.RoomRepository;
-import com.tracom.cohort5project.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -25,5 +23,17 @@ public class MeetingService {
     /*CREATE*/
     public void createMeeting(Meeting meeting){
         meetingRepository.save(meeting);
+    }
+
+    /*READ*/
+    public Meeting getMeeting(int meetingId){
+        return meetingRepository.findMeetingByMeetingId(meetingId);
+    }
+    public List<Meeting> getOrganizationMeetings(int organizationId){
+        return meetingRepository.findMeetingByOrganization(organizationId);
+    }
+
+    public List<Meeting> getOrganizationMeetingsOrderByTime(int organizationId){
+        return meetingRepository.findMeetingByOrganizationOrderByTime(organizationId);
     }
 }

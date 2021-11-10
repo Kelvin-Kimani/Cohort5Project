@@ -14,9 +14,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/admin")
@@ -46,9 +48,11 @@ public class AdminController {
 
         int users = userService.numberOfUsersWithRolesAndByOrganization(organizationId);
         int rooms = roomService.noOfRoomsInOrganization(organizationId);
+        List<Meeting> meetings = meetingService.getOrganizationMeetingsOrderByTime(organizationId);
 
         model.addAttribute("noOfUsers", users);
         model.addAttribute("noOfRooms", rooms);
+        model.addAttribute("meetings", meetings);
 
         return "admin/admin_welcome_page";
     }
@@ -193,7 +197,14 @@ public class AdminController {
 
     /** ----- Meeting -----**/
     @GetMapping(path = "/meetings")
-    public String getMeetings(){
+    public String getMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
+        List<Meeting> meetings = meetingService.getOrganizationMeetingsOrderByTime(organizationId);
+
+        model.addAttribute("meetings", meetings);
         return "admin/view_meetings";
     }
 
@@ -216,6 +227,16 @@ public class AdminController {
     public String createMeeting(Meeting meeting){
         meetingService.createMeeting(meeting);
         return "redirect:/admin/meetings";
+    }
+
+    @GetMapping("/meeting{meetingId}")
+    public ModelAndView getMeetingDetails(@PathVariable(name = "meetingId") int meetingId){
+
+        ModelAndView mvn = new ModelAndView("admin/meeting_details");
+
+        Meeting meeting = meetingService.getMeeting(meetingId);
+        mvn.addObject("meeting", meeting);
+        return mvn;
     }
 
 }

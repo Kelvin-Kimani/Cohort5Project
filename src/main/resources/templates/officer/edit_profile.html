@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <!--    CDN Path-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!--  Bootstrap icons-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link th:href="@{/css/admin_dashboard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../static/css/admin_dashboard.css">
+    <link rel="stylesheet" href="../../static/css/main.css">
+
+</head>
+<body>
+
+<div th:replace="officer/oo_dashboard::navbar"></div>
+<div th:replace="officer/oo_dashboard::sidebar"></div>
+
+<main class="mt-5 pt-4">
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-12">
+                <!-- Page header -->
+                <div>
+                    <div class="border-bottom pb-4 mb-4">
+                        <div class="mb-2 mb-lg-0">
+                            <h3 class="mb-0 fw-bold">Profile Settings</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-xl-3 col-lg-4 col-md-12 col-12">
+                <div class="mb-4 mb-lg-0">
+                    <h5 class="mb-1">General User Setting</h5>
+                    <p class="mb-0 fs-6 text-muted">Profile</p>
+                </div>
+
+            </div>
+
+            <div class="col-xl-9 col-lg-8 col-md-12 col-12">
+                <!-- card -->
+                <div class="card">
+                    <!-- card body -->
+                    <div class="card-body">
+                        <div class=" mb-6">
+                            <h5 class="mb-1">Edit Profile</h5>
+                        </div>
+
+                        <div>
+
+                            <form th:action="@{/admin/edit_profile/update}"
+                                  th:object="${editUser}"
+                                  method="post">
+
+
+                                <div class="row mb-4">
+
+                                    <input type="hidden" name="userId" th:value="${editUser.userId}">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Organization (disabled)</label>
+                                            <input type="text" class="form-control" disabled placeholder="Organization" th:field="*{organization.organizationName}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Role (disabled)</label>
+                                            <input type="text" class="form-control" placeholder="Role" disabled th:field="*{userRole}">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-4">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>First Name</label>
+                                            <input type="text" class="form-control" placeholder="First Name" name="firstName" th:value="${editUser.employeeFirstName}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Last Name</label>
+                                            <input type="text" class="form-control" placeholder="Last Name" name="lastName" th:value="${editUser.employeeLastName}">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-4">
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Phone Number</label>
+                                            <input type="text" class="form-control" placeholder="+254..." name="phone" th:value="${editUser.employeePhoneNumber}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 pl-1">
+                                        <div class="form-group">
+                                            <label>Email address (disabled)</label>
+                                            <input type="email" class="form-control" disabled placeholder="Email" th:field="*{employeeEmailAddress}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 pl-1">
+                                        <div class="form-group">
+                                            <label>Department</label>
+                                            <select id="dept" disabled class="form-select" th:field="*{employeeDepartment}">
+                                                <option disabled th:value="'NONE'">Choose department</option>
+                                                <option name="department" th:value="'Human Resource'">Human Resource</option>
+                                                <option name="department" th:value= "'Finance'">Finance</option>
+                                                <option name="department" th:value="'Quality Assurance'">Quality Assurance</option>
+                                                <option name="department" th:value="'Software Development'">Software Development</option>
+                                                <option name="department" th:value="'Hospitality'">Hospitality</option>
+                                                <option name="department" th:value="'Marketing'">Marketing</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="update ml-auto mr-auto">
+                                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-xl-3 col-lg-4 col-md-12 col-12">
+                <div class="mb-4 mb-lg-0">
+                    <h5 class="mb-1">Password Setting</h5>
+                    <p class="mb-0 fs-6 text-muted">Change Password</p>
+                </div>
+
+            </div>
+
+            <div class="col-xl-9 col-lg-8 col-md-12 col-12">
+                <!-- card -->
+                <div class="card" id="edit">
+                    <!-- card body -->
+                    <div class="card-body">
+                        <div class="mb-6 mt-6">
+                            <h5 class="mb-1">Change your password</h5>
+
+                        </div>
+                        <form>
+                            <div class="form-group mt-3">
+                                <label>Old Password</label>
+                                <input type="password" class="form-control" placeholder="Old Password">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label>New Password</label>
+                                <input type="password" class="form-control" placeholder="New Password">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label>Confirm Password</label>
+                                <input type="password" class="form-control" placeholder="Confirm Password">
+                            </div>
+
+                            <div class="col-md-8 col-12 mt-4 password-requirements">
+                                <h6 class="mb-1">Password requirements:</h6>
+                                <p>Ensure that these requirements are met:</p>
+                                <ul>
+                                    <li> Minimum 8 characters long the more, the better</li>
+                                    <li>At least one lowercase character</li>
+                                    <li>At least one uppercase character</li>
+                                    <li>At least one number, symbol, or whitespace character
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Change Password</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-xl-3 col-lg-4 col-md-12 col-12">
+                <div class="mb-4 mb-lg-0">
+                    <h5 class="mb-1">Delete Account</h5>
+                    <p class="mb-0 text-muted">Account Deletion</p>
+                </div>
+
+            </div>
+
+            <div class="col-xl-9 col-lg-8 col-md-12 col-12">
+                <!-- card -->
+
+                <div class="card mb-6">
+                    <!-- card body -->
+                    <div class="card-body">
+                        <div class="mb-6">
+                            <h5 class="mb-1">Danger Zone </h5>
+
+                        </div>
+                        <div>
+                            <!-- text -->
+                            <p>Delete any and all content you have, such as meetings, schedules and any other interactions.</p>
+                            <a href="#" class="btn btn-danger">Delete Account</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="officer/oo_dashboard::footer"></footer>
+
+<!---->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

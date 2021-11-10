@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec = "https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <!--    CDN Path-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!--  Bootstrap icons-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link th:href="@{/css/admin_dashboard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../static/css/admin_dashboard.css">
+    <link rel="stylesheet" href="../../static/css/main.css">
+
+</head>
+<body>
+
+<div th:replace="officer/oo_dashboard::navbar"></div>
+<div th:replace="officer/oo_dashboard::sidebar"></div>
+
+<main class="mt-5 pt-4">
+
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-12">
+                <!-- Page header -->
+                <div>
+                    <div class="border-bottom pb-4 mb-4 ">
+                        <div class="mb-2 mb-lg-0">
+                            <h3 class="mb-0 fw-bold">Overview</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="d-flex align-items-center justify-content-between pt-4 pb-4 px-4">
+                            <div class="d-flex align-items-center">
+                                <!-- avatar -->
+
+                                <div class="me-2">
+                                    <img src="../../static/images/profile.png" th:src="@{/images/profile.png}" class="rounded-circle border-white-color-40">
+                                </div>
+
+                                <div class="ml-3">
+                                    <h3 class="mb-0"><b th:text="${loggedUser.employeeFirstName}"/> <b th:text="${loggedUser.employeeLastName}"/></h3>
+
+                                    <h6 class="text-muted"><span th:text="${loggedUser.userRole}"/></h6>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="#" th:href="@{/officer/edit_profile}" class="btn btn-sm create-user-btn btn-outline-primary">Edit Profile</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!--Interactions-->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-12 mt-4">
+                <!-- Page header -->
+                <div>
+                    <div class="border-bottom pb-4 mb-4 ">
+                        <div class="mb-2 mb-lg-0">
+                            <h3 class="mb-0 fw-bold">Activities</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="text-muted text-center">Meetings Created</h5>
+                        <div class="table-responsive">
+                            <table class="table text-nowrap table-borderless table-hover">
+                                <thead class="table-light">
+                                <tr>
+                                    <td>Newe</td>
+                                    <td>Newe</td>
+                                    <td>Newe</td>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td>Newe</td>
+                                    <td>Newe</td>
+                                    <td>Newe</td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="text-muted text-center">Co-owned meetings</h5>
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover">
+                                <thead class="table-dark">
+                                <tr>
+                                    <td>Newe</td>
+                                    <td>Newe</td>
+                                    <td>Newe</td>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td>Newe</td>
+                                    <td>Newe</td>
+                                    <td>Newe</td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="officer/oo_dashboard::footer"></footer>
+
+<!---->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

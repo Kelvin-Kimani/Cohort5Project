@@ -24,8 +24,8 @@
 </head>
 <body>
 
-<div th:replace="admin/admin_dashboard::navbar"></div>
-<div th:replace="admin/admin_dashboard::sidebar"></div>
+<div th:replace="officer/oo_dashboard::navbar"></div>
+<div th:replace="officer/oo_dashboard::sidebar"></div>
 
 <main class="mt-5 pt-3">
     <div class="content container-fluid">
@@ -49,37 +49,37 @@
                                 </thead>
 
                                 <tbody>
-                                <tr th:each="meeting: ${meetings}">
-                                    <td class="py-4" th:text="${meeting.meetingName}"/>
-                                    <td class="py-4" th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>
-                                    <td class="py-4" th:text="${meeting.startTime}"/>
-                                    <td class="py-4" th:text="${meeting.endTime}"/>
-                                    <td class="py-4" th:text="${meeting.capacity}"/>
+                                <tr>
+                                    <td class="py-4"/>
+                                    <td class="py-4"/>
+                                    <td class="py-4"/>
+                                    <td class="py-4"/>
+                                    <td class="py-4"/>
 
                                     <td class="d-flex justify-content-center py-4">
 
                                         <a href="" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-muted"><i class="me-2 bi bi-pen"></i></a>
 
-                                        <a href="" class="text-muted" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${meeting.meetingId}"><i class="me-2 bi bi-trash"></i></a>
+<!--                                        <a href="" class="text-muted" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${meeting.meetingId}"><i class="me-2 bi bi-trash"></i></a>-->
 
                                         <!--Delete Modal-->
-                                        <div class="modal fade" th:attr="id='modal-warning'+${meeting.meetingId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header border-0">
-                                                        <h5 class="modal-title">Confirm Delete</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>Are you sure you want to delete <span th:text="${meeting.meetingName}"/>, scheduled on <span th:text="${meeting.meetingDate}"/>?</p>
-                                                    </div>
-                                                    <div class="modal-footer border-0">
-                                                        <a type="button" class="btn btn-danger btn-sm text-white" th:attr="href='/admin/delete_user_role/'+${meeting.meetingId}">Yes</a>
-                                                        <a class="btn btn-primary btn-sm text-white" data-dismiss="modal">No</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+<!--                                        <div class="modal fade" th:attr="id='modal-warning'+${meeting.meetingId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--                                            <div class="modal-dialog modal-dialog-centered">-->
+<!--                                                <div class="modal-content">-->
+<!--                                                    <div class="modal-header border-0">-->
+<!--                                                        <h5 class="modal-title">Confirm Delete</h5>-->
+<!--                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="modal-body">-->
+<!--                                                        <p>Are you sure you want to delete <span th:text="${meeting.meetingName}"/>, scheduled on <span th:text="${meeting.meetingDate}"/>?</p>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="modal-footer border-0">-->
+<!--                                                        <a type="button" class="btn btn-danger btn-sm text-white" th:attr="href='/admin/delete_user_role/'+${meeting.meetingId}">Yes</a>-->
+<!--                                                        <a class="btn btn-primary btn-sm text-white" data-dismiss="modal">No</a>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
 
                                     </td>
 
@@ -96,7 +96,7 @@
     </div>
 </main>
 
-<footer th:replace="admin/admin_dashboard::footer"></footer>
+<footer th:replace="officer/oo_dashboard::footer"></footer>
 
 <!--Offline Scripts-->
 <script src="../../static/js/extern/jquery-3.6.0.js"></script>
