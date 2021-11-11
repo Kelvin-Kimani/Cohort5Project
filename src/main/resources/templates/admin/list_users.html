@@ -69,7 +69,6 @@
 
                                     <tbody>
                                     <tr th:each="userTableDetails: ${userDetails}">
-
                                         <td th:text="${userTableDetails.userId}"/>
                                         <td th:text="${userTableDetails.employeeFirstName}"/>
                                         <td th:text="${userTableDetails.employeeLastName}"/>
@@ -80,26 +79,7 @@
 
                                         <td class="d-flex justify-content-center">
 
-                                            <a th:if="${userTableDetails.userId} != ${loggedUser.userId}" href="" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-muted"><i class="me-2 bi bi-pen"></i></a>
-
-                                            <!--Edit Modal-->
-                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            ...
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <a th:if="${userTableDetails.userId} != ${loggedUser.userId}" href="#" th:href="@{'/admin/edit_user_role/' + ${userTableDetails.userId}}" type="button" class="text-muted"><i class="me-2 bi bi-pen"></i></a>
 
 
                                             <a th:if="${userTableDetails.userId} != ${loggedUser.userId}" href="" class="text-muted" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${userTableDetails.userId}"><i class="me-2 bi bi-trash"></i></a>
@@ -122,6 +102,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
 
                                             <a href="#" th:href="@{/admin/edit_profile}"><b class="text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" th:if="${userTableDetails.userId} == ${loggedUser.userId}">CU</b></a>
 

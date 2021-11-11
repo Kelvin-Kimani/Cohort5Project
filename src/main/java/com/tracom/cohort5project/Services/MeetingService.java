@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -36,4 +37,9 @@ public class MeetingService {
     public List<Meeting> getOrganizationMeetingsOrderByTime(int organizationId){
         return meetingRepository.findMeetingByOrganizationOrderByTime(organizationId);
     }
+
+    public List<Meeting> getOrganizationMeetingsToday(int organizationId){
+        return meetingRepository.findMeetingByOrganizationAndToday(organizationId);
+    }
+
 }

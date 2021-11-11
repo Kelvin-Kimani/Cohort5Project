@@ -29,8 +29,10 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "organization_id")
+    @ToString.Exclude
     private Organization organization;
 
     @ManyToMany(mappedBy = "users")
+    @ToString.Exclude
     private List<Meeting> meetings;
 }

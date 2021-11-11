@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec = "https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" th:object="${meeting}">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${meeting.meetingName}"/>
+    <title>Meeting</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <!--    CDN Path-->
@@ -34,6 +34,12 @@
                             <h1 th:text="${meeting.meetingName}"/>
                             <p>Scheduled on <span th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>.</p>
                             <p>Meeting Time <span th:text="${meeting.startTime}"/></p>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-end">
+                                <a href="#" th:href="@{'/admin/edit_meeting/' + ${meeting.meetingId}}" class="btn btn-secondary me-2">Edit Schedule</a>
+                                <button class="btn btn-danger border-0">Delete Schedule</button>
+                            </div>
                         </div>
                     </div>
                 </div>

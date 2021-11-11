@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -45,15 +46,18 @@ public class Meeting {
             joinColumns = @JoinColumn(name = "meeting_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @ToString.Exclude
     private List<User> users;
 
     /** --- Other Relationships -----**/
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @ToString.Exclude
     private Room room;
 
     @ManyToOne
     @JoinColumn(name = "org_id")
+    @ToString.Exclude
     private Organization organization;
 
 }

@@ -20,12 +20,15 @@ public class Organization {
     private String organizationDescription;
 
     @OneToMany(mappedBy = "organization")
+    @ToString.Exclude
     private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "organization")
+    @ToString.Exclude
     private List<Room> rooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "organization")
+    @ToString.Exclude
     private List<Meeting> meetings = new ArrayList<>();
 
     public Organization(String organizationName, List<User> users) {

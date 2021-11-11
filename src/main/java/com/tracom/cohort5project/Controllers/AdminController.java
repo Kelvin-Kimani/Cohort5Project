@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,11 +50,13 @@ public class AdminController {
         int users = userService.numberOfUsersWithRolesAndByOrganization(organizationId);
         int rooms = roomService.noOfRoomsInOrganization(organizationId);
         List<Meeting> meetings = meetingService.getOrganizationMeetingsOrderByTime(organizationId);
+        List<Meeting> todayMeetings = meetingService.getOrganizationMeetingsToday(organizationId);
+
 
         model.addAttribute("noOfUsers", users);
         model.addAttribute("noOfRooms", rooms);
         model.addAttribute("meetings", meetings);
-
+        model.addAttribute("todayMeetings", todayMeetings);
         return "admin/admin_welcome_page";
     }
 
@@ -150,29 +153,6 @@ public class AdminController {
     }
 
     /*User*/
-    @GetMapping(path = "/create_user")
-    public String showCreateUser(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
-
-        //Users without roles and organization
-        String email = loggedUser.getUsername();
-        User user = userService.getUserByEmail(email);
-
-        int organizationId = user.getOrganization().getOrganizationId();
-
-        //List<User> registeredUsers = userService.getUsersWithoutRoles();
-        List<User> registeredUsers = userService.getUsersWithoutRolesAndByOrganization(organizationId);
-        model.addAttribute("registeredUsersList", registeredUsers);
-        model.addAttribute("editUserRole", new User());
-        return "admin/create_user";
-    }
-
-    @RequestMapping("/edit_user_role")
-    public String createUser(@RequestParam(value = "userId") int userId,
-                             @RequestParam(value = "userRole") String userRole){
-        userService.createSystemUserById(userId, userRole);
-        return "redirect:/admin/create_user";
-    }
-
     @GetMapping("/users")
     public String getUsers(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
 
@@ -188,6 +168,46 @@ public class AdminController {
         return "admin/list_users";
     }
 
+    @GetMapping(path = "/create_user")
+    public String showCreateUser(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+
+        //Users without roles and organization
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
+
+        //List<User> registeredUsers = userService.getUsersWithoutRoles();
+        List<User> registeredUsers = userService.getUsersWithoutRolesAndByOrganization(organizationId);
+        model.addAttribute("registeredUsersList", registeredUsers);
+        model.addAttribute("addUserRole", new User());
+        return "admin/create_user";
+    }
+
+    @RequestMapping("/add_user_role")
+    public String createUser(@RequestParam(value = "userId") int userId,
+                             @RequestParam(value = "userRole") String userRole){
+        userService.createSystemUserById(userId, userRole);
+        return "redirect:/admin/create_user";
+    }
+
+    @GetMapping(path = "/edit_user_role/{userId}")
+    public ModelAndView getEditUserRole(@PathVariable(name = "userId") int userId){
+
+        ModelAndView mvn = new ModelAndView("admin/edit_user_role");
+
+        User user = userService.getUserById(userId);
+
+        mvn.addObject("editUserRole", user);
+        return mvn;
+    }
+
+    @RequestMapping("/edit_user_role")
+    public String updateUserRole(@RequestParam(value = "userId") int userId,
+                             @RequestParam(value = "userRole") String userRole){
+        userService.createSystemUserById(userId, userRole);
+        return "redirect:/admin/users";
+    }
 
     @GetMapping(path = "/delete_user_role/{userId}")
     public String deleteUserWithRole(@PathVariable(name = "userId") int userId){
@@ -236,6 +256,24 @@ public class AdminController {
 
         Meeting meeting = meetingService.getMeeting(meetingId);
         mvn.addObject("meeting", meeting);
+        return mvn;
+    }
+
+    @GetMapping(path = "/edit_meeting/{meetingId}")
+    public ModelAndView getEditMeetingForm(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId){
+
+        ModelAndView mvn = new ModelAndView("admin/edit_meeting");
+
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
+
+        List<Room> roomsList = roomService.showRoomsInOrganization(organizationId);
+        Meeting meeting = meetingService.getMeeting(meetingId);
+        mvn.addObject("editMeeting", meeting);
+        mvn.addObject("rooms", roomsList);
+
         return mvn;
     }
 

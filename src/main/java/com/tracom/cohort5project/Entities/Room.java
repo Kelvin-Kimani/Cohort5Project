@@ -23,9 +23,11 @@ public class Room{
 
     @ManyToOne
     @JoinColumn(name = "organization_id")
+    @ToString.Exclude
     private Organization organization;
 
     @OneToMany(mappedBy = "room")
+    @ToString.Exclude
     private List<Meeting> meeting;
 
 }
