@@ -18,8 +18,16 @@
     <script th:src="@{/js/extern/jquery-3.6.0.js}"></script>
 
     <!--SelectizeJS-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />-->
+<!--    -->
+
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css">-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <!--  Bootstrap icons-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
@@ -57,7 +65,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>User</label>
-                                    <select id="user" th:field="*{userId}" class="fs-5">
+                                    <select th:field="*{userId}" class="user form-select" style="height: 30px;">
                                         <option name="userId" th:each="user : ${registeredUsersList}" th:value="${user.userId}" th:text="${user.employeeFirstName} + ' ' + ${user.employeeLastName} + ' : ' + ${user.employeeDepartment}" />
                                     </select>
                                 </div>
@@ -66,7 +74,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Role</label>
-                                    <select id="role" class="form-select" th:field="*{userRole}">
+                                    <select id="role" style="width: 100%" class="form-select form-select-sm" th:field="*{userRole}">
                                         <option disabled th:value="'NONE'">Select role...</option>
                                         <option name="userRole" th:value="'Admin'">Admin</option>
                                         <option name="userRole" th:value="'Organization Officer'">Organization Officer</option>
@@ -99,9 +107,10 @@
 <footer th:replace="admin/admin_dashboard::footer"></footer>
 
 <script>
-    $(document).ready(function () {
-        $("#user").selectize({
-            sortField: 'text'
+    $(document).ready(function() {
+        $('.user, .js-example-basic-single').select2({
+            width: 'resolve',
+            placeholder: "Select a user",
         });
     });
 </script>

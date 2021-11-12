@@ -21,4 +21,9 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     @Query("SELECT m FROM Meeting m WHERE m.organization.organizationId = ?1 AND m.meetingDate = CURRENT_DATE")
     List<Meeting> findMeetingByOrganizationAndToday(int organizationId);
 
+    @Query("SELECT m FROM Meeting m WHERE m.organization.organizationId = ?1 AND m.meetingDate >= CURRENT_DATE ORDER BY DATE(m.meetingDate) ASC, TIME(m.startTime) ASC")
+    List<Meeting> findMeetingByOrganizationOrderByTimeAndLaterDate(int organizationId);
+
+    @Query("SELECT COUNT (m.meetingId) FROM Meeting m WHERE m.organization.organizationId = ?1 AND m.meetingDate >= CURRENT_DATE")
+    int numberOfMeetingsTobeAttendedByOrganization(int organizationId);
 }

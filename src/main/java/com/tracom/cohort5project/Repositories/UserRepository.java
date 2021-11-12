@@ -22,6 +22,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.userRole IS NOT NULL AND u.organization.organizationId = ?1")
     List<User> findAllWithRolesAndByOrganization(int organizationId);
 
+    @Query("SELECT u FROM User u WHERE u.userRole IS NOT NULL AND u.organization.organizationId = ?1 AND u.userId <> ?1)")
+    List<User> findEligibleCoOwnersOrganization(int organizationId, int userId);
+
     @Query("SELECT u FROM User u WHERE u.userRole IS NULL AND u.organization.organizationId = ?1")
     List<User> findAllWithoutRolesAndByOrganization(int organizationId);
 

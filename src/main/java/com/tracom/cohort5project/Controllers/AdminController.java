@@ -49,10 +49,11 @@ public class AdminController {
 
         int users = userService.numberOfUsersWithRolesAndByOrganization(organizationId);
         int rooms = roomService.noOfRoomsInOrganization(organizationId);
-        List<Meeting> meetings = meetingService.getOrganizationMeetingsOrderByTime(organizationId);
+        int meetingsToBeAttended = meetingService.numberOfMeetingsToBeAttendedByOrganization(organizationId);
+        List<Meeting> meetings = meetingService.getOrganizationMeetingsForLaterDate(organizationId);
         List<Meeting> todayMeetings = meetingService.getOrganizationMeetingsToday(organizationId);
 
-
+        model.addAttribute("noOfMeetingsToBeAttended", meetingsToBeAttended);
         model.addAttribute("noOfUsers", users);
         model.addAttribute("noOfRooms", rooms);
         model.addAttribute("meetings", meetings);
@@ -249,13 +250,37 @@ public class AdminController {
         return "redirect:/admin/meetings";
     }
 
+    @GetMapping(path = "/add_coowners/{meetingId}")
+    public String addMeetingCoOwners(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId, Model model){
+
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
+        int userId = user.getUserId();
+
+        System.out.println(userId);
+
+        Meeting meeting = meetingService.getMeeting(meetingId);
+        List<User> users = userService.getEligibleCoOwners(organizationId, userId);
+
+        model.addAttribute("meeting", meeting);
+        model.addAttribute("users", users);
+        return "admin/add_coowners";
+    }
+
     @GetMapping("/meeting{meetingId}")
-    public ModelAndView getMeetingDetails(@PathVariable(name = "meetingId") int meetingId){
+    public ModelAndView getMeetingDetails(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId){
+
+        //Get current loggedin user
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
 
         ModelAndView mvn = new ModelAndView("admin/meeting_details");
 
         Meeting meeting = meetingService.getMeeting(meetingId);
         mvn.addObject("meeting", meeting);
+        mvn.addObject("loggedUser", user);
         return mvn;
     }
 

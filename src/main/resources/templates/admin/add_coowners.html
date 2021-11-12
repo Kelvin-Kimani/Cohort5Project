@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Co-owner</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <!--    CDN Path-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--Styling-->
+    <link th:href="@{/css/admin_dashboard.css}" th:rel="stylesheet">
+    <link th:href="@{/css/main.css}" th:rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/main.css">
+    <link rel="stylesheet" href="../../static/css/admin_dashboard.css">
+
+    <script src="../../static/js/extern/jquery-3.6.0.js"></script>
+    <script th:src="@{/js/extern/jquery-3.6.0.js}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--  Bootstrap icons-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+</head>
+<body>
+
+<div th:replace="admin/admin_dashboard::navbar"></div>
+<div th:replace="admin/admin_dashboard::sidebar"></div>
+
+<main class="mt-5 pt-3">
+
+    <div class="content container-fluid">
+
+        <div class="row">
+            <form method="post">
+
+                <div class="card">
+                    <div class="card-header bg-secondary"></div>
+                    <div class="card-body">
+                        <h3 class="fw-bold mb-4">Co-Owners</h3>
+                        <p class="fw-bold text-muted">Add new co-owners to your meeting</p>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>User</label>
+                                    <select class="user form-select"  name="states[]" multiple="multiple">
+                                        <option name="userId" th:each="user : ${users}" th:value="${user.userId}" th:text="${user.employeeFirstName} + ' ' + ${user.employeeLastName} + ' : ' + ${user.employeeDepartment}" />
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="ml-auto mr-auto mt-5 d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-primary">Add Co-owners</button>
+                                    <button type="submit" class="btn text-primary border-0">Skip Step<i class="bi bi-chevron-compact-right text-primary me-1"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</main>
+
+<footer th:replace="admin/admin_dashboard::footer"></footer>
+
+<script>
+    $(document).ready(function() {
+        $('.user, .js-example-basic-single').select2({
+            placeholder: "Select users",
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+</body>
+</html>

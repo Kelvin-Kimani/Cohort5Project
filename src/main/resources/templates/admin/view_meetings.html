@@ -21,6 +21,12 @@
     <!--  Bootstrap icons-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
+    <script>
+        function rowClicked(value) {
+            location.href = "/admin/meeting" + value;
+        }
+    </script>
+
 </head>
 <body>
 
@@ -29,6 +35,23 @@
 
 <main class="mt-5 pt-3">
     <div class="content container-fluid">
+
+        <div class="row mb-3">
+            <div class="col">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" th:href="@{/admin/dashboard}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Meetings</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="col">
+                <a type="button" class="create-user-btn btn-sm btn btn-primary" th:href="@{/admin/create_meeting}"><i class="bi bi-calendar-plus me-2"></i>New Meeting</a>
+            </div>
+
+        </div>
+
         <h1>Meeting Schedules</h1>
 
         <div class="row">
@@ -50,17 +73,16 @@
 
                                 <tbody>
                                 <tr th:each="meeting: ${meetings}">
-                                    <td class="py-4" th:text="${meeting.meetingName}"/>
-                                    <td class="py-4" th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>
-                                    <td class="py-4" th:text="${meeting.startTime}"/>
-                                    <td class="py-4" th:text="${meeting.endTime}"/>
-                                    <td class="py-4" th:text="${meeting.capacity}"/>
+                                        <td class="py-4" th:text="${meeting.meetingName}"/>
+                                        <td class="py-4" th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>
+                                        <td class="py-4" th:text="${meeting.startTime}"/>
+                                        <td class="py-4" th:text="${meeting.endTime}"/>
+                                        <td class="py-4" th:text="${meeting.capacity}"/>
+                                        <td class="d-flex justify-content-center py-4">
 
-                                    <td class="d-flex justify-content-center py-4">
+                                        <a href="#" th:href="@{'/admin/meeting' + ${meeting.meetingId}}" type="button" class="text-muted"><i class="bi bi-chevron-compact-right me-2 fw-bold"></i></a>
 
-                                        <a href="" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-muted"><i class="me-2 bi bi-pen"></i></a>
-
-                                        <a href="" class="text-muted" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${meeting.meetingId}"><i class="me-2 bi bi-trash"></i></a>
+                                        <a href="#" class="text-muted" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${meeting.meetingId}"><i class="me-2 bi bi-trash"></i></a>
 
                                         <!--Delete Modal-->
                                         <div class="modal fade" th:attr="id='modal-warning'+${meeting.meetingId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

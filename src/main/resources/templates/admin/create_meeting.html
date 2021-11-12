@@ -24,6 +24,18 @@
 <main class="mt-5 pt-3">
     <div class="content container-fluid">
 
+        <div class="row mb-3">
+            <div class="col">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" th:href="@{/admin/dashboard}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#" th:href="@{/admin/meetings}">Meetings</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Schedule Meeting</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
         <form th:action="@{/admin/create_meeting}"
               th:object="${meeting}"
                 method="post">
@@ -172,6 +184,7 @@
 
     </div>
 </main>
+
 <footer th:replace="admin/admin_dashboard::footer"></footer>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

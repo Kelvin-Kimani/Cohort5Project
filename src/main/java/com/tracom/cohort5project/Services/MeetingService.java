@@ -42,4 +42,12 @@ public class MeetingService {
         return meetingRepository.findMeetingByOrganizationAndToday(organizationId);
     }
 
+    public List<Meeting> getOrganizationMeetingsForLaterDate(int organizationId){
+        return meetingRepository.findMeetingByOrganizationOrderByTimeAndLaterDate(organizationId);
+    }
+
+    public int numberOfMeetingsToBeAttendedByOrganization(int organizationId){
+        return meetingRepository.numberOfMeetingsTobeAttendedByOrganization(organizationId);
+    }
+
 }

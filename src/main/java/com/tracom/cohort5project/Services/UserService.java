@@ -78,6 +78,10 @@ public class UserService {
         return userRepository.numberOfUsersWithRolesAndByOrganization(organizationId);
     }
 
+    public List<User> getEligibleCoOwners(int organizationId, int userId){
+        return userRepository.findEligibleCoOwnersOrganization(organizationId, userId);
+    }
+
 
 
 

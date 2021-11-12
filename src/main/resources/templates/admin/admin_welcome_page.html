@@ -89,8 +89,8 @@
 
                                 <div class="row">
                                     <div class="col-4">
-                                        <p class="text-muted">Scheduled</p>
-                                        <h1 class="fw-bold">18</h1>
+                                        <p class="text-muted">Schedules</p>
+                                        <h1 class="fw-bold" th:text="${noOfMeetingsToBeAttended}"/>
                                     </div>
 
                                     <div class="col-4">
@@ -178,15 +178,21 @@
                                     <div th:unless="${#lists.isEmpty(todayMeetings)}">
                                          <h5 class="text-center fw-bold py-4">Today's Schedules</h5>
                                             <div class="row mb-2 border-bottom mx-4" th:each="meetingToday : ${todayMeetings}">
-                                                <div class="col-12">
-                                                    <h5 th:text="${meetingToday.meetingName}" class="fw-bold text-muted"/>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="text-muted">From <b th:text="${meetingToday.startTime}"/> - <b th:text="${meetingToday.endTime}"/></p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="text-muted">Venue: <b th:text="${meetingToday.room.roomName}"/></p>
-                                                </div>
+
+                                                <a href="#" th:href="@{'/admin/meeting' + ${meetingToday.meetingId}}">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h5 th:text="${meetingToday.meetingName}" class="fw-bold text-muted"/>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <p class="text-muted">From <b th:text="${meetingToday.startTime}"/> - <b th:text="${meetingToday.endTime}"/></p>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <p class="text-muted">Venue: <b th:text="${meetingToday.room.roomName}"/></p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+
                                             </div>
 
                                     </div>

@@ -35,10 +35,21 @@
                             <p>Scheduled on <span th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>.</p>
                             <p>Meeting Time <span th:text="${meeting.startTime}"/></p>
                         </div>
+
                         <div class="row">
-                            <div class="d-flex justify-content-end">
-                                <a href="#" th:href="@{'/admin/edit_meeting/' + ${meeting.meetingId}}" class="btn btn-secondary me-2">Edit Schedule</a>
-                                <button class="btn btn-danger border-0">Delete Schedule</button>
+                            <div class="d-flex">
+                                <a href="#" class="btn btn-sm btn-primary" th:href="@{'/admin/add_coowners/' +${meeting.meetingId}}"><i class="bi bi-person-plus me-2"></i>Add Co-Owners</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-between">
+                                <a class="btn text-primary border-0" onclick="history.back()"><i class="bi bi-chevron-compact-left text-primary me-1"></i>Cancel</a>
+
+                                <div>
+                                    <a href="#" th:if="${loggedUser.userId} == ${meeting.ownerId}" th:href="@{'/admin/edit_meeting/' + ${meeting.meetingId}}" class="btn btn-secondary me-2">Edit Schedule</a>
+                                    <button class="btn btn-danger border-0">Delete Schedule</button>
+                                </div>
+
                             </div>
                         </div>
                     </div>

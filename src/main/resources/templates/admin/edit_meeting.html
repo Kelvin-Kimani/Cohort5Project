@@ -23,7 +23,6 @@
 <main class="mt-5 pt-3">
     <div class="content container-fluid">
 
-
         <form th:object="${editMeeting}" method="post">
             <div class="card">
                 <div class="card-header border-0"></div>
@@ -147,7 +146,7 @@
                     <div class="row pb-2">
 
                         <div>
-                            <button class="btn text-primary border-0" onclick="history.go(-1)"><i class="bi bi-chevron-compact-left text-primary me-1"></i>Cancel</button>
+                            <a class="btn text-primary border-0" onclick="window.history.back()"><i class="bi bi-chevron-compact-left text-primary me-1"></i>Cancel</a>
                             <button class="btn btn-secondary float-end">Update Schedule</button>
                         </div>
 
