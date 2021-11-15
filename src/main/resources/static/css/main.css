@@ -41,3 +41,17 @@ a:hover{
     margin-bottom: 5px;
     color: #9A9A9A;
 }
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    font-size: 8px;
+    text-align: center;
+}
+
+.co-owners{
+    font-size: 0.8571em;
+    color: #3d3d3d;
+}

@@ -34,18 +34,64 @@
     <div class="content container-fluid">
 
         <div class="row">
-            <form method="post">
+            <form th:action="@{/admin/create_meeting}"
+                  th:object="${meeting}"
+                  method="post">
+
+                <!--Map meeting with meeting-->
+                <select hidden class="form-select" id="meeting" th:field="*{meetingId}">
+                    <option th:value="${meeting.meetingId}"/>
+                </select>
+
+                <!--Map meeting with user-->
+                <select hidden class="form-select" id="owner" th:field="*{ownerId}">
+                    <option th:value="${meeting.ownerId}"/>
+                </select>
+
+                <!--Map meeting with organization-->
+                <select hidden class="form-select" id="organization" th:field="*{organization}">
+                    <option th:value="${meeting.organization.organizationId}"/>
+                </select>
+
+                <select hidden class="form-select" id="capacity" th:field="*{capacity}">
+                    <option th:value="${meeting.capacity}"/>
+                </select>
+
+                <select hidden class="form-select" id="meetingDescription" th:field="*{meetingDescription}">
+                    <option th:value="${meeting.meetingDescription}"/>
+                </select>
+
+                <select hidden class="form-select" id="meetingName" th:field="*{meetingName}">
+                    <option th:value="${meeting.meetingName}"/>
+                </select>
+
+                <select hidden class="form-select" id="meetingDate" th:field="*{meetingDate}">
+                    <option th:value="${meeting.meetingDate}"/>
+                </select>
+
+                <select hidden class="form-select" id="startTime" th:field="*{startTime}">
+                    <option th:value="${meeting.startTime}"/>
+                </select>
+
+                <select hidden class="form-select" id="endTime" th:field="*{endTime}">
+                    <option th:value="${meeting.endTime}"/>
+                </select>
+
+                <select hidden class="form-select" id="room" th:field="*{room}">
+                    <option th:value="${meeting.room.roomId}"/>
+                </select>
 
                 <div class="card">
                     <div class="card-header bg-secondary"></div>
                     <div class="card-body">
                         <h3 class="fw-bold mb-4">Co-Owners</h3>
-                        <p class="fw-bold text-muted">Add new co-owners to your meeting</p>
+                        <p class="text-muted"><span th:if="${#lists.isEmpty(meeting.users)}" th:text="'Add new'"/><span th:unless="${#lists.isEmpty(meeting.users)}" th:text="'Edit'"/> co-owners <span th:if="${#lists.isEmpty(meeting.users)}" th:text="'to'"/><span th:unless="${#lists.isEmpty(meeting.users)}" th:text="'in'"/> <span class="fw-bold" th:text="${meeting.meetingName}"/></p>
+
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    <label>User</label>
-                                    <select class="user form-select"  name="states[]" multiple="multiple">
+                                    <label>User(s)</label>
+                                    <select class="user form-select"  name="states[]" multiple="multiple" th:field="*{users}">
                                         <option name="userId" th:each="user : ${users}" th:value="${user.userId}" th:text="${user.employeeFirstName} + ' ' + ${user.employeeLastName} + ' : ' + ${user.employeeDepartment}" />
                                     </select>
                                 </div>
@@ -53,8 +99,8 @@
 
                             <div class="row">
                                 <div class="ml-auto mr-auto mt-5 d-flex justify-content-between">
-                                    <button type="submit" class="btn btn-primary">Add Co-owners</button>
-                                    <button type="submit" class="btn text-primary border-0">Skip Step<i class="bi bi-chevron-compact-right text-primary me-1"></i></button>
+                                    <a onclick="history.back()" class="btn text-primary border-0"><i class="bi bi-chevron-compact-left text-primary me-1"></i>Back</a>
+                                    <button type="submit" class="btn btn-primary"><span th:if="${#lists.isEmpty(meeting.users)}" th:text="'Add Co-Owners'"/><span th:unless="${#lists.isEmpty(meeting.users)}" th:text="'Save Changes'"/></button>
                                 </div>
                             </div>
 

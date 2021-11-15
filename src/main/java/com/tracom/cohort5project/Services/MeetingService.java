@@ -1,12 +1,14 @@
 package com.tracom.cohort5project.Services;
 
 import com.tracom.cohort5project.Entities.Meeting;
+import com.tracom.cohort5project.Entities.User;
 import com.tracom.cohort5project.Repositories.MeetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -24,6 +26,13 @@ public class MeetingService {
     /*CREATE*/
     public void createMeeting(Meeting meeting){
         meetingRepository.save(meeting);
+    }
+
+    public void createCoOwners(User user, int meetingId){
+        Meeting meeting = meetingRepository.findMeetingByMeetingId(meetingId);
+
+
+        meeting.getUsers().add(user);
     }
 
     /*READ*/
@@ -48,6 +57,10 @@ public class MeetingService {
 
     public int numberOfMeetingsToBeAttendedByOrganization(int organizationId){
         return meetingRepository.numberOfMeetingsTobeAttendedByOrganization(organizationId);
+    }
+
+    public int numberOfMeetingsAttendedByOrganization(int organizationId){
+        return meetingRepository.numberOfMeetingsAttendedByOrganization(organizationId);
     }
 
 }

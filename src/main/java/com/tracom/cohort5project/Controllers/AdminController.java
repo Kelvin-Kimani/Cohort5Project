@@ -50,10 +50,12 @@ public class AdminController {
         int users = userService.numberOfUsersWithRolesAndByOrganization(organizationId);
         int rooms = roomService.noOfRoomsInOrganization(organizationId);
         int meetingsToBeAttended = meetingService.numberOfMeetingsToBeAttendedByOrganization(organizationId);
+        int meetingsAttended = meetingService.numberOfMeetingsAttendedByOrganization(organizationId);
         List<Meeting> meetings = meetingService.getOrganizationMeetingsForLaterDate(organizationId);
         List<Meeting> todayMeetings = meetingService.getOrganizationMeetingsToday(organizationId);
 
         model.addAttribute("noOfMeetingsToBeAttended", meetingsToBeAttended);
+        model.addAttribute("noOfMeetingsAttended", meetingsAttended);
         model.addAttribute("noOfUsers", users);
         model.addAttribute("noOfRooms", rooms);
         model.addAttribute("meetings", meetings);
@@ -236,8 +238,12 @@ public class AdminController {
         User user = userService.getUserByEmail(email);
 
         int organizationId = user.getOrganization().getOrganizationId();
+        int userId = user.getUserId();
 
         List<Room> roomsList = roomService.showRoomsInOrganization(organizationId);
+        List<User> users = userService.getEligibleCoOwners(organizationId, userId);
+
+        model.addAttribute("coOwnersEligible", users);
         model.addAttribute("roomsList", roomsList);
         model.addAttribute("loggedUser", user);
         model.addAttribute("meeting", new Meeting());

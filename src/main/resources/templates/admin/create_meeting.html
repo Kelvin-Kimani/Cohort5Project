@@ -15,6 +15,20 @@
     <link th:href="@{/css/admin_dashboard.css}" rel="stylesheet"/>
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
 
+    <!--jQuery-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!--Select2-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script>
+        $(document).ready(function () {
+            $('.user').select2({
+                placeholder: "Select users",
+            });
+        })
+    </script>
 </head>
 <body>
 
@@ -160,10 +174,22 @@
                             <div class="col-lg-12 col-md-12">
                                 <div class="py-4">
                                     <div class="mb-lg-0">
-                                        <h5 class="mb-0 fw-bold">Repetitive</h5>
+                                        <h5 class="mb-0 fw-bold">Add Co-Owners</h5>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-12 col-lg-12" id="co-owners">
+                                <div class="form-group">
+                                    <label>User(s)</label>
+
+                                    <select class="user form-select" name="states[]" multiple="multiple" th:field="*{users}">
+                                        <option name="userId" th:each="eligibleUser : ${coOwnersEligible}" th:value="${eligibleUser.userId}" th:text="${eligibleUser.employeeFirstName} + ' ' + ${eligibleUser.employeeLastName} + ' : ' + ${eligibleUser.employeeDepartment}" />
+                                    </select>
+                                </div>
+                            </div>
+
+
                         </div>
 
 
@@ -187,7 +213,11 @@
 
 <footer th:replace="admin/admin_dashboard::footer"></footer>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+
+    });
+</script>
 
 <script>
     var date = new Date().toISOString().slice(0,10);

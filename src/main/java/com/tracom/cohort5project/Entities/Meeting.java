@@ -42,7 +42,7 @@ public class Meeting {
     /** --- Owners and Co-owners (TO-DO) -----**/
     @ManyToMany
     @JoinTable(
-            name = "users_meetings",
+            name = "meetings_users",
             joinColumns = @JoinColumn(name = "meeting_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
