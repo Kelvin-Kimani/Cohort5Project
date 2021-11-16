@@ -34,7 +34,7 @@
                             <h1 class="col-6 fw-bold" th:text="${meeting.meetingName}"/><h1 th:if="${meeting.meetingDate.isBefore(#temporals.createToday())}"  th:text="'(Attended)'" class="text-warning"/>
 
                             <p>Date: <b th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>.</p>
-                            <p>Time <b th:text="${meeting.startTime}"/> to <b th:text="${meeting.endTime}"/></p>
+                            <p>Time <b th:text="${#temporals.format(meeting.startTime, 'HH:mm a')}"/> to <b th:text="${#temporals.format(meeting.startTime, 'HH:mm a')}"/></p>
                         </div>
                         <div class="row py-4">
                             <div class="col-6">

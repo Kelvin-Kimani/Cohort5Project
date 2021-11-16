@@ -65,7 +65,7 @@
 
         </div>
 
-        <div class="row">
+        <div class="row mb-4">
 
             <div class="col-lg-6 col-md-6 col-sm-12 shortcuts">
 
@@ -172,28 +172,30 @@
                                 </div>
                             </div>
                             <!-- card body -->
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <div>
-                                    <p class="text-center" th:if="${#lists.isEmpty(todayMeetings)}">No upcoming meetings for today</p>
+                                    <h5 class="text-center fw-bold py-4" th:if="${#lists.isEmpty(todayMeetings)}">No upcoming meetings for today</h5>
                                     <div th:unless="${#lists.isEmpty(todayMeetings)}">
-                                         <h5 class="text-center fw-bold py-4">Today's Schedules</h5>
-                                            <div class="row mb-2 border-bottom mx-4" th:each="meetingToday : ${todayMeetings}">
 
-                                                <a href="#" th:href="@{'/admin/meeting' + ${meetingToday.meetingId}}">
-                                                    <div class="row">
+                                        <h5 class="fw-bold py-4">Today's Schedules</h5>
+
+                                        <div class="text-start my-2 border-bottom mx-3" th:each="meetingToday,noLimit : ${todayMeetings}" th:unless="${noLimit.index>1}">
+                                                <a href="#" class="text-black" th:href="@{'/admin/meeting' + ${meetingToday.meetingId}}">
+                                                    <div class="row my-2">
                                                         <div class="col-12">
-                                                            <h5 th:text="${meetingToday.meetingName}" class="fw-bold text-muted"/>
+                                                            <h5 th:text="${meetingToday.meetingName}" class="fw-bold"/>
                                                         </div>
                                                         <div class="col-6">
-                                                            <p class="text-muted">From <b th:text="${meetingToday.startTime}"/> - <b th:text="${meetingToday.endTime}"/></p>
+                                                            <p>From <b th:text="${#temporals.format(meetingToday.startTime, 'HH:mm a')}"/> - <b th:text="${#temporals.format(meetingToday.endTime, 'HH:mm a')}"/></p>
                                                         </div>
                                                         <div class="col-6">
-                                                            <p class="text-muted">Venue: <b th:text="${meetingToday.room.roomName}"/></p>
+                                                            <p>Venue: <b th:text="${meetingToday.room.roomName}"/></p>
                                                         </div>
                                                     </div>
                                                 </a>
+                                        </div>
 
-                                            </div>
+                                        <a href="" class="py-4 my-4" th:each="meetingToday,noLimit : ${todayMeetings}" th:if="${noLimit.index>1}">View All<i class="bi bi-chevron-compact-right text-primary me-1 fw-bold"></i></a>
 
                                     </div>
                                 </div>
@@ -216,27 +218,25 @@
                         <div class="table-responsive">
                             <table class="table table-borderless table-hover" id="meetings_list">
                                 <thead class="lead">
-                                    <tr>
-                                        <th>Meeting Name</th>
-                                        <th>Venue</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th class="text-center">Status</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
+                                <tr>
+                                    <th>Meeting Name</th>
+                                    <th>Venue</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
                                 </thead>
 
                                 <tbody>
-                                    <tr th:each="meeting : ${meetings}">
-                                        <td class="py-4"th:text="${meeting.meetingName}"/>
-                                        <td class="py-4"th:text="${meeting.room.roomName}"/>
-                                        <td class="py-4"th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>
-                                        <td class="py-4"th:text="${meeting.startTime}"/>
-                                        <td class="py-4 text-success fw-bold text-center" th:text="'A'"/>
-                                        <td class="py-4 fw-bold text-center text-primary">
-                                            <a class="text-decoration-none" href="#" th:href="@{'/admin/meeting' + ${meeting.meetingId}}">View</a>
-                                        </td>
-                                    </tr>
+                                <tr th:each="meeting : ${meetings}">
+                                    <td class="py-4"th:text="${meeting.meetingName}"/>
+                                    <td class="py-4"th:text="${meeting.room.roomName}"/>
+                                    <td class="py-4"th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>
+                                    <td class="py-4"th:text="${#temporals.format(meeting.startTime, 'HH:mm a')}"/>
+                                    <td class="py-4 fw-bold text-center text-primary">
+                                        <a class="text-decoration-none" href="#" th:href="@{'/admin/meeting' + ${meeting.meetingId}}">View</a>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>

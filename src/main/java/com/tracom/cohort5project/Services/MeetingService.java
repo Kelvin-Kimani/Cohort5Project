@@ -28,13 +28,6 @@ public class MeetingService {
         meetingRepository.save(meeting);
     }
 
-    public void createCoOwners(User user, int meetingId){
-        Meeting meeting = meetingRepository.findMeetingByMeetingId(meetingId);
-
-
-        meeting.getUsers().add(user);
-    }
-
     /*READ*/
     public Meeting getMeeting(int meetingId){
         return meetingRepository.findMeetingByMeetingId(meetingId);
@@ -53,6 +46,10 @@ public class MeetingService {
 
     public List<Meeting> getOrganizationMeetingsForLaterDate(int organizationId){
         return meetingRepository.findMeetingByOrganizationOrderByTimeAndLaterDate(organizationId);
+    }
+
+    public List<Meeting> getOrganizationMeetingsForPastDate(int organizationId){
+        return meetingRepository.findMeetingByOrganizationOrderByTimeAndPastDate(organizationId);
     }
 
     public int numberOfMeetingsToBeAttendedByOrganization(int organizationId){

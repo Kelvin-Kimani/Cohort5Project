@@ -29,6 +29,10 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
+    public Room getRoom(int roomId){
+        return roomRepository.findByRoomId(roomId);
+    }
+
     public List<Room> showRoomsInOrganization(int organizationId){
         return roomRepository.findAllByOrganization(organizationId);
     }

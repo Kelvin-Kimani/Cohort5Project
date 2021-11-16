@@ -84,9 +84,13 @@
                 <div class="card">
                     <div class="card-header bg-secondary"></div>
                     <div class="card-body">
-                        <h3 class="fw-bold mb-4">Co-Owners</h3>
+                        <h3 class="fw-bold mb-4" th:if="${#lists.isEmpty(meeting.users)}" th:text="'Add Co-Owners'"/><h3 class="fw-bold mb-4" th:unless="${#lists.isEmpty(meeting.users)}" th:text="'Edit Co-Owners'"/>
                         <p class="text-muted"><span th:if="${#lists.isEmpty(meeting.users)}" th:text="'Add new'"/><span th:unless="${#lists.isEmpty(meeting.users)}" th:text="'Edit'"/> co-owners <span th:if="${#lists.isEmpty(meeting.users)}" th:text="'to'"/><span th:unless="${#lists.isEmpty(meeting.users)}" th:text="'in'"/> <span class="fw-bold" th:text="${meeting.meetingName}"/></p>
-
+                        <ul>
+                            <li>
+                                <div class="form-text">To remove a co-owner, click the x icon and save changes.</div>
+                            </li>
+                        </ul>
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">

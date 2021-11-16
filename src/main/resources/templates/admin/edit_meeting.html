@@ -23,7 +23,28 @@
 <main class="mt-5 pt-3">
     <div class="content container-fluid">
 
-        <form th:object="${editMeeting}" method="post">
+        <form th:action="@{/admin/create_meeting}"
+              th:object="${editMeeting}"
+              method="post">
+
+            <!--Map room to organization-->
+            <select hidden class="form-select" id="organization" th:field="*{organization}">
+                <option th:value="${loggedUser.organization.organizationId}"/>
+            </select>
+
+            <select hidden class="form-select" id="owner" th:field="*{ownerId}">
+                <option th:value="${loggedUser.userId}"/>
+            </select>
+
+            <select hidden class="form-select" id="meeting" th:field="*{meetingId}">
+                <option th:value="${editMeeting.meetingId}"/>
+            </select>
+
+            <select hidden class="form-select" name="states[]" id="coOwners" multiple="multiple" th:field="*{users}">
+                <option th:each="coOwner : ${editMeeting.users}" th:value="${coOwner.userId}"/>
+            </select>
+
+
             <div class="card">
                 <div class="card-header border-0"></div>
 
@@ -130,24 +151,13 @@
                             </div>
                         </div>
 
-                        <div class="col-6">
-                            <div class="col-lg-12 col-md-12">
-                                <div class="py-4">
-                                    <div class="mb-lg-0">
-                                        <h5 class="mb-0 fw-bold">Repetitive</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
                     </div>
 
                     <div class="row pb-2">
 
                         <div>
                             <a class="btn text-primary border-0" onclick="window.history.back()"><i class="bi bi-chevron-compact-left text-primary me-1"></i>Cancel</a>
-                            <button class="btn btn-secondary float-end">Update Schedule</button>
+                            <button type="submit" class="btn btn-secondary float-end">Update Schedule</button>
                         </div>
 
 

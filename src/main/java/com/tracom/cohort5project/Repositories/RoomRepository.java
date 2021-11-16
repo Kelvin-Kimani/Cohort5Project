@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface RoomRepository extends JpaRepository<Room, Integer> {
 
+    @Query("SELECT r FROM Room r WHERE r.roomId = ?1")
     Room findByRoomId(int roomId);
 
     @Query("SELECT COUNT(r.roomId) FROM Room r")

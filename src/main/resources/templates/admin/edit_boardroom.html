@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Room</title>
+    <title>Edit Room</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <!--    Bootstrap icons-->
@@ -60,7 +60,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#" th:href="@{/admin/dashboard}">Home</a></li>
                         <li class="breadcrumb-item"><a href="#" th:href="@{/admin/rooms}">Rooms</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Create Room</li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Room</li>
                     </ol>
                 </nav>
             </div>
@@ -69,12 +69,12 @@
             <div class="col-md-12">
                 <div class="card card-user border-0 create-room">
                     <div class="card-header border-0">
-                        <h2 class="fw-bold text-center">Create Room</h2>
+                        <h2 class="fw-bold text-center">Edit Room</h2>
                     </div>
                     <div class="card-body py-4">
 
                         <form th:action="@{/admin/create_room}"
-                              th:object="${room}"
+                              th:object="${editRoom}"
                               method="post">
 
                             <div class="row">
@@ -82,6 +82,10 @@
                                 <!--Map room to organization-->
                                 <select hidden class="form-select" id="organization" th:field="*{organization}">
                                     <option th:value="${loggedUser.organization.organizationId}" th:text="${loggedUser.organization.organizationId}"/>
+                                </select>
+
+                                <select hidden class="form-select" id="room" th:field="*{roomId}">
+                                    <option th:value="${editRoom.roomId}"/>
                                 </select>
 
                                 <div class="col-md-6">
@@ -176,12 +180,11 @@
 
                             <div class="row text-center">
                                 <div class="ml-auto mr-auto">
-                                    <button type="submit" class="btn btn-primary btn-round text-uppercase">Create Room</button>
+                                    <button type="submit" class="btn btn-primary btn-round text-uppercase">update Room</button>
                                 </div>
                             </div>
 
                         </form>
-
 
                     </div>
                 </div>

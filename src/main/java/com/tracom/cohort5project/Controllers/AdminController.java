@@ -143,6 +143,20 @@ public class AdminController {
         return "admin/create_boardroom";
     }
 
+    @GetMapping(path = "/edit_room/{roomId}")
+    public ModelAndView getEditRoomForm(@AuthenticationPrincipal CustomUserDetails loggedUser,  @PathVariable(name = "roomId") int roomId){
+
+        ModelAndView mvn = new ModelAndView("admin/edit_boardroom");
+
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+        Room room = roomService.getRoom(roomId);
+
+        mvn.addObject("editRoom", room);
+        mvn.addObject("loggedUser", user);
+        return mvn;
+    }
+
     @PostMapping(value = "/create_room")
     public String createRoom(Room room){
         roomService.createRoom(room);
@@ -225,10 +239,38 @@ public class AdminController {
         User user = userService.getUserByEmail(email);
 
         int organizationId = user.getOrganization().getOrganizationId();
-        List<Meeting> meetings = meetingService.getOrganizationMeetingsOrderByTime(organizationId);
+        List<Meeting> upcomingMeetings = meetingService.getOrganizationMeetingsForLaterDate(organizationId);
+        List<Meeting> pastMeetings = meetingService.getOrganizationMeetingsForPastDate(organizationId);
 
-        model.addAttribute("meetings", meetings);
+
+        model.addAttribute("pastMeetings", pastMeetings);
+        model.addAttribute("upcomingMeetings", upcomingMeetings);
         return "admin/view_meetings";
+    }
+
+    @GetMapping(path = "/upcoming_meetings")
+    public String getUpcomingMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
+        List<Meeting> upcomingMeetings = meetingService.getOrganizationMeetingsForLaterDate(organizationId);
+
+        model.addAttribute("upcomingMeetings", upcomingMeetings);
+        return "admin/upcoming_meetings";
+    }
+
+
+    @GetMapping(path = "/past_meetings")
+    public String getPastMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+        String email = loggedUser.getUsername();
+        User user = userService.getUserByEmail(email);
+
+        int organizationId = user.getOrganization().getOrganizationId();
+        List<Meeting> pastMeetings = meetingService.getOrganizationMeetingsForPastDate(organizationId);
+
+        model.addAttribute("pastMeetings", pastMeetings);
+        return "admin/past_meetings";
     }
 
     @GetMapping(path = "/create_meeting")
@@ -302,6 +344,8 @@ public class AdminController {
 
         List<Room> roomsList = roomService.showRoomsInOrganization(organizationId);
         Meeting meeting = meetingService.getMeeting(meetingId);
+
+        mvn.addObject("loggedUser", user);
         mvn.addObject("editMeeting", meeting);
         mvn.addObject("rooms", roomsList);
 
