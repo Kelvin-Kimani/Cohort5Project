@@ -88,7 +88,6 @@ public class AdminController {
                                     @RequestParam(value = "firstName", required = false) String firstName,
                                     @RequestParam(value = "lastName", required = false) String lastName,
                                     @RequestParam(value = "phone", required = false) String phoneNumber,
-                                    User user,
                                     RedirectAttributes redirectAttributes){
 
         //Perform update
@@ -102,6 +101,13 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("message", "Profile Updated successfully");
         return "redirect:/admin/profile";
     }
+
+//    @PostMapping("/edit_profile/change_password")
+//    public String updatePassword(@RequestParam(value = "password") String password,
+//                                 @RequestParam(value = "userId") int userId){
+//        userService.updatePassword(password, userId);
+//        return "redirect:/admin/edit_profile";
+//    }
 
 
     /*Organization*/
@@ -350,6 +356,12 @@ public class AdminController {
         mvn.addObject("rooms", roomsList);
 
         return mvn;
+    }
+
+    @RequestMapping("/delete_meeting/{meetingId}")
+    public String deleteMeeting(@PathVariable(name = "meetingId") int meetingId){
+        meetingService.deleteMeetingById(meetingId);
+        return "redirect:/admin/meetings";
     }
 
 }

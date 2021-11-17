@@ -87,11 +87,13 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header border-0">
                                                             <h5 class="modal-title">Confirm Delete</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <p>Are you sure you want to delete <span th:text="${roomsDetails.roomName}"/>?</p>
-                                                        </div>
+                                                            <label>Ensure the room has no meeting(s) to it.</label>
+                                                            <label class="text-danger">You could update the room, as deleting it is risky</label>
+                                                    </div>
                                                         <div class="modal-footer border-0">
                                                             <a type="button" class="btn btn-danger btn-sm text-white" th:attr="href='/admin/delete_room/'+${roomsDetails.roomId}">Yes</a>
                                                             <a class="btn btn-primary btn-sm text-white" data-dismiss="modal">No</a>

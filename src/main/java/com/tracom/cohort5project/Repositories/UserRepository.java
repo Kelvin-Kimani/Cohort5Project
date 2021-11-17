@@ -37,6 +37,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateUserDetails(@Param(value = "userId") int userId, @Param(value = "firstName") String firstName, @Param(value = "lastName") String lastName, @Param(value = "phoneNumber") String phoneNumber);
 
     @Modifying
+    @Query("UPDATE User u SET u.password = :password WHERE u.userId = :userId")
+    void updateUserPassword(@Param(value = "password") String password, @Param(value = "userId") int userId);
+
+    @Modifying
     @Query("UPDATE User u SET u.userRole = NULL WHERE u.userId = :userId")
     void deleteUserRole(@Param(value = "userId") int userId);
 
@@ -45,4 +49,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT COUNT(u.userRole) FROM User u WHERE u.organization.organizationId = ?1")
     int numberOfUsersWithRolesAndByOrganization(int organizationId);
+
+
+    User findByResetPasswordToken(String token);
 }

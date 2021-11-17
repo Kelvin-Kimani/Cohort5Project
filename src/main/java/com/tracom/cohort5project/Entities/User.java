@@ -26,6 +26,7 @@ public class User {
     private String employeeEmailAddress;
     private String employeePhoneNumber;
     private String password;
+    private String resetPasswordToken;
 
     @ManyToOne
     @JoinColumn(name = "organization_id")

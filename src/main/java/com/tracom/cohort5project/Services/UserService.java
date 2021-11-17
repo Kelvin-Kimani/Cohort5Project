@@ -1,6 +1,7 @@
 package com.tracom.cohort5project.Services;
 
 import com.tracom.cohort5project.Entities.User;
+import com.tracom.cohort5project.Exceptions.UserNotFoundException;
 import com.tracom.cohort5project.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,8 +39,6 @@ public class UserService {
         userRepository.updateUserRole(id, role);
     }
 
-    public void setPassword(int id, String password){
-    }
 
     /*READ*/
     public List<User> getUsers(){
@@ -80,6 +79,34 @@ public class UserService {
 
     public List<User> getEligibleCoOwners(int organizationId, int userId){
         return userRepository.findEligibleCoOwnersOrganization(organizationId, userId);
+    }
+
+    /***----------------------- Forgot Password ---------------------**********/
+
+    public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
+        User user = userRepository.findByEmployeeEmailAddress(email);
+
+        if (user != null){
+            user.setResetPasswordToken(token);
+            userRepository.save(user);
+        }
+        else {
+            throw new UserNotFoundException("Could not find user with the email " + email);
+        }
+    }
+
+    public User getUserByToken(String resetPasswordToken){
+        return userRepository.findByResetPasswordToken(resetPasswordToken);
+    }
+
+    public void updatePassword(User user, String newPassword){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+
+        user.setPassword(encodedPassword);
+        user.setResetPasswordToken(null);
+
+        userRepository.save(user);
     }
 
 

@@ -60,4 +60,9 @@ public class MeetingService {
         return meetingRepository.numberOfMeetingsAttendedByOrganization(organizationId);
     }
 
+    /*DELETE*/
+    public void deleteMeetingById(int meetingId){
+        meetingRepository.deleteById(meetingId);
+    }
+
 }

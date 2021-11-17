@@ -78,8 +78,30 @@
                                 <a class="btn text-primary border-0" onclick="history.back()"><i class="bi bi-chevron-compact-left text-primary me-1"></i>Back</a>
 
                                 <div>
+
                                     <a href="#" th:if="${loggedUser.userId} == ${meeting.ownerId}" th:unless="${meeting.meetingDate.isBefore(#temporals.createToday())}" th:href="@{'/admin/edit_meeting/' + ${meeting.meetingId}}" class="btn btn-secondary me-2">Edit Schedule</a>
-                                    <button class="btn btn-danger border-0">Delete Schedule</button>
+
+                                    <a href="#" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${meeting.meetingId}"class="btn btn-danger border-0">Delete Schedule</a>
+
+                                    <!--Delete Modal-->
+                                    <div class="modal fade" th:attr="id='modal-warning'+${meeting.meetingId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header border-0">
+                                                    <h5 class="modal-title">Confirm Delete</h5>
+                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to delete <span th:text="${meeting.meetingName}"/>, scheduled on <span th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>?</p>
+                                                    <label>This will delete all Co Owners of the meeting, and free up room that was allocated at the particular time.</label>                                                </div>
+                                                <div class="modal-footer border-0">
+                                                    <a type="button" class="btn btn-danger btn-sm text-white" th:attr="href='/admin/delete_meeting/'+${meeting.meetingId}">Yes</a>
+                                                    <a class="btn btn-primary btn-sm text-white" data-dismiss="modal">No</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -96,7 +118,8 @@
 
 <!---->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </body>
 </html>

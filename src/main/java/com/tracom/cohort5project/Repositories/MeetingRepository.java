@@ -32,4 +32,6 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
 
     @Query("SELECT COUNT (m.meetingId) FROM Meeting m WHERE m.organization.organizationId = ?1 AND m.meetingDate < CURRENT_DATE")
     int numberOfMeetingsAttendedByOrganization(int organizationId);
+
+    void deleteById(Integer meetingId);
 }
