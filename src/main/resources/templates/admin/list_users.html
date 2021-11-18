@@ -56,7 +56,6 @@
                                 <table class="table table-hover table-borderless" id="users_list">
                                     <thead>
                                     <tr>
-                                        <th scope="col">User ID</th>
                                         <th scope="col">First Name</th>
                                         <th scope="col">Last Name</th>
                                         <th scope="col">Phone Number</th>
@@ -69,7 +68,6 @@
 
                                     <tbody>
                                     <tr th:each="userTableDetails: ${userDetails}">
-                                        <td th:text="${userTableDetails.userId}"/>
                                         <td th:text="${userTableDetails.employeeFirstName}"/>
                                         <td th:text="${userTableDetails.employeeLastName}"/>
                                         <td th:text="${userTableDetails.employeePhoneNumber}"/>
@@ -90,7 +88,7 @@
                                                     <div class="modal-content">
                                                         <div class="modal-header border-0">
                                                             <h5 class="modal-title">Confirm Delete</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <p>Are you sure you want to delete <span th:text="${userTableDetails.employeeFirstName}"/> <span th:text="${userTableDetails.employeeLastName}"/>?</p>

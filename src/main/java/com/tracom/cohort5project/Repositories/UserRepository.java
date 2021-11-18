@@ -13,13 +13,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.employeeEmailAddress = ?1")
     User findByEmployeeEmailAddress(String emailAddress);
 
+    @Query("SELECT u FROM User u WHERE u.employeeEmailAddress = ?1 AND u.userRole IS NOT NULL")
+    User findByEmailAddressAndUserRole(String emailAddress);
+
     @Query("SELECT u FROM User u WHERE u.userRole IS NOT NULL")
     List<User> findAllWithRoles();
 
     @Query("SELECT u FROM User u WHERE u.userRole IS NULL")
     List<User> findAllWithoutRoles();
 
-    @Query("SELECT u FROM User u WHERE u.userRole IS NOT NULL AND u.organization.organizationId = ?1")
+    @Query("SELECT u FROM User u WHERE u.userRole IS NOT NULL AND u.password IS NOT NULL AND u.organization.organizationId = ?1")
     List<User> findAllWithRolesAndByOrganization(int organizationId);
 
     @Query("SELECT u FROM User u WHERE u.userRole IS NOT NULL AND u.organization.organizationId = ?1 AND u.userId <> ?2")
@@ -41,15 +44,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateUserPassword(@Param(value = "password") String password, @Param(value = "userId") int userId);
 
     @Modifying
-    @Query("UPDATE User u SET u.userRole = NULL WHERE u.userId = :userId")
+    @Query("UPDATE User u SET u.userRole = NULL, u.password = NULL WHERE u.userId = :userId")
     void deleteUserRole(@Param(value = "userId") int userId);
 
     @Query("SELECT COUNT(u.userRole) FROM User u")
     int numberOfUsersWithRoles();
 
-    @Query("SELECT COUNT(u.userRole) FROM User u WHERE u.organization.organizationId = ?1")
+    @Query("SELECT COUNT(u.userRole) FROM User u WHERE u.organization.organizationId = ?1 AND u.password IS NOT NULL")
     int numberOfUsersWithRolesAndByOrganization(int organizationId);
 
-
     User findByResetPasswordToken(String token);
+
+    User findBySetPasswordToken(String token);
 }

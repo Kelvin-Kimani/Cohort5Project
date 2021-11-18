@@ -4,12 +4,17 @@ import com.tracom.cohort5project.Entities.Meeting;
 import com.tracom.cohort5project.Entities.Organization;
 import com.tracom.cohort5project.Entities.Room;
 import com.tracom.cohort5project.Entities.User;
+import com.tracom.cohort5project.Exceptions.UserNotFoundException;
 import com.tracom.cohort5project.Security.CustomUserDetails;
 import com.tracom.cohort5project.Services.MeetingService;
 import com.tracom.cohort5project.Services.OrganizationService;
 import com.tracom.cohort5project.Services.RoomService;
 import com.tracom.cohort5project.Services.UserService;
+import com.tracom.cohort5project.Utilities.Utility;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +22,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,13 +38,15 @@ public class AdminController {
     private UserService userService;
     private RoomService roomService;
     private MeetingService meetingService;
+    private JavaMailSender mailSender;
 
     @Autowired
-    public AdminController(OrganizationService organizationService, UserService userService, RoomService roomService, MeetingService meetingService) {
+    public AdminController(OrganizationService organizationService, UserService userService, RoomService roomService, MeetingService meetingService, JavaMailSender mailSender) {
         this.organizationService = organizationService;
         this.userService = userService;
         this.roomService = roomService;
         this.meetingService = meetingService;
+        this.mailSender = mailSender;
     }
 
     /*Dashboard*/
@@ -209,9 +220,63 @@ public class AdminController {
 
     @RequestMapping("/add_user_role")
     public String createUser(@RequestParam(value = "userId") int userId,
-                             @RequestParam(value = "userRole") String userRole){
+                             @RequestParam(value = "userRole") String userRole,
+                             HttpServletRequest request,
+                             Model model) throws UserNotFoundException, MessagingException, UnsupportedEncodingException {
+
         userService.createSystemUserById(userId, userRole);
+
+        User user = userService.getUserById(userId);
+
+        String email = user.getEmployeeEmailAddress();
+        String token = RandomString.make(45);
+        String fullNames = user.getEmployeeFirstName() + " " + user.getEmployeeLastName();
+        System.out.println(email + " : " + token);
+
+
+        try {
+
+            userService.updateSetPasswordToken(token, email);
+
+            //Generate Password Link
+            String passwordLink = Utility.getSiteURL(request) + "/set_password?token=" + token;
+
+            System.out.println(passwordLink);
+
+            //send email
+            sendEmail(fullNames, email, passwordLink);
+
+            model.addAttribute("message", "User created and email sent for them to set their password.");
+
+        }
+        catch (UserNotFoundException | MessagingException | UnsupportedEncodingException ex){
+            model.addAttribute("error", ex.getMessage());
+        }
+
         return "redirect:/admin/create_user";
+    }
+
+    private void sendEmail(String fullNames, String email, String passwordLink) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("staff@mop.com", "Meeting Office Planner");
+        helper.setTo(email);
+
+        String subject = "Welcome To Meeting Office Planner";
+
+        String content = "<p>Hi " + fullNames + ",</p>"
+                + "<p>Welcome to Meeting Office Planner, where we help you schedule your meetings in an efficient manner.</p>"
+                + "<p>Provided is a link that lets you set your password for the first time before accessing our services.</p>"
+                + "<p><b><a href=\"" + passwordLink + "\">Set password</a></b></p>"
+                + "<p>Once again, Welcome!</p><br>"
+                + "<p><b>Regards,</b></p>"
+                + "<p><b>Meeting Office Planner</b></p>";
+
+        helper.setSubject(subject);
+        helper.setText(content, true);
+
+        mailSender.send(message);
     }
 
     @GetMapping(path = "/edit_user_role/{userId}")

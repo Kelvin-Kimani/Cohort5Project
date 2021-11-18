@@ -84,10 +84,22 @@ public class UserService {
     /***----------------------- Forgot Password ---------------------**********/
 
     public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
-        User user = userRepository.findByEmployeeEmailAddress(email);
+        User user = userRepository.findByEmailAddressAndUserRole(email);
 
         if (user != null){
             user.setResetPasswordToken(token);
+            userRepository.save(user);
+        }
+        else {
+            throw new UserNotFoundException("Could not find user with the email " + email);
+        }
+    }
+
+    public void updateSetPasswordToken(String token, String email) throws UserNotFoundException {
+        User user = userRepository.findByEmployeeEmailAddress(email);
+
+        if (user != null){
+            user.setSetPasswordToken(token);
             userRepository.save(user);
         }
         else {
@@ -99,12 +111,27 @@ public class UserService {
         return userRepository.findByResetPasswordToken(resetPasswordToken);
     }
 
+
+    public User getUserSetPasswordByToken(String passwordToken){
+        return userRepository.findBySetPasswordToken(passwordToken);
+    }
+
     public void updatePassword(User user, String newPassword){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newPassword);
 
         user.setPassword(encodedPassword);
         user.setResetPasswordToken(null);
+
+        userRepository.save(user);
+    }
+
+    public void setFirstTimePassword(User user, String newPassword){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+
+        user.setPassword(encodedPassword);
+        user.setSetPasswordToken(null);
 
         userRepository.save(user);
     }

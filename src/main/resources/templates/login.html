@@ -18,7 +18,7 @@
             <div class="card border-0 smooth-shadow-md">
                 <!-- Card body -->
                 <div class="card-body p-4 m-2">
-                    <div class="mb-4">
+                    <div class="mb-4 text-center">
                         <h3><a href="" class="text-decoration-none text-black fw-bold" th:href="@{/}">Meeting Planner</a></h3>
                         <p class="mb-4 text-muted">Please enter your user information.</p>
 
@@ -26,6 +26,14 @@
                             <div class="alert alert-danger">
                                 Invalid Email Address or Password
                             </div>
+                        </div>
+
+                        <div th:if="${message}">
+                            <div class="alert alert-success" th:text="${message}"/>
+                        </div>
+
+                        <div th:if="${messageErr}">
+                            <div class="alert alert-danger" th:text="${messageErr}"/>
                         </div>
 
                     </div>

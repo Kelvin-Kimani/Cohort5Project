@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 
                 //list all the users registered on the website, there we use antmatchers to match with the url
-                .antMatchers("/css/**", "/js/**", "/images/**" , "/" , "/register", "/forgot_password").permitAll()
+                .antMatchers("/css/**", "/js/**", "/images/**" , "/" , "/register", "/forgot_password", "/reset_password" ,"/set_password").permitAll()
                 .antMatchers("/admin/**").hasAuthority("Admin")
                 .antMatchers("/officer/**").hasAuthority("Organization Officer")
                 .antMatchers("/user/**").hasAuthority("User")
