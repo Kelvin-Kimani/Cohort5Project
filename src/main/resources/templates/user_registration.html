@@ -15,6 +15,9 @@
         </div>
         <div class="card-body">
 
+            <div th:if="${message}" class="text-center">
+                <div class="alert alert-success mx-5 fs-5" th:text="${message}"/>
+            </div>
             <form th:action="@{/register}"
                   th:object="${user}"
                   method="post">
@@ -24,7 +27,6 @@
                         <div class="form-group">
                             <label>Organization</label>
                             <select class="form-select" id="organization" th:field="*{organization}">
-                                <option disabled th:text="'Choose organization...'" th:value="'NONE'"/>
                                 <option th:each="organization : ${organizations}" th:value="${organization.organizationId}" th:text="${organization.organizationName}"/>
                             </select>
                         </div>
@@ -33,14 +35,14 @@
                     <div class="col">
                         <div class="form-group">
                             <label>First Name</label>
-                            <input type="text" class="form-control" required placeholder="First Name" th:field="*{employeeFirstName}" >
+                            <input type="text" class="form-control" required name="First Name" placeholder="First Name" th:field="*{employeeFirstName}" >
                         </div>
                     </div>
 
                     <div class="col">
                         <div class="form-group">
                             <label>Last Name</label>
-                            <input type="text" class="form-control" required placeholder="Last Name" th:field="*{employeeLastName}">
+                            <input type="text" class="form-control" required name="Last Name" placeholder="Last Name" th:field="*{employeeLastName}">
                         </div>
                     </div>
 
@@ -50,7 +52,8 @@
 
                     <div class="col">
                         <div class="form-group">
-                            <label>Email address</label>
+                            <label>Email Address</label>
+                            <label class="text-danger fw-bold" th:if="${error}" th:text="${error}"/>
                             <input type="email" class="form-control" required placeholder="Email" th:field="*{employeeEmailAddress}">
                             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                         </div>

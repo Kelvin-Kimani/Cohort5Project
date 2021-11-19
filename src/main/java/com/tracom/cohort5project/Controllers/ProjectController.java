@@ -64,9 +64,48 @@ public class ProjectController {
     }
 
     @PostMapping(value = "/register")
-    public String addNewUser(User user) {
-        userService.createUser(user);
-        return "redirect:/";
+    public String addNewUser(HttpServletRequest request, User user, Model model) throws MessagingException, UnsupportedEncodingException {
+
+        String email = user.getEmployeeEmailAddress();
+        String fName = user.getEmployeeFirstName();
+        String lName = user.getEmployeeLastName();
+
+        try {
+            userService.createUser(user);
+
+            model.addAttribute("message", "Registration Successful");
+
+            //Send Email
+            sendRegisterEmail(email, fName, lName);
+            return "welcome";
+
+        } catch (IllegalStateException ex){
+            model.addAttribute("error", ex.getMessage());
+        }
+
+        return "user_registration";
+    }
+
+    private void sendRegisterEmail(String email, String fName, String lName) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("staff@mop.com", "Meeting Office Planner");
+        helper.setTo(email);
+
+        String subject = "Meeting Office Planner - Await Verification";
+
+        String content = "<p>Hi " + fName + " " + lName + ",</p>"
+                + "<p>You have created an account with us.</p>"
+                + "<p>Please await your verification to continue using our services</p>"
+                + "<p>Thank you.</p><br>"
+                + "<p><b>Regards,</b></p>"
+                + "<p><b>Meeting Office Planner</b></p>";
+
+        helper.setSubject(subject);
+        helper.setText(content, true);
+
+        mailSender.send(message);
     }
 
     /*Forgot Password*/
@@ -101,7 +140,7 @@ public class ProjectController {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("contact@shopme.com", "Meeting Office Planner");
+        helper.setFrom("staff@mop.com", "Meeting Office Planner");
         helper.setTo(email);
 
         String subject = "Password Reset - Meeting Office Planner";
@@ -110,9 +149,9 @@ public class ProjectController {
                 + "<p>Here is your requested reset password link</p>"
                 + "<p>Click and follow instructions to reset password</p>"
                 + "<p><b><a href=\"" + resetPasswordLink + "\">Change my password</a></b></p>"
-                + "<p>Kindly ignore the email if you didn't request for a password reset.</p>"
-                + "<p>Regards,</p>"
-                + "<p>Meeting Office Planner</p>";
+                + "<p>Kindly ignore the email if you didn't request for a password reset.</p><br>"
+                + "<p><b>Regards,</b></p>"
+                + "<p><b>Meeting Office Planner</b></p>";
 
         helper.setSubject(subject);
         helper.setText(content, true);

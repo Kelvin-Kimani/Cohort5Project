@@ -26,7 +26,7 @@ public class UserService {
     CREATE
     Implementing HTTP POST
     */
-    public void createUser(User user){
+    public void createUser(User user) throws IllegalStateException{
         Optional<User> userByEmail = Optional.ofNullable(userRepository.findByEmployeeEmailAddress(user.getEmployeeEmailAddress()));
         if (userByEmail.isPresent()){
             throw new IllegalStateException("Account with the same email exists!");
@@ -125,6 +125,7 @@ public class UserService {
 
         userRepository.save(user);
     }
+
 
     public void setFirstTimePassword(User user, String newPassword){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

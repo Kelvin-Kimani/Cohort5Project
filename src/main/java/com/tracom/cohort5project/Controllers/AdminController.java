@@ -26,9 +26,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/admin")
@@ -112,14 +110,6 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("message", "Profile Updated successfully");
         return "redirect:/admin/profile";
     }
-
-//    @PostMapping("/edit_profile/change_password")
-//    public String updatePassword(@RequestParam(value = "password") String password,
-//                                 @RequestParam(value = "userId") int userId){
-//        userService.updatePassword(password, userId);
-//        return "redirect:/admin/edit_profile";
-//    }
-
 
     /*Organization*/
     @GetMapping(path = "/organization")
