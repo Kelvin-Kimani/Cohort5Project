@@ -29,69 +29,86 @@
 
 <main class="mt-5 pt-3">
     <div class="content container-fluid">
-        <h1>Meeting Schedules</h1>
+
+        <div class="row mb-3">
+            <div class="col">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" th:href="@{/officer/dashboard}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Meetings</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="col">
+                <a type="button" class="create-user-btn btn-sm btn btn-primary" th:href="@{/officer/create_meeting}"><i class="bi bi-calendar-plus me-2"></i>New Meeting</a>
+            </div>
+
+        </div>
+
+        <h3 class="col-md-3 fw-bold fs-30 mb-4">Meeting Schedules</h3>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="card border-0">
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-borderless" id="meetings_list">
-                                <thead>
-                                <tr>
-                                    <th class="fs-5" scope="col">Meeting Name</th>
-                                    <th class="fs-5" scope="col">Date</th>
-                                    <th class="fs-5" scope="col">Start Time</th>
-                                    <th class="fs-5" scope="col">End Time</th>
-                                    <th class="fs-5" scope="col">Capacity</th>
-                                    <th class="fs-5 text-center" scope="col">Actions</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr>
-                                    <td class="py-4"/>
-                                    <td class="py-4"/>
-                                    <td class="py-4"/>
-                                    <td class="py-4"/>
-                                    <td class="py-4"/>
-
-                                    <td class="d-flex justify-content-center py-4">
-
-                                        <a href="" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-muted"><i class="me-2 bi bi-pen"></i></a>
-
-<!--                                        <a href="" class="text-muted" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${meeting.meetingId}"><i class="me-2 bi bi-trash"></i></a>-->
-
-                                        <!--Delete Modal-->
-<!--                                        <div class="modal fade" th:attr="id='modal-warning'+${meeting.meetingId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--                                            <div class="modal-dialog modal-dialog-centered">-->
-<!--                                                <div class="modal-content">-->
-<!--                                                    <div class="modal-header border-0">-->
-<!--                                                        <h5 class="modal-title">Confirm Delete</h5>-->
-<!--                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="modal-body">-->
-<!--                                                        <p>Are you sure you want to delete <span th:text="${meeting.meetingName}"/>, scheduled on <span th:text="${meeting.meetingDate}"/>?</p>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="modal-footer border-0">-->
-<!--                                                        <a type="button" class="btn btn-danger btn-sm text-white" th:attr="href='/admin/delete_user_role/'+${meeting.meetingId}">Yes</a>-->
-<!--                                                        <a class="btn btn-primary btn-sm text-white" data-dismiss="modal">No</a>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-
-                                    </td>
-
-                                </tr>
-
-                                </tbody>
-
-                            </table>
+                        <div class="d-flex justify-content-between mx-3">
+                            <h5 class="text-muted fw-bold pb-3">Upcoming Meetings</h5>
+                            <a href="" th:href="@{/officer/upcoming_meetings}">View All<i class="bi bi-chevron-compact-right"></i></a>
+                        </div>
+                        <div class="text-start mx-3" th:each="futureMeeting,noLimit : ${upcomingMeetings}" th:unless="${noLimit.index>5}">
+                            <div class="border-top border-1 mt-2 mb-4" th:if="${noLimit.index > 0}"></div>
+                            <a href="#" class="text-black" th:href="@{'/officer/meeting' + ${futureMeeting.meetingId}}">
+                                <div class="row my-2">
+                                    <div class="col-12">
+                                        <h6 th:text="${futureMeeting.meetingName}" class="fw-bold"/>
+                                    </div>
+                                    <div class="col-12">
+                                        <p th:text="${#temporals.format(futureMeeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>From <b th:text="${#temporals.format(futureMeeting.startTime, 'HH:mm a')}"/> - <b th:text="${#temporals.format(futureMeeting.endTime, 'HH:mm a')}"/></label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p>Venue: <b th:text="${futureMeeting.room.roomName}"/></p>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <div class="card past-meetings border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mx-3">
+                            <h5 class="fw-bold pb-3">Past Meetings</h5>
+                            <a href="" th:href="@{/officer/past_meetings}">View All<i class="bi bi-chevron-compact-right"></i></a>
+                        </div>
+                        <div class="text-start mx-3" th:each="pastMeeting,noLimit : ${pastMeetings}" th:unless="${noLimit.index>5}">
+                            <div class="border-top border-1 mt-2 mb-4" th:if="${noLimit.index > 0}"></div>
+                            <a href="#" th:href="@{'/officer/meeting' + ${pastMeeting.meetingId}}">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 th:text="${pastMeeting.meetingName}" class="fw-bold text-muted"/>
+                                    </div>
+                                    <div class="col-12">
+                                        <p th:text="${#temporals.format(pastMeeting.meetingDate, 'EEEE, MMMM dd, yyyy')}" class="text-muted"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>From <b th:text="${#temporals.format(pastMeeting.startTime, 'HH:mm a')}"/> - <b th:text="${#temporals.format(pastMeeting.endTime, 'HH:mm a')}"/></label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="text-muted">Venue: <b th:text="${pastMeeting.room.roomName}"/></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </main>
@@ -100,16 +117,10 @@
 
 <!--Offline Scripts-->
 <script src="../../static/js/extern/jquery-3.6.0.js"></script>
-<script src="../../static/js/extern/jquery.dataTables.min.js"></script>
-<script src="../../static/js/extern/dataTables.bootstrap5.min.js"></script>
-<script src="../../static/js/script.js"></script>
+
 <!--Thymeleaf-->
 <script th:src="@{/js/extern/jquery-3.6.0.js}"></script>
-<script th:src="@{/js/extern/jquery.dataTables.min.js}"></script>
-<script th:src="@{/js/extern/dataTables.bootstrap5.min.js}"></script>
-<script th:src="@{/js/script.js}"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 

@@ -64,7 +64,7 @@ public class ProjectController {
     }
 
     @PostMapping(value = "/register")
-    public String addNewUser(HttpServletRequest request, User user, Model model) throws MessagingException, UnsupportedEncodingException {
+    public String addNewUser(User user, Model model) throws MessagingException, UnsupportedEncodingException {
 
         String email = user.getEmployeeEmailAddress();
         String fName = user.getEmployeeFirstName();

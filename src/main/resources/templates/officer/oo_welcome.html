@@ -89,17 +89,17 @@
 
                                 <div class="row">
                                     <div class="col-4">
-                                        <p class="text-muted">Scheduled</p>
+                                        <label>Scheduled</label>
                                         <h1 class="fw-bold">18</h1>
                                     </div>
 
                                     <div class="col-4">
-                                        <p class="text-muted">Attended</p>
+                                        <label>Attended</label>
                                         <h1 class="fw-bold">18</h1>
                                     </div>
 
                                     <div class="col-4">
-                                        <p class="text-muted">Cancelled</p>
+                                        <label>Cancelled</label>
                                         <h1 class="fw-bold">18</h1>
                                     </div>
 
@@ -112,7 +112,6 @@
 
             </div>
 
-
             <div class="col-lg-6 col-md-6 col-sm-12 shortcuts">
 
                 <div class="row">
@@ -121,18 +120,43 @@
                         <!-- card -->
                         <div class="card rounded-3">
 
-                            <div class="card-header border-0"></div>
-                            <!-- card body -->
-                            <div class="card-body">
-
-                                <div>
+                            <div class="card-header border-0">
+                                <div class="py-4">
                                     <h1 id="time" class="text-center fw-bold"/>
 
                                     <h6 id="date" class="text-center text-muted"/>
                                 </div>
+                            </div>
+                            <!-- card body -->
+                            <div class="card-body text-center">
+                                <div>
+                                    <h5 class="text-center fw-bold py-4" th:if="${#lists.isEmpty(todayMeetings)}">No upcoming meetings for today</h5>
+                                    <div th:unless="${#lists.isEmpty(todayMeetings)}">
 
-                                <div class="text-center">
-                                    <p>No upcoming meetings for today</p>
+                                        <h5 class="fw-bold py-4">Today's Schedules</h5>
+
+                                        <div class="text-start mx-3" th:each="meetingToday,noLimit : ${todayMeetings}" th:unless="${noLimit.index>1}">
+                                            <div class="border-top border-1 mt-2 mb-4" th:if="${noLimit.index > 0}"></div>
+                                            <a href="#" class="text-black" th:href="@{'/officer/meeting' + ${meetingToday.meetingId}}">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h5 th:text="${meetingToday.meetingName}" class="fw-bold"/>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <p>From <b th:text="${#temporals.format(meetingToday.startTime, 'HH:mm a')}"/> - <b th:text="${#temporals.format(meetingToday.endTime, 'HH:mm a')}"/></p>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <p>Venue: <b th:text="${meetingToday.room.roomName}"/></p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <a href="" class="mt-4 fw-bold" th:each="meetingToday,noLimit : ${todayMeetings}" th:if="${noLimit.index>1}">View All<i class="bi bi-chevron-compact-right text-primary me-1 fw-bold"></i></a>
+                                        </div>
+
+                                    </div>
                                 </div>
 
                             </div>

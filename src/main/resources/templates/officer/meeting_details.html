@@ -17,8 +17,8 @@
 </head>
 <body>
 
-<div th:replace="admin/admin_dashboard::navbar"></div>
-<div th:replace="admin/admin_dashboard::sidebar"></div>
+<div th:replace="officer/oo_dashboard::navbar"></div>
+<div th:replace="officer/oo_dashboard::sidebar"></div>
 
 <main class="mt-5 pt-3">
 
@@ -27,17 +27,15 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header border-0 bg-primary">
-                    </div>
 
-                    <div class="card-body p-4">
-                        <div class="row py-2">
+                    </div>
+                    <div class="card-body">
+                        <div class="row border-bottom py-2">
                             <h1 class="col-6 fw-bold" th:text="${meeting.meetingName}"/><h1 th:if="${meeting.meetingDate.isBefore(#temporals.createToday())}"  th:text="'(Attended)'" class="text-warning"/>
 
                             <p>Date: <b th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>.</p>
                             <p>Time <b th:text="${#temporals.format(meeting.startTime, 'HH:mm a')}"/> to <b th:text="${#temporals.format(meeting.endTime, 'HH:mm a')}"/></p>
                         </div>
-                        <div class="row border-bottom mx-1"></div>
-
                         <div class="row py-4">
                             <div class="col-6">
                                 <h3 class="fw-bold">Location</h3>
@@ -54,18 +52,12 @@
                             <div class="col-6">
                                 <h3 class="fw-bold">Co-Owners</h3>
                                 <ol class="list-group list-group-numbered list-group-flush border-0" th:unless="${#lists.isEmpty(meeting.users)}">
-
-                                    <li th:each="coOwner, noLimit : ${meeting.users}" th:unless="${noLimit.index>2}" class="list-group-item d-flex justify-content-between align-items-start px-2 co-owners border-0">
+                                    <li th:each="coOwner : ${meeting.users}"  class="list-group-item d-flex justify-content-between align-items-start px-2 co-owners border-0">
                                         <div class="ms-2 me-auto">
                                             <div class="fw-bold"><span th:text="${coOwner.employeeFirstName} + ' ' + ${coOwner.employeeLastName}"/></div>
                                             Department: <span th:text="${coOwner.employeeDepartment}"/>
                                         </div>
                                     </li>
-
-                                    <div class="row text-center mt-3">
-                                        <a href="#" class="mt-4 fw-bold" th:each="coOwner,noLimit : ${meeting.users}" th:if="${noLimit.index>4}">See All<i class="bi bi-chevron-compact-right text-primary me-1 fw-bold"></i></a>
-                                    </div>
-
                                 </ol>
 
                                 <div th:if="${#lists.isEmpty(meeting.users)}">
@@ -78,7 +70,7 @@
 
                         <div class="row py-4">
                             <div th:unless="${meeting.meetingDate.isBefore(#temporals.createToday())}" th:if="${loggedUser.userId} == ${meeting.ownerId}" class="d-flex">
-                                <a href="#" class="btn btn-sm btn-primary" th:href="@{'/admin/add_coowners/' +${meeting.meetingId}}"><i class="bi bi-person-plus me-2"></i><span th:if="${#lists.isEmpty(meeting.users)}" th:text="'Add'"/><span th:unless="${#lists.isEmpty(meeting.users)}" th:text="'Edit'"/> Co-Owners</a>
+                                <a href="#" class="btn btn-sm btn-primary" th:href="@{'/officer/add_coowners/' +${meeting.meetingId}}"><i class="bi bi-person-plus me-2"></i><span th:if="${#lists.isEmpty(meeting.users)}" th:text="'Add'"/><span th:unless="${#lists.isEmpty(meeting.users)}" th:text="'Edit'"/> Co-Owners</a>
                             </div>
                         </div>
                         <div class="row">
@@ -87,9 +79,9 @@
 
                                 <div>
 
-                                    <a href="#" th:if="${loggedUser.userId} == ${meeting.ownerId}" th:unless="${meeting.meetingDate.isBefore(#temporals.createToday())}" th:href="@{'/admin/edit_meeting/' + ${meeting.meetingId}}" class="btn btn-secondary me-2">Edit Schedule</a>
+                                    <a href="#" th:if="${loggedUser.userId} == ${meeting.ownerId}" th:unless="${meeting.meetingDate.isBefore(#temporals.createToday())}" th:href="@{'/officer/edit_meeting/' + ${meeting.meetingId}}" class="btn btn-secondary me-2">Edit Schedule</a>
 
-                                    <a href="#" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${meeting.meetingId}"class="btn btn-danger border-0">Delete Schedule</a>
+                                    <a href="#" th:if="${loggedUser.userId} == ${meeting.ownerId}" data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${meeting.meetingId}"class="btn btn-danger border-0">Delete Schedule</a>
 
                                     <!--Delete Modal-->
                                     <div class="modal fade" th:attr="id='modal-warning'+${meeting.meetingId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -103,7 +95,7 @@
                                                     <p>Are you sure you want to delete <span th:text="${meeting.meetingName}"/>, scheduled on <span th:text="${#temporals.format(meeting.meetingDate, 'EEEE, MMMM dd, yyyy')}"/>?</p>
                                                     <label>This will delete all Co Owners of the meeting, and free up room that was allocated at the particular time.</label>                                                </div>
                                                 <div class="modal-footer border-0">
-                                                    <a type="button" class="btn btn-danger btn-sm text-white" th:attr="href='/admin/delete_meeting/'+${meeting.meetingId}">Yes</a>
+                                                    <a type="button" class="btn btn-danger btn-sm text-white" th:attr="href='/officer/delete_meeting/'+${meeting.meetingId}">Yes</a>
                                                     <a class="btn btn-primary btn-sm text-white" data-dismiss="modal">No</a>
                                                 </div>
                                             </div>
@@ -122,7 +114,7 @@
 
 </main>
 
-<footer th:replace="admin/admin_dashboard::footer"></footer>
+<footer th:replace="officer/oo_dashboard::footer"></footer>
 
 <!---->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

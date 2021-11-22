@@ -89,17 +89,17 @@
 
                                 <div class="row">
                                     <div class="col-4">
-                                        <p class="text-muted">Schedules</p>
+                                        <label>Schedules</label>
                                         <h1 class="fw-bold" th:text="${noOfMeetingsToBeAttended}"/>
                                     </div>
 
                                     <div class="col-4">
-                                        <p class="text-muted">Attended</p>
+                                        <label>Attended</label>
                                         <h1 class="fw-bold" th:text="${noOfMeetingsAttended}"/>
                                     </div>
 
                                     <div class="col-4">
-                                        <p class="text-muted">Cancelled</p>
+                                        <label>Cancelled</label>
                                         <h1 class="fw-bold">TBD</h1>
                                     </div>
 
@@ -179,9 +179,10 @@
 
                                         <h5 class="fw-bold py-4">Today's Schedules</h5>
 
-                                        <div class="text-start my-2 border-bottom mx-3" th:each="meetingToday,noLimit : ${todayMeetings}" th:unless="${noLimit.index>1}">
-                                                <a href="#" class="text-black" th:href="@{'/admin/meeting' + ${meetingToday.meetingId}}">
-                                                    <div class="row my-2">
+                                        <div class="text-start mx-3" th:each="meetingToday,noLimit : ${todayMeetings}" th:unless="${noLimit.index>1}">
+                                            <div class="border-top border-1 mt-2 mb-4" th:if="${noLimit.index > 0}"></div>
+                                            <a href="#" class="text-black" th:href="@{'/admin/meeting' + ${meetingToday.meetingId}}">
+                                                    <div class="row">
                                                         <div class="col-12">
                                                             <h5 th:text="${meetingToday.meetingName}" class="fw-bold"/>
                                                         </div>
@@ -192,10 +193,12 @@
                                                             <p>Venue: <b th:text="${meetingToday.room.roomName}"/></p>
                                                         </div>
                                                     </div>
-                                                </a>
+                                            </a>
                                         </div>
 
-                                        <a href="" class="py-4 my-4" th:each="meetingToday,noLimit : ${todayMeetings}" th:if="${noLimit.index>1}">View All<i class="bi bi-chevron-compact-right text-primary me-1 fw-bold"></i></a>
+                                        <div class="row mt-3">
+                                            <a href="#" class="mt-4 fw-bold" th:each="meetingToday,noLimit : ${todayMeetings}" th:if="${noLimit.index>1}">View All<i class="bi bi-chevron-compact-right text-primary me-1 fw-bold"></i></a>
+                                        </div>
 
                                     </div>
                                 </div>

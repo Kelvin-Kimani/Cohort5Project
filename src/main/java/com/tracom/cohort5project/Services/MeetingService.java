@@ -60,6 +60,11 @@ public class MeetingService {
         return meetingRepository.numberOfMeetingsAttendedByOrganization(organizationId);
     }
 
+    /*UPDATE*/
+    public void updateCoOwners(Meeting meeting, List<User> coOwners){
+        meeting.setUsers(coOwners);
+        meetingRepository.save(meeting);
+    }
     /*DELETE*/
     public void deleteMeetingById(int meetingId){
         meetingRepository.deleteById(meetingId);

@@ -212,7 +212,7 @@ public class AdminController {
     public String createUser(@RequestParam(value = "userId") int userId,
                              @RequestParam(value = "userRole") String userRole,
                              HttpServletRequest request,
-                             Model model) throws UserNotFoundException, MessagingException, UnsupportedEncodingException {
+                             Model model){
 
         userService.createSystemUserById(userId, userRole);
 
@@ -368,14 +368,23 @@ public class AdminController {
         int organizationId = user.getOrganization().getOrganizationId();
         int userId = user.getUserId();
 
-        System.out.println(userId);
-
         Meeting meeting = meetingService.getMeeting(meetingId);
         List<User> users = userService.getEligibleCoOwners(organizationId, userId);
 
         model.addAttribute("meeting", meeting);
         model.addAttribute("users", users);
         return "admin/add_coowners";
+    }
+
+    @PostMapping(path = "/add_coowners")
+    public String addCoOwners( @RequestParam(value = "meetingId", required = false) int meetingId,
+                               @RequestParam(value = "users", required = false) List<User> users){
+
+        Meeting meeting = meetingService.getMeeting(meetingId);
+        meetingService.updateCoOwners(meeting, users);
+
+        return "redirect:/admin/meetings";
+
     }
 
     @GetMapping("/meeting{meetingId}")

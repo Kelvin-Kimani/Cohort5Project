@@ -214,12 +214,6 @@
 <footer th:replace="admin/admin_dashboard::footer"></footer>
 
 <script>
-    $(document).ready(function() {
-
-    });
-</script>
-
-<script>
     var date = new Date().toISOString().slice(0,10);
     //To restrict past date
     $('#date_picker').attr('min', date);

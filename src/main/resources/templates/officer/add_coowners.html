@@ -26,15 +26,15 @@
 </head>
 <body>
 
-<div th:replace="admin/admin_dashboard::navbar"></div>
-<div th:replace="admin/admin_dashboard::sidebar"></div>
+<div th:replace="officer/oo_dashboard::navbar"></div>
+<div th:replace="officer/oo_dashboard::sidebar"></div>
 
 <main class="mt-5 pt-3">
 
     <div class="content container-fluid">
 
         <div class="row">
-            <form th:action="@{/admin/add_coowners}"
+            <form th:action="@{/officer/add_coowners}"
                   th:object="${meeting}"
                   method="post">
 
@@ -54,7 +54,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>User(s)</label>
-                                    <select class="user form-select" name="users" multiple="multiple" th:field="*{users}">
+                                    <select class="user form-select"  name="users" multiple="multiple" th:field="*{users}">
                                         <option name="users" th:each="user : ${users}" th:value="${user.userId}" th:text="${user.employeeFirstName} + ' ' + ${user.employeeLastName} + ' : ' + ${user.employeeDepartment}" />
                                     </select>
                                 </div>
@@ -78,7 +78,7 @@
 
 </main>
 
-<footer th:replace="admin/admin_dashboard::footer"></footer>
+<footer th:replace="officer/oo_dashboard::footer"></footer>
 
 <script>
     $(document).ready(function() {
