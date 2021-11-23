@@ -16,19 +16,16 @@
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
 
     <!--jQuery-->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="../../static/js/extern/jquery-3.6.0.js"></script>
+    <script th:src="@{/js/extern/jquery-3.6.0.js}"></script>
+    <!--jQuery Validator-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
     <!--Select2-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <script>
-        $(document).ready(function () {
-            $('.user').select2({
-                placeholder: "Select users",
-            });
-        })
-    </script>
 </head>
 <body>
 
@@ -50,7 +47,8 @@
             </div>
         </div>
 
-        <form th:action="@{/admin/create_meeting}"
+        <form id="meeting-form"
+              th:action="@{/admin/create_meeting}"
               th:object="${meeting}"
                 method="post">
             <!--Map meeting with user-->
@@ -81,25 +79,26 @@
 
                     <div class="row pb-4">
                         <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="name" name="meetingname" required placeholder="Meeting Topic" th:field="*{meetingName}">
+                            <div class="form-group mb-3">
                                 <label for="name" class="text-muted">Meeting Topic</label>
+                                <input type="text" class="form-control" id="name" name="meetingname" minlength="3" required th:field="*{meetingName}">
                             </div>
                         </div>
 
                         <div class="col-6">
-                            <div class="form-floating">
-                                <textarea class="form-control" required placeholder="Meeting Description" id="meetingdesc" th:field="*{meetingDescription}"></textarea>
-                                <label for="meetingdesc">Meeting Description</label>
+                            <div class="form-group">
+                                <label for="meetingdesc">Meeting Description (optional)</label>
+                                <textarea class="form-control" id="meetingdesc" th:field="*{meetingDescription}"></textarea>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row pb-4">
+                    <div class="row pb-3">
 
                         <div class="col-6">
+
                             <div class="col-lg-12 col-md-12">
-                                <div class="py-4">
+                                <div class="py-3">
                                     <div class="mb-lg-0">
                                         <h5 class="mb-0 fw-bold">Attendees</h5>
                                     </div>
@@ -107,14 +106,15 @@
                             </div>
 
                             <div class="col-lg-12 col-md-12">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control" id="attendees" name="attendees" required placeholder="Number of Attendees" th:field="*{capacity}">
-                                    <label for="attendees">Number of Attendees</label>
+                                <div class="form-group">
+                                    <label for="customCapacity">Number of Attendees</label>
+                                    <input type="number" class="form-control" id="customCapacity" name="customCapacity" required th:field="*{capacity}">
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-6">
+
                             <div class="col-lg-12 col-md-12">
                                 <div class="py-3">
                                     <div class="mb-lg-0">
@@ -136,11 +136,11 @@
 
                     </div>
 
-                    <div class="row pb-4">
+                    <div class="row pb-3">
 
                         <div class="col-6">
                             <div class="col-lg-12 col-md-12">
-                                <div class="py-4">
+                                <div class="py-3">
                                     <div class="mb-lg-0">
                                         <h5 class="mb-0 fw-bold">Date & Time</h5>
                                     </div>
@@ -148,23 +148,23 @@
                             </div>
 
                             <div class="col-lg-12 col-md-12">
-                                <div class="form-floating">
-                                    <input id="date_picker" type="date" class="form-control" required th:field="*{meetingDate}">
+                                <div class="form-group">
                                     <label for="date_picker" class="text-muted">Date</label>
+                                    <input id="date_picker" type="date" class="form-control" required th:field="*{meetingDate}">
                                 </div>
                             </div>
 
                             <div class="row pt-3">
                                 <div class="col-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="time" class="form-control" id="starttime" required th:field="*{startTime}">
+                                    <div class="form-group mb-3">
                                         <label for="starttime" class="text-muted">Start Time</label>
+                                        <input type="time" class="form-control" id="starttime" name="starttime" min="06:00" max="20:00" required th:field="*{startTime}">
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="time" class="form-control" id="endtime" required th:field="*{endTime}">
+                                    <div class="form-group mb-3">
                                         <label for="endtime" class="text-muted">End Time</label>
+                                        <input type="time" class="form-control" id="endtime" name="endtime" min="06:00" max="20:00" required th:field="*{endTime}">
                                     </div>
                                 </div>
                             </div>
@@ -182,8 +182,7 @@
                             <div class="col-md-12 col-lg-12" id="co-owners">
                                 <div class="form-group">
                                     <label>User(s)</label>
-
-                                    <select class="user form-select" name="states[]" multiple="multiple" th:field="*{users}">
+                                    <select class="user form-select" name="users" multiple="multiple" th:field="*{users}">
                                         <option name="userId" th:each="eligibleUser : ${coOwnersEligible}" th:value="${eligibleUser.userId}" th:text="${eligibleUser.employeeFirstName} + ' ' + ${eligibleUser.employeeLastName} + ' : ' + ${eligibleUser.employeeDepartment}" />
                                     </select>
                                 </div>
@@ -195,7 +194,7 @@
 
                     </div>
 
-                    <div class="row pb-2">
+                    <div class="row">
 
                         <div>
                             <button type="submit" class="btn btn-primary float-end">Create Schedule</button>
@@ -214,10 +213,59 @@
 <footer th:replace="admin/admin_dashboard::footer"></footer>
 
 <script>
-    var date = new Date().toISOString().slice(0,10);
-    //To restrict past date
-    $('#date_picker').attr('min', date);
+    $(document).ready(function () {
+        $('.user').select2({
+            placeholder: "Select users",
+        });
+    });
+</script>
 
+<script>
+    var date = new Date();
+    date.setDate(date.getDate() + 1);
+    var tomorrow = date.toISOString().slice(0,10);
+    //To restrict past date
+
+    $('#date_picker').attr('min', tomorrow);
+
+
+//    Check End Time
+//     var startTime = new Date().setTime($('#starttime').val());
+//     var endTime = new Date().setTime($('#endtime').val());
+//
+//     if (startTime > endTime){
+//         alert("End time can't be less than start time");
+//     }
+
+</script>
+
+<script>
+    $(document).ready(function() {
+        $("#meeting-form").validate({
+            rules: {
+                "meetingName" : {
+                  required: true,
+                },
+                "capacity": {
+                    required: true,
+                    max: 100,
+                    min: 1,
+                },
+            },
+
+            messages : {
+                starttime : {
+                    min: "Meetings should be scheduled past 0600hrs",
+                    max: "Meetings cannot extend past 2000hrs"
+                },
+
+                endtime : {
+                    min: "Meetings should be scheduled past 0600hrs",
+                    max: "Meetings cannot extend past 2000hrs"
+                }
+            },
+        });
+    });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>

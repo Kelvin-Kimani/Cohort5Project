@@ -22,6 +22,21 @@ label{
     margin-bottom: 5px;
     color: #9A9A9A;
 }
+
+
+label.error {
+    color: red;
+    display: block;
+    margin-top: 5px;
+}
+
+input.error, textarea.error {
+    border: 1px dashed red;
+    font-weight: 300;
+    color: red;
+}
+
+
 .card{
     border: none;
     box-shadow: 0 5px 10px 0 rgba(124, 124, 124, 0.2);
