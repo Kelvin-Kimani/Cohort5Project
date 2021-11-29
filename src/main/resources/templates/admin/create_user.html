@@ -65,7 +65,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>User</label>
-                                    <select th:field="*{userId}" class="user form-select" style="height: 30px;">
+                                    <select class="user form-select" th:field="*{userId}" style="height: 30px;">
                                         <option name="userId" th:each="user : ${registeredUsersList}" th:value="${user.userId}" th:text="${user.employeeFirstName} + ' ' + ${user.employeeLastName} + ' : ' + ${user.employeeDepartment}" />
                                     </select>
                                 </div>

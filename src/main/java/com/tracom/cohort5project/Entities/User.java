@@ -1,8 +1,10 @@
 package com.tracom.cohort5project.Entities;
 
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,8 +28,17 @@ public class User {
     private String employeeEmailAddress;
     private String employeePhoneNumber;
     private String password;
+
+    //Generated
     private String resetPasswordToken;
     private String setPasswordToken;
+
+    //Limit Login Attempts
+    @Column(columnDefinition = "tinyint(1) default 1")
+    private boolean accountNonLocked = true;
+
+    private int failedAttempts;
+    private Date lockTime;
 
     @ManyToOne
     @JoinColumn(name = "organization_id")

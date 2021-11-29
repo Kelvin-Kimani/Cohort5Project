@@ -8,12 +8,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class UserService {
+
+    public static final int MAX_FAILED_ATTEMPTS = 4;
+    private static final long LOCK_TIME_DURATION = 30 * 60 * 1000; //30 Minutes in milliseconds
 
     private UserRepository userRepository;
 
@@ -172,4 +176,38 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public void increaseFailedAttempts(User user) {
+        int newFailedAttempts = user.getFailedAttempts() + 1;
+        userRepository.updateUserFailedAttempts(newFailedAttempts, user.getEmployeeEmailAddress());
+    }
+
+    public void lock(User user) {
+        user.setAccountNonLocked(false);
+        user.setLockTime(new Date());
+
+        userRepository.save(user);
+    }
+
+    public boolean unlock(User user){
+        long lockTimeInMillis = user.getLockTime().getTime();
+        long currentTimeInMillis = System.currentTimeMillis();
+
+        //Duration expired
+        if (lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis){
+            user.setAccountNonLocked(true);
+            user.setLockTime(null);
+            user.setFailedAttempts(0);
+
+            userRepository.save(user);
+            return true;
+        }
+
+        else {
+            return false;
+        }
+    }
+
+    public void resetFailedAttempts(String employeeEmailAddress) {
+        userRepository.updateUserFailedAttempts(0, employeeEmailAddress);
+    }
 }

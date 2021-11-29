@@ -23,9 +23,7 @@
                         <p class="mb-4 text-muted">Please enter your user information.</p>
 
                         <div th:if="${param.error}">
-                            <div class="alert alert-danger">
-                                Invalid Email Address or Password
-                            </div>
+                            <label class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</label>
                         </div>
 
                         <div th:if="${message}">

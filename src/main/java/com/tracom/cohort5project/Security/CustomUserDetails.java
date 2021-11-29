@@ -41,7 +41,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.isAccountNonLocked();
     }
 
     @Override
@@ -64,5 +64,9 @@ public class CustomUserDetails implements UserDetails {
     }
     public void setLastName(String lastName){
         this.user.setEmployeeLastName(lastName);
+    }
+
+    public User getUser() {
+        return this.user;
     }
 }

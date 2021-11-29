@@ -1,5 +1,6 @@
 package com.tracom.cohort5project.Security;
 
+import com.tracom.cohort5project.Security.Service.CustomFailureHandler;
 import com.tracom.cohort5project.Security.Service.CustomSuccessHandler;
 import com.tracom.cohort5project.Security.Service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private DataSource dataSource;
     @Autowired
     private AuthenticationSuccessHandler successHandler;
+
+    @Autowired
+    private CustomFailureHandler failureHandler;
 
     //Load user from custom user details
     @Bean
@@ -67,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 
                 //list all the users registered on the website, there we use antmatchers to match with the url
-                .antMatchers("/css/**", "/js/**", "/images/**" , "/" , "/register", "/forgot_password", "/reset_password" ,"/set_password").permitAll()
+                .antMatchers("/css/**", "/js/**", "/images/**" , "/" , "/login", "/register", "/forgot_password", "/reset_password" ,"/set_password").permitAll()
                 .antMatchers("/admin/**").hasAuthority("Admin")
                 .antMatchers("/officer/**").hasAuthority("Organization Officer")
                 .antMatchers("/user/**").hasAuthority("User")
@@ -77,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .permitAll()
                     .successHandler(successHandler)
-                    .failureUrl("/login?error=true")
+                    .failureHandler(failureHandler)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login").permitAll();

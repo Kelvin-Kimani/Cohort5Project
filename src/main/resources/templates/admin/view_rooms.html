@@ -58,7 +58,6 @@
                                 <table class="table table-hover table-borderless" id="users_list">
                                     <thead>
                                     <tr>
-                                        <th scope="col">Room ID</th>
                                         <th scope="col">Room Name</th>
                                         <th scope="col">Room Capacity</th>
                                         <th scope="col">Screen Display</th>
@@ -70,7 +69,6 @@
 
                                     <tbody>
                                     <tr th:each="roomsDetails: ${roomsList}">
-                                        <td th:text="${roomsDetails.roomId}"/>
                                         <td th:text="${roomsDetails.roomName}"/>
                                         <td th:text="${roomsDetails.roomCapacity}"/>
                                         <td th:text="${roomsDetails.displayScreen}"/>

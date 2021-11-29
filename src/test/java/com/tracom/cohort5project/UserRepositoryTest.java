@@ -30,15 +30,14 @@ public class UserRepositoryTest {
         user.setUserRole("Organization Officer");
         user.setEmployeeDepartment("Software Development");
         user.setEmployeeEmailAddress("jj.njoro@tracom.co.ke");
-        //user.setEmployeeGender("MALE");
         user.setEmployeePhoneNumber("+254790838747");
         user.setPassword("JayJay");
 
         User savedUser = userRepository.save(user);
 
-//        User existsUser = testEntityManager.find(User.class, savedUser.getUserId());
+        User existsUser = testEntityManager.find(User.class, savedUser.getUserId());
 
-//        Assertions.assertThat(existsUser.getEmployeeEmailAddress().equals(savedUser.getEmployeeEmailAddress()));
+        Assertions.assertThat(existsUser.getEmployeeEmailAddress().equals(savedUser.getEmployeeEmailAddress()));
     }
 
     @Test
@@ -48,5 +47,18 @@ public class UserRepositoryTest {
         User user = userRepository.findByEmployeeEmailAddress(email);
         
         Assertions.assertThat(user).isNotNull();
+    }
+
+    @Test
+    public void testUpdateFailedAttempts(){
+        String email = "kelvin.kimani@tracom.co.ke";
+        int failedAttempts = 2;
+
+        userRepository.updateUserFailedAttempts(failedAttempts, email);
+        Integer userId = 13;
+
+        User user = testEntityManager.find(User.class, userId);
+
+        org.junit.jupiter.api.Assertions.assertEquals(failedAttempts, user.getFailedAttempts());
     }
 }
