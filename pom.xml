@@ -117,6 +117,7 @@
             </plugin>
 
         </plugins>
+        <finalName>Cohort5Project</finalName>
     </build>
 
 </project>

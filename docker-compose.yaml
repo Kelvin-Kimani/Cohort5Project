@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  tracom-mysql:
+    image: mysql:latest
+    container_name: tracom-mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+#    ports:
+#      - "3307:3306"
+    networks:
+      - cohort-network
+    environment:
+      MYSQL_ROOT_PASSWORD: Kelvin@5257
+      MYSQL_DATABASE: tracom
+    volumes:
+      - tracom-data:/var/lib/mysql
+
+  springcohortproject:
+    image: springcohortproject
+    container_name: springcohortproject
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - cohort-network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - tracom-mysql
+
+networks:
+  cohort-network:
+    driver: bridge
+volumes:
+  tracom-data: {}
