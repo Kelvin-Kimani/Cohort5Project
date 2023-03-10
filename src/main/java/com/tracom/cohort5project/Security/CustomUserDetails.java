@@ -1,19 +1,20 @@
 package com.tracom.cohort5project.Security;
 
 import com.tracom.cohort5project.Entities.User;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class CustomUserDetails implements UserDetails {
 
-    private User user;
-    private List<GrantedAuthority> authorities;
+    private final User user;
+    private final List<GrantedAuthority> authorities;
 
-    public CustomUserDetails(User user){
+    public CustomUserDetails(User user) {
         this.user = user;
         this.authorities = Arrays.stream(user.getUserRole().split(","))
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
@@ -54,15 +55,16 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return this.user.getEmployeeFirstName() + " " + this.user.getEmployeeLastName();
     }
 
     //Update Current LoggedIn user
-    public void setFirstName(String firstName){
+    public void setFirstName(String firstName) {
         this.user.setEmployeeFirstName(firstName);
     }
-    public void setLastName(String lastName){
+
+    public void setLastName(String lastName) {
         this.user.setEmployeeLastName(lastName);
     }
 

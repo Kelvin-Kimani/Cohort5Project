@@ -3,14 +3,13 @@ package com.tracom.cohort5project.Services;
 import com.tracom.cohort5project.Entities.User;
 import com.tracom.cohort5project.Exceptions.UserNotFoundException;
 import com.tracom.cohort5project.Repositories.UserRepository;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,10 +18,10 @@ public class UserService {
     public static final int MAX_FAILED_ATTEMPTS = 4;
     private static final long LOCK_TIME_DURATION = 30 * 60 * 1000; //30 Minutes in milliseconds
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -30,24 +29,24 @@ public class UserService {
     CREATE
     Implementing HTTP POST
     */
-    public void createUser(User user) throws IllegalStateException{
+    public void createUser(User user) throws IllegalStateException {
         Optional<User> userByEmail = Optional.ofNullable(userRepository.findByEmployeeEmailAddress(user.getEmployeeEmailAddress()));
-        if (userByEmail.isPresent()){
+        if (userByEmail.isPresent()) {
             throw new IllegalStateException("Account with the same email exists!");
         }
         userRepository.save(user);
     }
 
     public void createSystemUserById(int id,
-                                 String role){
+                                     String role) {
         userRepository.updateUserRole(id, role);
     }
 
-
     /*READ*/
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
+
     public List<User> getUsersWithRoles() {
         return userRepository.findAllWithRoles();
     }
@@ -66,22 +65,22 @@ public class UserService {
 
     public User getUserById(int id) {
         return userRepository.findById(id)
-                .orElseThrow(()-> new IllegalStateException("User with id " + id + " does not exist."));
+                .orElseThrow(() -> new IllegalStateException("User with id " + id + " does not exist."));
     }
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmployeeEmailAddress(email);
     }
 
-    public int numberOfUsersWithRoles(){
+    public int numberOfUsersWithRoles() {
         return userRepository.numberOfUsersWithRoles();
     }
 
-    public int numberOfUsersWithRolesAndByOrganization(int organizationId){
+    public int numberOfUsersWithRolesAndByOrganization(int organizationId) {
         return userRepository.numberOfUsersWithRolesAndByOrganization(organizationId);
     }
 
-    public List<User> getEligibleCoOwners(int organizationId, int userId){
+    public List<User> getEligibleCoOwners(int organizationId, int userId) {
         return userRepository.findEligibleCoOwnersOrganization(organizationId, userId);
     }
 
@@ -90,11 +89,10 @@ public class UserService {
     public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
         User user = userRepository.findByEmailAddressAndUserRole(email);
 
-        if (user != null){
+        if (user != null) {
             user.setResetPasswordToken(token);
             userRepository.save(user);
-        }
-        else {
+        } else {
             throw new UserNotFoundException("Could not find user with the email " + email);
         }
     }
@@ -102,25 +100,23 @@ public class UserService {
     public void updateSetPasswordToken(String token, String email) throws UserNotFoundException {
         User user = userRepository.findByEmployeeEmailAddress(email);
 
-        if (user != null){
+        if (user != null) {
             user.setSetPasswordToken(token);
             userRepository.save(user);
-        }
-        else {
+        } else {
             throw new UserNotFoundException("Could not find user with the email " + email);
         }
     }
 
-    public User getUserByToken(String resetPasswordToken){
+    public User getUserByToken(String resetPasswordToken) {
         return userRepository.findByResetPasswordToken(resetPasswordToken);
     }
 
-
-    public User getUserSetPasswordByToken(String passwordToken){
+    public User getUserSetPasswordByToken(String passwordToken) {
         return userRepository.findBySetPasswordToken(passwordToken);
     }
 
-    public void updatePassword(User user, String newPassword){
+    public void updatePassword(User user, String newPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newPassword);
 
@@ -130,8 +126,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-
-    public void setFirstTimePassword(User user, String newPassword){
+    public void setFirstTimePassword(User user, String newPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newPassword);
 
@@ -141,36 +136,31 @@ public class UserService {
         userRepository.save(user);
     }
 
-
-
-
     /*UPDATE*/
     public void updateUserRole(int id,
-                               String role){
+                               String role) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(()-> new IllegalStateException("User with the id does not exist"));
+                .orElseThrow(() -> new IllegalStateException("User with the id does not exist"));
 
         user.setUserRole(role);
     }
 
-
     public void updateUserDetails(int userId,
                                   String firstName,
                                   String lastname,
-                                  String phoneNumber){
+                                  String phoneNumber) {
         userRepository.updateUserDetails(userId, firstName, lastname, phoneNumber);
     }
 
-    public void deleteUserWithRoleById(int id){
+    public void deleteUserWithRoleById(int id) {
         userRepository.deleteUserRole(id);
     }
-
 
     /*DELETE*/
     public void deleteById(int id) {
         boolean userExists = userRepository.existsById(id);
-        if (!userExists){
+        if (!userExists) {
             throw new IllegalStateException("User by id " + id + " does not exist.");
         }
         userRepository.deleteById(id);
@@ -188,21 +178,19 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public boolean unlock(User user){
+    public boolean unlock(User user) {
         long lockTimeInMillis = user.getLockTime().getTime();
         long currentTimeInMillis = System.currentTimeMillis();
 
         //Duration expired
-        if (lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis){
+        if (lockTimeInMillis + LOCK_TIME_DURATION < currentTimeInMillis) {
             user.setAccountNonLocked(true);
             user.setLockTime(null);
             user.setFailedAttempts(0);
 
             userRepository.save(user);
             return true;
-        }
-
-        else {
+        } else {
             return false;
         }
     }

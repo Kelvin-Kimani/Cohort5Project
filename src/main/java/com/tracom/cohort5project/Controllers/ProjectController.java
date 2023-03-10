@@ -1,17 +1,21 @@
 package com.tracom.cohort5project.Controllers;
 
-import com.tracom.cohort5project.Entities.*;
+import com.tracom.cohort5project.Entities.Organization;
+import com.tracom.cohort5project.Entities.User;
+import com.tracom.cohort5project.Exceptions.UserNotFoundException;
 import com.tracom.cohort5project.Security.CustomUserDetails;
 import com.tracom.cohort5project.Services.OrganizationService;
-import com.tracom.cohort5project.Exceptions.UserNotFoundException;
 import com.tracom.cohort5project.Services.UserService;
 import com.tracom.cohort5project.Utilities.Utility;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
-import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,27 +23,24 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * In the beginning, there was data, and it was good. But then people wanted to access the data through various means.
  */
 
+@Slf4j
 @Controller
 public class ProjectController {
 
-    private OrganizationService organizationService;
-    private UserService userService;
-    private JavaMailSender mailSender;
+    private final OrganizationService organizationService;
+    private final UserService userService;
+    private final JavaMailSender mailSender;
 
-    @Autowired
-    public ProjectController(OrganizationService organizationService, UserService userService, JavaMailSender mailSender) {
+    public ProjectController(OrganizationService organizationService,
+                             UserService userService,
+                             JavaMailSender mailSender) {
         this.organizationService = organizationService;
         this.userService = userService;
         this.mailSender = mailSender;
@@ -51,35 +52,27 @@ public class ProjectController {
         return "welcome";
     }
 
-
     /*Login*/
     @GetMapping(path = "/login")
-    public String getLoginPage(@AuthenticationPrincipal CustomUserDetails loggedUser){
+    public String getLoginPage(@AuthenticationPrincipal CustomUserDetails loggedUser) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return "login";
-        }
-        else {
+        } else {
 
             String email = loggedUser.getUsername();
             User user = userService.getUserByEmail(email);
 
-            if (user.getUserRole().equals("Admin")){
+            if (user.getUserRole().equals("Admin")) {
                 return "redirect:/admin/dashboard";
-            }
-
-            else if (user.getUserRole().equals("Organization Officer")){
+            } else if (user.getUserRole().equals("Organization Officer")) {
                 return "redirect:/officer/dashboard";
-            }
-
-            else {
+            } else {
                 return "redirect:/user/dashboard";
             }
         }
-
     }
-
 
     /*Employee Registration*/
     @GetMapping(path = "/register")
@@ -97,20 +90,19 @@ public class ProjectController {
         String fName = user.getEmployeeFirstName();
         String lName = user.getEmployeeLastName();
 
+        userService.createUser(user);
+
+        model.addAttribute("message", "Registration Successful");
+
         try {
-            userService.createUser(user);
-
-            model.addAttribute("message", "Registration Successful");
-
             //Send Email
             sendRegisterEmail(email, fName, lName);
             return "welcome";
-
-        } catch (IllegalStateException ex){
-            model.addAttribute("error", ex.getMessage());
+        } catch (Exception ex) {
+            log.error("Unable to send email --> {}", ex.getMessage());
         }
 
-        return "user_registration";
+        return "welcome";
     }
 
     private void sendRegisterEmail(String email, String fName, String lName) throws MessagingException, UnsupportedEncodingException {
@@ -142,7 +134,7 @@ public class ProjectController {
     }
 
     @PostMapping("/forgot_password")
-    public String processForgotPasswordForm(HttpServletRequest request, Model model){
+    public String processForgotPasswordForm(HttpServletRequest request, Model model) {
         String email = request.getParameter("email");
         String token = RandomString.make(45);
 
@@ -152,11 +144,9 @@ public class ProjectController {
             //generate reset pwd link
             String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
 
-
             sendEmail(email, resetPasswordLink);
             //send email
             model.addAttribute("message", "We have sent a link to reset your password to the email.");
-
         } catch (UserNotFoundException | MessagingException | UnsupportedEncodingException ex) {
             model.addAttribute("error", ex.getMessage());
         }
@@ -187,10 +177,10 @@ public class ProjectController {
     }
 
     @GetMapping(path = "/reset_password")
-    public String getResetPasswordForm(@Param(value = "token") String token, Model model){
+    public String getResetPasswordForm(@Param(value = "token") String token, Model model) {
         User user = userService.getUserByToken(token);
 
-        if (user == null){
+        if (user == null) {
             model.addAttribute("message", "Invalid Token");
         }
 
@@ -200,16 +190,15 @@ public class ProjectController {
     }
 
     @PostMapping("/reset_password")
-    public String resetPassword(HttpServletRequest request, Model model){
+    public String resetPassword(HttpServletRequest request, Model model) {
         String token = request.getParameter("token");
         String password = request.getParameter("password");
 
         User user = userService.getUserByToken(token);
 
-        if (user == null){
+        if (user == null) {
             model.addAttribute("messageErr", "Invalid Token");
-        }
-        else {
+        } else {
             userService.updatePassword(user, password);
             model.addAttribute("message", "You have successfully changed your password");
         }
@@ -219,12 +208,11 @@ public class ProjectController {
         return "login";
     }
 
-
     @GetMapping(path = "/set_password")
-    public String getSetFirstTimePasswordForm(@Param(value = "token") String token, Model model){
+    public String getSetFirstTimePasswordForm(@Param(value = "token") String token, Model model) {
         User user = userService.getUserSetPasswordByToken(token);
 
-        if (user == null){
+        if (user == null) {
             model.addAttribute("message", "User doesn't exist");
         }
 
@@ -234,24 +222,21 @@ public class ProjectController {
     }
 
     @PostMapping("/set_password")
-    public String setFirstTimePassword(HttpServletRequest request, Model model){
+    public String setFirstTimePassword(HttpServletRequest request, Model model) {
 
         String token = request.getParameter("token");
         String password = request.getParameter("password");
 
         User user = userService.getUserSetPasswordByToken(token);
 
-        if (user == null){
+        if (user == null) {
             model.addAttribute("messageErr", "Invalid Token");
-        }
-        else {
+        } else {
 
             userService.setFirstTimePassword(user, password);
             model.addAttribute("message", "You have successfully set your password");
-
         }
 
         return "login";
     }
-
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     @GetMapping(path = "/dashboard")
-    public String getUserWelcomePage(){
+    public String getUserWelcomePage() {
         return "user/user_welcome";
     }
 }

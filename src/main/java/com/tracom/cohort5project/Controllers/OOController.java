@@ -5,48 +5,44 @@ import com.tracom.cohort5project.Entities.Room;
 import com.tracom.cohort5project.Entities.User;
 import com.tracom.cohort5project.Security.CustomUserDetails;
 import com.tracom.cohort5project.Services.MeetingService;
-import com.tracom.cohort5project.Services.OrganizationService;
 import com.tracom.cohort5project.Services.RoomService;
 import com.tracom.cohort5project.Services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 @RequestMapping(path = "/officer")
 public class OOController {
 
-    private OrganizationService organizationService;
-    private UserService userService;
-    private RoomService roomService;
-    private MeetingService meetingService;
+    private final UserService userService;
+    private final RoomService roomService;
+    private final MeetingService meetingService;
 
-    @Autowired
-    public OOController(OrganizationService organizationService, UserService userService, RoomService roomService, MeetingService meetingService) {
-        this.organizationService = organizationService;
+    public OOController(UserService userService, RoomService roomService, MeetingService meetingService) {
         this.userService = userService;
         this.roomService = roomService;
         this.meetingService = meetingService;
     }
 
-    public User getLoggedUser(@AuthenticationPrincipal CustomUserDetails loggedUser){
+    public User getLoggedUser(@AuthenticationPrincipal CustomUserDetails loggedUser) {
         String email = loggedUser.getUsername();
-        User user = userService.getUserByEmail(email);
-
-        return user;
+        return userService.getUserByEmail(email);
     }
 
     @GetMapping(path = "/dashboard")
-    public String getOfficerWelcomePage(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getOfficerWelcomePage(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
 
-        int organizationId = getLoggedUser(loggedUser).getOrganization().getOrganizationId();
-        int meetingsToBeAttended = meetingService.numberOfMeetingsToBeAttendedByOrganization(organizationId);
-        int meetingsAttended = meetingService.numberOfMeetingsAttendedByOrganization(organizationId);
+        Integer organizationId = getLoggedUser(loggedUser).getOrganization().getOrganizationId();
+        Integer meetingsToBeAttended = meetingService.numberOfMeetingsToBeAttendedByOrganization(organizationId);
+        Integer meetingsAttended = meetingService.numberOfMeetingsAttendedByOrganization(organizationId);
         List<Meeting> meetings = meetingService.getOrganizationMeetingsForLaterDate(organizationId);
         List<Meeting> todayMeetings = meetingService.getOrganizationMeetingsToday(organizationId);
 
@@ -60,13 +56,13 @@ public class OOController {
 
     /*USER*/
     @GetMapping(path = "/profile")
-    public String getUserProfile(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getUserProfile(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
         model.addAttribute("loggedUser", getLoggedUser(loggedUser));
         return "officer/user_profile";
     }
 
     @GetMapping(path = "/edit_profile")
-    public String getEditProfile(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getEditProfile(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
         model.addAttribute("editUser", getLoggedUser(loggedUser));
 
         return "officer/edit_profile";
@@ -74,7 +70,7 @@ public class OOController {
 
     /*MEETINGS*/
     @GetMapping(path = "/meetings")
-    public String getMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
 
         int organizationId = getLoggedUser(loggedUser).getOrganization().getOrganizationId();
         List<Meeting> upcomingMeetings = meetingService.getOrganizationMeetingsForLaterDate(organizationId);
@@ -86,7 +82,7 @@ public class OOController {
     }
 
     @GetMapping(path = "/create_meeting")
-    public String getCreateMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getCreateMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
 
         int organizationId = getLoggedUser(loggedUser).getOrganization().getOrganizationId();
         int userId = getLoggedUser(loggedUser).getUserId();
@@ -103,13 +99,13 @@ public class OOController {
     }
 
     @PostMapping(path = "/create_meeting")
-    public String createMeeting(Meeting meeting){
+    public String createMeeting(Meeting meeting) {
         meetingService.createMeeting(meeting);
         return "redirect:/officer/meetings";
     }
 
     @GetMapping(path = "/add_coowners/{meetingId}")
-    public String addMeetingCoOwners(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId, Model model){
+    public String addMeetingCoOwners(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId, Model model) {
 
         int organizationId = getLoggedUser(loggedUser).getOrganization().getOrganizationId();
         int userId = getLoggedUser(loggedUser).getUserId();
@@ -126,7 +122,7 @@ public class OOController {
 
     @PostMapping(path = "/add_coowners")
     public String addCoOwners(@RequestParam(value = "meetingId", required = false) int meetingId,
-                              @RequestParam(value = "users", required = false) List<User> users){
+                              @RequestParam(value = "users", required = false) List<User> users) {
 
         Meeting meeting = meetingService.getMeeting(meetingId);
         meetingService.updateCoOwners(meeting, users);
@@ -134,9 +130,8 @@ public class OOController {
         return "redirect:/officer/meetings";
     }
 
-
     @GetMapping("/meeting{meetingId}")
-    public ModelAndView getMeetingDetails(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId){
+    public ModelAndView getMeetingDetails(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId) {
 
         ModelAndView mvn = new ModelAndView("officer/meeting_details");
 
@@ -146,13 +141,12 @@ public class OOController {
         return mvn;
     }
 
-
     @GetMapping(path = "/edit_meeting/{meetingId}")
-    public ModelAndView getEditMeetingForm(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId){
+    public ModelAndView getEditMeetingForm(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId) {
 
         ModelAndView mvn = new ModelAndView("officer/edit_meeting");
 
-        int organizationId = getLoggedUser(loggedUser).getOrganization().getOrganizationId();
+        Integer organizationId = getLoggedUser(loggedUser).getOrganization().getOrganizationId();
 
         List<Room> roomsList = roomService.showRoomsInOrganization(organizationId);
         Meeting meeting = meetingService.getMeeting(meetingId);
@@ -164,13 +158,9 @@ public class OOController {
         return mvn;
     }
 
-
     @RequestMapping("/delete_meeting/{meetingId}")
-    public String deleteMeeting(@PathVariable(name = "meetingId") int meetingId){
+    public String deleteMeeting(@PathVariable(name = "meetingId") int meetingId) {
         meetingService.deleteMeetingById(meetingId);
         return "redirect:/officer/meetings";
     }
-
-
-
 }

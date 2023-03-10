@@ -11,35 +11,40 @@ import com.tracom.cohort5project.Services.OrganizationService;
 import com.tracom.cohort5project.Services.RoomService;
 import com.tracom.cohort5project.Services.UserService;
 import com.tracom.cohort5project.Utilities.Utility;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import net.bytebuddy.utility.RandomString;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 @Controller
 @RequestMapping(path = "/admin")
 public class AdminController {
 
-    private OrganizationService organizationService;
-    private UserService userService;
-    private RoomService roomService;
-    private MeetingService meetingService;
-    private JavaMailSender mailSender;
+    private final OrganizationService organizationService;
+    private final UserService userService;
+    private final RoomService roomService;
+    private final MeetingService meetingService;
+    private final JavaMailSender mailSender;
 
-    @Autowired
-    public AdminController(OrganizationService organizationService, UserService userService, RoomService roomService, MeetingService meetingService, JavaMailSender mailSender) {
+    public AdminController(OrganizationService organizationService,
+                           UserService userService,
+                           RoomService roomService,
+                           MeetingService meetingService,
+                           JavaMailSender mailSender) {
         this.organizationService = organizationService;
         this.userService = userService;
         this.roomService = roomService;
@@ -49,17 +54,17 @@ public class AdminController {
 
     /*Dashboard*/
     @GetMapping(path = "/dashboard")
-    public String homeAdminDashboard(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String homeAdminDashboard(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
 
         String email = loggedUser.getUsername();
         User user = userService.getUserByEmail(email);
 
-        int organizationId = user.getOrganization().getOrganizationId();
+        Integer organizationId = user.getOrganization().getOrganizationId();
 
-        int users = userService.numberOfUsersWithRolesAndByOrganization(organizationId);
-        int rooms = roomService.noOfRoomsInOrganization(organizationId);
-        int meetingsToBeAttended = meetingService.numberOfMeetingsToBeAttendedByOrganization(organizationId);
-        int meetingsAttended = meetingService.numberOfMeetingsAttendedByOrganization(organizationId);
+        Integer users = userService.numberOfUsersWithRolesAndByOrganization(organizationId);
+        Integer rooms = roomService.noOfRoomsInOrganization(organizationId);
+        Integer meetingsToBeAttended = meetingService.numberOfMeetingsToBeAttendedByOrganization(organizationId);
+        Integer meetingsAttended = meetingService.numberOfMeetingsAttendedByOrganization(organizationId);
         List<Meeting> meetings = meetingService.getOrganizationMeetingsForLaterDate(organizationId);
         List<Meeting> todayMeetings = meetingService.getOrganizationMeetingsToday(organizationId);
 
@@ -73,16 +78,14 @@ public class AdminController {
     }
 
     @GetMapping(path = "/profile")
-    public String getUserProfile(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
-        String email = loggedUser.getUsername();
-        User user = userService.getUserByEmail(email);
-
-        model.addAttribute("loggedUser", user);
+    public String getUserProfile(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
+        var email = loggedUser.getUsername();
+        model.addAttribute("loggedUser", userService.getUserByEmail(email));
         return "admin/user_profile";
     }
 
     @GetMapping("/edit_profile")
-    public String getUserProfileDetails(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getUserProfileDetails(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
         String email = loggedUser.getUsername();
         User user = userService.getUserByEmail(email);
 
@@ -97,7 +100,7 @@ public class AdminController {
                                     @RequestParam(value = "firstName", required = false) String firstName,
                                     @RequestParam(value = "lastName", required = false) String lastName,
                                     @RequestParam(value = "phone", required = false) String phoneNumber,
-                                    RedirectAttributes redirectAttributes){
+                                    RedirectAttributes redirectAttributes) {
 
         //Perform update
         userService.updateUserDetails(userId, firstName, lastName, phoneNumber);
@@ -105,7 +108,6 @@ public class AdminController {
         //Set current loggedIn user details on top.
         loggedUser.setFirstName(firstName);
         loggedUser.setLastName(lastName);
-
 
         redirectAttributes.addFlashAttribute("message", "Profile Updated successfully");
         return "redirect:/admin/profile";
@@ -126,20 +128,20 @@ public class AdminController {
 
     /*Board Room*/
     @GetMapping(path = "/rooms")
-    public String getRooms(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getRooms(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
 
         String email = loggedUser.getUsername();
         User user = userService.getUserByEmail(email);
 
         int organizationId = user.getOrganization().getOrganizationId();
-        //List<Room> roomsList = roomService.showRooms();
 
         List<Room> roomsList = roomService.showRoomsInOrganization(organizationId);
         model.addAttribute("roomsList", roomsList);
         return "admin/view_rooms";
     }
+
     @GetMapping(path = "/create_room")
-    public String getCreateRoomForm(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getCreateRoomForm(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
         model.addAttribute("room", new Room());
 
         String email = loggedUser.getUsername();
@@ -151,7 +153,7 @@ public class AdminController {
     }
 
     @GetMapping(path = "/edit_room/{roomId}")
-    public ModelAndView getEditRoomForm(@AuthenticationPrincipal CustomUserDetails loggedUser,  @PathVariable(name = "roomId") int roomId){
+    public ModelAndView getEditRoomForm(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "roomId") int roomId) {
 
         ModelAndView mvn = new ModelAndView("admin/edit_boardroom");
 
@@ -165,20 +167,20 @@ public class AdminController {
     }
 
     @PostMapping(value = "/create_room")
-    public String createRoom(Room room){
+    public String createRoom(Room room) {
         roomService.createRoom(room);
         return "redirect:/admin/rooms";
     }
 
     @RequestMapping("/delete_room/{roomId}")
-    public String deleteRoom(@PathVariable(name = "roomId") int id){
+    public String deleteRoom(@PathVariable(name = "roomId") int id) {
         roomService.deleteRoom(id);
         return "redirect:/admin/rooms";
     }
 
     /*User*/
     @GetMapping("/users")
-    public String getUsers(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getUsers(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
 
         //Users with roles and organization
         String email = loggedUser.getUsername();
@@ -193,7 +195,7 @@ public class AdminController {
     }
 
     @GetMapping(path = "/create_user")
-    public String showCreateUser(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String showCreateUser(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
 
         //Users without roles and organization
         String email = loggedUser.getUsername();
@@ -201,7 +203,6 @@ public class AdminController {
 
         int organizationId = user.getOrganization().getOrganizationId();
 
-        //List<User> registeredUsers = userService.getUsersWithoutRoles();
         List<User> registeredUsers = userService.getUsersWithoutRolesAndByOrganization(organizationId);
         model.addAttribute("registeredUsersList", registeredUsers);
         model.addAttribute("addUserRole", new User());
@@ -212,7 +213,7 @@ public class AdminController {
     public String createUser(@RequestParam(value = "userId") int userId,
                              @RequestParam(value = "userRole") String userRole,
                              HttpServletRequest request,
-                             Model model){
+                             Model model) {
 
         userService.createSystemUserById(userId, userRole);
 
@@ -222,7 +223,6 @@ public class AdminController {
         String token = RandomString.make(45);
         String fullNames = user.getEmployeeFirstName() + " " + user.getEmployeeLastName();
         System.out.println(email + " : " + token);
-
 
         try {
 
@@ -237,9 +237,7 @@ public class AdminController {
             sendEmail(fullNames, email, passwordLink);
 
             model.addAttribute("message", "User created and email sent for them to set their password.");
-
-        }
-        catch (UserNotFoundException | MessagingException | UnsupportedEncodingException ex){
+        } catch (UserNotFoundException | MessagingException | UnsupportedEncodingException ex) {
             model.addAttribute("error", ex.getMessage());
         }
 
@@ -270,7 +268,7 @@ public class AdminController {
     }
 
     @GetMapping(path = "/edit_user_role/{userId}")
-    public ModelAndView getEditUserRole(@PathVariable(name = "userId") int userId){
+    public ModelAndView getEditUserRole(@PathVariable(name = "userId") int userId) {
 
         ModelAndView mvn = new ModelAndView("admin/edit_user_role");
 
@@ -282,20 +280,22 @@ public class AdminController {
 
     @RequestMapping("/edit_user_role")
     public String updateUserRole(@RequestParam(value = "userId") int userId,
-                             @RequestParam(value = "userRole") String userRole){
+                                 @RequestParam(value = "userRole") String userRole) {
         userService.createSystemUserById(userId, userRole);
         return "redirect:/admin/users";
     }
 
     @GetMapping(path = "/delete_user_role/{userId}")
-    public String deleteUserWithRole(@PathVariable(name = "userId") int userId){
+    public String deleteUserWithRole(@PathVariable(name = "userId") int userId) {
         userService.deleteUserWithRoleById(userId);
         return "redirect:/admin/users";
     }
 
-    /** ----- Meeting -----**/
+    /**
+     * ----- Meeting -----
+     **/
     @GetMapping(path = "/meetings")
-    public String getMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
         String email = loggedUser.getUsername();
         User user = userService.getUserByEmail(email);
 
@@ -303,14 +303,13 @@ public class AdminController {
         List<Meeting> upcomingMeetings = meetingService.getOrganizationMeetingsForLaterDate(organizationId);
         List<Meeting> pastMeetings = meetingService.getOrganizationMeetingsForPastDate(organizationId);
 
-
         model.addAttribute("pastMeetings", pastMeetings);
         model.addAttribute("upcomingMeetings", upcomingMeetings);
         return "admin/view_meetings";
     }
 
     @GetMapping(path = "/upcoming_meetings")
-    public String getUpcomingMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getUpcomingMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
         String email = loggedUser.getUsername();
         User user = userService.getUserByEmail(email);
 
@@ -321,9 +320,8 @@ public class AdminController {
         return "admin/upcoming_meetings";
     }
 
-
     @GetMapping(path = "/past_meetings")
-    public String getPastMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String getPastMeetings(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
         String email = loggedUser.getUsername();
         User user = userService.getUserByEmail(email);
 
@@ -335,7 +333,7 @@ public class AdminController {
     }
 
     @GetMapping(path = "/create_meeting")
-    public String createMeeting(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model){
+    public String createMeeting(@AuthenticationPrincipal CustomUserDetails loggedUser, Model model) {
 
         String email = loggedUser.getUsername();
         User user = userService.getUserByEmail(email);
@@ -354,13 +352,13 @@ public class AdminController {
     }
 
     @PostMapping(path = "/create_meeting")
-    public String createMeeting(Meeting meeting){
+    public String createMeeting(Meeting meeting) {
         meetingService.createMeeting(meeting);
         return "redirect:/admin/meetings";
     }
 
     @GetMapping(path = "/add_coowners/{meetingId}")
-    public String addMeetingCoOwners(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId, Model model){
+    public String addMeetingCoOwners(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId, Model model) {
 
         String email = loggedUser.getUsername();
         User user = userService.getUserByEmail(email);
@@ -377,18 +375,17 @@ public class AdminController {
     }
 
     @PostMapping(path = "/add_coowners")
-    public String addCoOwners( @RequestParam(value = "meetingId", required = false) int meetingId,
-                               @RequestParam(value = "users", required = false) List<User> users){
+    public String addCoOwners(@RequestParam(value = "meetingId", required = false) int meetingId,
+                              @RequestParam(value = "users", required = false) List<User> users) {
 
         Meeting meeting = meetingService.getMeeting(meetingId);
         meetingService.updateCoOwners(meeting, users);
 
         return "redirect:/admin/meetings";
-
     }
 
     @GetMapping("/meeting{meetingId}")
-    public ModelAndView getMeetingDetails(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId){
+    public ModelAndView getMeetingDetails(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId) {
 
         //Get current loggedin user
         String email = loggedUser.getUsername();
@@ -403,7 +400,7 @@ public class AdminController {
     }
 
     @GetMapping(path = "/edit_meeting/{meetingId}")
-    public ModelAndView getEditMeetingForm(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId){
+    public ModelAndView getEditMeetingForm(@AuthenticationPrincipal CustomUserDetails loggedUser, @PathVariable(name = "meetingId") int meetingId) {
 
         ModelAndView mvn = new ModelAndView("admin/edit_meeting");
 
@@ -423,9 +420,8 @@ public class AdminController {
     }
 
     @RequestMapping("/delete_meeting/{meetingId}")
-    public String deleteMeeting(@PathVariable(name = "meetingId") int meetingId){
+    public String deleteMeeting(@PathVariable(name = "meetingId") int meetingId) {
         meetingService.deleteMeetingById(meetingId);
         return "redirect:/admin/meetings";
     }
-
 }

@@ -1,17 +1,22 @@
 package com.tracom.cohort5project.Entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,10 +28,11 @@ public class Meeting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int meetingId;
+
     private String meetingName;
+
     private String meetingDescription;
 
-    /** --- Date and Time -----**/
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate meetingDate;
 
@@ -37,9 +43,9 @@ public class Meeting {
     private LocalTime endTime;
 
     private int capacity;
+
     private int ownerId;
 
-    /** --- Owners and Co-owners (TO-DO) -----**/
     @ManyToMany
     @JoinTable(
             name = "meetings_users",
@@ -49,7 +55,6 @@ public class Meeting {
     @ToString.Exclude
     private List<User> users;
 
-    /** --- Other Relationships -----**/
     @ManyToOne
     @JoinColumn(name = "room_id")
     @ToString.Exclude
@@ -59,5 +64,4 @@ public class Meeting {
     @JoinColumn(name = "org_id")
     @ToString.Exclude
     private Organization organization;
-
 }

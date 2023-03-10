@@ -10,5 +10,4 @@ public class Cohort5ProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(Cohort5ProjectApplication.class, args);
     }
-
 }
